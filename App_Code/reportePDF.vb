@@ -81,7 +81,7 @@ Public Class reportePDF
             If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
 
                 UrlReport = dt.Rows(0)("url").ToString
-                PathReport = "/" + dt.Rows(0)("NombreCarpeta").ToString + "/OrdenPago_stro"
+                PathReport = "//" + dt.Rows(0)("NombreCarpeta").ToString + "//OrdenPago_stro"
                 UsuaReport = dt.Rows(0)("UsuaReport").ToString
                 PwdReport = dt.Rows(0)("PwdReport").ToString
                 DomReport = dt.Rows(0)("DomReport").ToString
@@ -113,13 +113,13 @@ Public Class reportePDF
                 Dim i As Integer = 0
                 Dim sufijo As Integer = 0
 
-                While System.IO.File.Exists(RutaArchivo + "\" + Nro_ops(index).ToString() + "-" + i.ToString() + "-.pdf")
+                While System.IO.File.Exists(RutaArchivo + "\\" + Nro_ops(index).ToString() + "-" + i.ToString() + "-.pdf")
                     i += 1
-                    rutacompleta = RutaArchivo + "\" + Nro_ops(index).ToString() + "-" + i.ToString() + "-.pdf"
+                    rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "-" + i.ToString() + "-.pdf"
                 End While
 
                 If i = 0 Then
-                    rutacompleta = RutaArchivo + "\" + Nro_ops(index).ToString() + "-0-.pdf"
+                    rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "-0-.pdf"
                 End If
 
 
@@ -149,14 +149,14 @@ Public Class reportePDF
     Private Sub unirPDFS(archivos As String(), RutaArchivo As String)
         Dim NuevoArchivo As String
         Dim RutaCompleta As String
-        ' // Obtener algunos nombres de archivo
+        ' //// Obtener algunos nombres de archivo
         'Dim files As String()
         'files = {]
 
-        '// Abra el documento de salida
+        '//// Abra el documento de salida
         Dim outputDocument As New PdfDocument()
 
-        '// recorrer archivos
+        '//// recorrer archivos
         For Each archivo As String In archivos
             '// Abrir el documento para importar páginas
             Dim inputDocument As PdfDocument = PdfReader.Open(archivo, PdfDocumentOpenMode.Import)
@@ -172,7 +172,7 @@ Public Class reportePDF
         Next
 
         NuevoArchivo = "Ordenes de Pago"
-        RutaCompleta = RutaArchivo + "\" + NuevoArchivo + ".pdf"
+        RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + ".pdf"
         outputDocument.Save(RutaCompleta)
 
 
@@ -233,37 +233,37 @@ Public Class reportePDF
 
 
         'AÑO
-        If Directory.Exists(sPathFile + "\" + sAnio) Then
+        If Directory.Exists(sPathFile + "\\" + sAnio) Then
 
-            sPathFile = sPathFile + "\" + sAnio
+            sPathFile = sPathFile + "\\" + sAnio
         Else
-            Directory.CreateDirectory(sPathFile + "\" + sAnio)
-            sPathFile = sPathFile + "\" + sAnio
+            Directory.CreateDirectory(sPathFile + "\\" + sAnio)
+            sPathFile = sPathFile + "\\" + sAnio
         End If
 
 
         If accion = 1 Then
             'Crea carpeta temporal
-            Directory.CreateDirectory(sPathFile + "\tmp") 'CAMBIAR NOMBRE DE LA CARPETA EN LA QUE SE GUARDARAN LOS PDFS CON VARIAS OPS
-            sPathFile = sPathFile + "\tmp"
+            Directory.CreateDirectory(sPathFile + "\\tmp") 'CAMBIAR NOMBRE DE LA CARPETA EN LA QUE SE GUARDARAN LOS PDFS CON VARIAS OPS
+            sPathFile = sPathFile + "\\tmp"
 
         Else
             'Mes
-            If Directory.Exists(sPathFile + "\" + sMes) Then
+            If Directory.Exists(sPathFile + "\\" + sMes) Then
 
-                sPathFile = sPathFile + "\" + sMes
+                sPathFile = sPathFile + "\\" + sMes
             Else
-                Directory.CreateDirectory(sPathFile + "\" + sMes)
-                sPathFile = sPathFile + "\" + sMes
+                Directory.CreateDirectory(sPathFile + "\\" + sMes)
+                sPathFile = sPathFile + "\\" + sMes
             End If
 
             'Dia
-            If Directory.Exists(sPathFile + "\" + sDia) Then
+            If Directory.Exists(sPathFile + "\\" + sDia) Then
 
-                sPathFile = sPathFile + "\" + sDia
+                sPathFile = sPathFile + "\\" + sDia
             Else
-                Directory.CreateDirectory(sPathFile + "\" + sDia)
-                sPathFile = sPathFile + "\" + sDia
+                Directory.CreateDirectory(sPathFile + "\\" + sDia)
+                sPathFile = sPathFile + "\\" + sDia
             End If
         End If
 
@@ -297,7 +297,7 @@ Public Class reportePDF
             If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
 
                 UrlReport = dt.Rows(0)("url").ToString
-                PathReport = "/" + dt.Rows(0)("NombreCarpeta").ToString + "/OP_PagoInternacional "
+                PathReport = "//" + dt.Rows(0)("NombreCarpeta").ToString + "//OP_PagoInternacional "
                 UsuaReport = dt.Rows(0)("UsuaReport").ToString
                 PwdReport = dt.Rows(0)("PwdReport").ToString
                 DomReport = dt.Rows(0)("DomReport").ToString
@@ -330,9 +330,9 @@ Public Class reportePDF
                 Dim sufijo As Integer = 0
 
                 If Nro_ops.Length > 1 Then
-                    rutacompleta = RutaArchivo + "\" + Nro_ops(index).ToString() + "_" + Cod_usuario + ".pdf"
+                    rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "_" + Cod_usuario + ".pdf"
                 Else
-                    rutacompleta = RutaArchivo + "\Ordenes de Pago Pago Inter" + "_" + Cod_usuario + ".pdf"
+                    rutacompleta = RutaArchivo + "\\Ordenes de Pago Pago Inter" + "_" + Cod_usuario + ".pdf"
                 End If
 
                 Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
@@ -393,32 +393,32 @@ Public Class reportePDF
 
 
         'AÑO
-        If Directory.Exists(sPathFile + "\" + sAnio) Then
+        If Directory.Exists(sPathFile + "\\" + sAnio) Then
 
-            sPathFile = sPathFile + "\" + sAnio
+            sPathFile = sPathFile + "\\" + sAnio
         Else
-            Directory.CreateDirectory(sPathFile + "\" + sAnio)
-            sPathFile = sPathFile + "\" + sAnio
+            Directory.CreateDirectory(sPathFile + "\\" + sAnio)
+            sPathFile = sPathFile + "\\" + sAnio
         End If
 
-        sPathFile = sPathFile + "\Pago Internacional"
+        sPathFile = sPathFile + "\\Pago Internacional"
 
         'Mes
-        If Directory.Exists(sPathFile + "\" + sMes) Then
+        If Directory.Exists(sPathFile + "\\" + sMes) Then
 
-            sPathFile = sPathFile + "\" + sMes
+            sPathFile = sPathFile + "\\" + sMes
         Else
-            Directory.CreateDirectory(sPathFile + "\" + sMes)
-            sPathFile = sPathFile + "\" + sMes
+            Directory.CreateDirectory(sPathFile + "\\" + sMes)
+            sPathFile = sPathFile + "\\" + sMes
         End If
 
         'Dia
-        If Directory.Exists(sPathFile + "\" + sDia) Then
+        If Directory.Exists(sPathFile + "\\" + sDia) Then
 
-            sPathFile = sPathFile + "\" + sDia
+            sPathFile = sPathFile + "\\" + sDia
         Else
-            Directory.CreateDirectory(sPathFile + "\" + sDia)
-            sPathFile = sPathFile + "\" + sDia
+            Directory.CreateDirectory(sPathFile + "\\" + sDia)
+            sPathFile = sPathFile + "\\" + sDia
         End If
 
         Ruta_explorador = sPathFile
@@ -451,7 +451,7 @@ Public Class reportePDF
         Next
 
         NuevoArchivo = "Ordenes de Pago Pago Inter"
-        RutaCompleta = RutaArchivo + "\" + NuevoArchivo + "_" + Cod_usuario + ".pdf"
+        RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + "_" + Cod_usuario + ".pdf"
         outputDocument.Save(RutaCompleta)
 
 

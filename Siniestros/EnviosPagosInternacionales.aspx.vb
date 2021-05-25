@@ -282,7 +282,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 Exit Sub
             End If
 
-            Dim archivo As String = "\Ordenes de Pago Pago Inter_SISTRAN.pdf"
+            Dim archivo As String = "\\Ordenes de Pago Pago Inter_SISTRAN.pdf"
 
 
             If archivos.Length > 0 AndAlso Index <> 0 Then
@@ -291,23 +291,23 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 pdf.ReportePagosInter(True)
 
                 '>VZAVALETA_10290_CC7_PDF 
-                RutaArchivo = pdf.RutaArchivo_correo.Split("\")
+                RutaArchivo = pdf.RutaArchivo_correo.Split("\\")
 
                 Dim max As Integer = RutaArchivo.Length
                 Dim pathToFiles As String
 
                 archivo = RutaArchivo(max - 1)
-                pathToFiles = Server.MapPath("/PDF")
+                pathToFiles = Server.MapPath("//PDF")
 
-                If File.Exists(pathToFiles + "\" + archivo) Then
-                    File.Delete(pathToFiles + "\" + archivo)
+                If File.Exists(pathToFiles + "\\" + archivo) Then
+                    File.Delete(pathToFiles + "\\" + archivo)
                 End If
 
-                File.Copy(pdf.RutaArchivo_correo, pathToFiles + "\" + archivo)
+                File.Copy(pdf.RutaArchivo_correo, pathToFiles + "\\" + archivo)
 
                 MuestraMensaje("Impresión", "La Impresión fue correcta", TipoMsg.Advertencia)
 
-                Response.Redirect("../PDF/" + archivo)
+                Response.Redirect("..//PDF//" + archivo)
                 'Response.Redirect("../Siniestros/EnviosPagosInternacionales.aspx")
 
                 '<VZAVALETA_10290_CC7_PDF   
@@ -318,7 +318,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
 
         Catch ex As Exception
-            Mensaje.MuestraMensaje(Master.Titulo, ex.Message, TipoMsg.Falla)
+            Mensaje.MuestraMensaje(Master.Titulo, ex.Message + "-" + pdf.RutaArchivo_correo, TipoMsg.Falla)
         End Try
     End Sub
 
@@ -569,7 +569,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 '>VZAVALETA_10290_CC7_PDF  
 
                 RutaArchivo = Replace(pdf.RutaArchivo_correo, " ", "%20")
-                RutaArchivo = Replace(RutaArchivo, "\", "/")
+                RutaArchivo = Replace(RutaArchivo, "\\", "//")
 
                 'Funciones.EjecutaFuncion("window.open(RutaArchivo, '_blank');", "PDF")
 
@@ -584,7 +584,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
 
         Catch ex As Exception
-            Mensaje.MuestraMensaje(Master.Titulo, ex.Message, TipoMsg.Falla)
+            Mensaje.MuestraMensaje(Master.Titulo, ex.Message + "-" + pdf.Ruta_explorador, TipoMsg.Falla)
 
         End Try
     End Sub
