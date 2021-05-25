@@ -53,16 +53,17 @@
 
 
         <div class="padding10">
-            <asp:LinkButton ID="btn_BuscarOP" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="120px">
-                                <span>
-                                    <img class="btn-buscar"/>&nbsp Buscar
-                                </span>
+            <asp:LinkButton ID="btnLimpiar" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="130px">
+                <span>
+                    <img class="btn-limpiar"/>&nbsp&nbsp Limpiar Filtros
+                </span>
             </asp:LinkButton>
-             <asp:LinkButton ID="btnLimpiar" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="130px">
-                        <span>
-                            <img class="btn-limpiar"/>&nbsp&nbsp Limpiar Filtros
-                        </span>
-                    </asp:LinkButton>
+            <asp:LinkButton ID="btn_BuscarOP" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="120px">
+                <span>
+                    <img class="btn-buscar"/>&nbsp Buscar
+                </span>
+            </asp:LinkButton>
+
             
 
             <%-- <asp:LinkButton ID="btn_Continuar" runat="server" class="btn botones" Width="153px" data-toggle="modal" data-target="#CorreosPI" Visible="TRUE">
@@ -164,9 +165,8 @@
 
                             </div>
                         </div>
-
                         <div class="col-md-6">                            
-                            <div style="text-align: right">
+                            <div style="text-align: right">                                
                                 <asp:LinkButton ID="btn_Imprimir" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="120px" Visible="false">
                                 <span>
                                     <img class="btn-imprimir"/>
@@ -178,6 +178,12 @@
                                         <img class="btn-mail"/>&nbsp Enviar
 									</span>
                                 </asp:LinkButton>
+                                <asp:LinkButton ID="AbrirExplorador" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="120px" Visible="False">
+                                <span>
+                                    <img class="btn-imprimir"/>
+                                    Examinar
+                                </span>
+                                </asp:LinkButton>
                                           
                                <%-- <asp:LinkButton ID="btn_Continuar" runat="server" class="btn botones" Width="153px" data-toggle="modal" data-target="#mailPI" Visible="true">
                                 <span>
@@ -185,7 +191,7 @@
                                 </span>
                             </asp:LinkButton>--%>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                     <div class="padding10" />
                 </asp:Panel>

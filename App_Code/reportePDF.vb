@@ -12,7 +12,7 @@ Public Class reportePDF
     Dim _nro_ops As String()
     Dim _rutaArchivo_correo As String
     Dim _cod_usuario As String
-
+    Dim _ruta_explorador As String
 
 
     Public Property Nro_ops As String()
@@ -42,7 +42,14 @@ Public Class reportePDF
         End Set
     End Property
 
-
+    Public Property Ruta_explorador As String
+        Get
+            Return _ruta_explorador
+        End Get
+        Set(value As String)
+            _ruta_explorador = value
+        End Set
+    End Property
 
 
     'Dim NombreArchivo As String
@@ -414,7 +421,7 @@ Public Class reportePDF
             sPathFile = sPathFile + "\" + sDia
         End If
 
-
+        Ruta_explorador = sPathFile
         Return sPathFile
     End Function
 

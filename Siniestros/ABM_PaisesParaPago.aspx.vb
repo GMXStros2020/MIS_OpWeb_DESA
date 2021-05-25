@@ -42,9 +42,9 @@ Partial Class Siniestros_ABM_AnalistaSolicitante
             End If
 
             If chkDomicilio.Checked Then
-                oParametros.Add("sn_domicilio", 0)
-            Else
                 oParametros.Add("sn_domicilio", -1)
+            Else
+                oParametros.Add("sn_domicilio", 0)
             End If
 
             If chkCuenta.Checked Then
@@ -231,7 +231,6 @@ Partial Class Siniestros_ABM_AnalistaSolicitante
 
         oParametros.Add("catalogo", "Pais")
 
-
         oDatos = Funciones.ObtenerDatos("usp_obtener_cat_direccion", oParametros)
 
         cmbPais.DataSource = oDatos.Tables(0)
@@ -239,7 +238,36 @@ Partial Class Siniestros_ABM_AnalistaSolicitante
         cmbPais.DataValueField = "cod_pais"
         cmbPais.DataBind()
 
+        chkBanco.Checked = False
+        chkNumBanco.Checked = False
+        chkDomicilio.Checked = False
+        chkCuenta.Checked = False
+        chkAba.Checked = False
+        chkswift.Checked = False
+        chkTransit.Checked = False
+        chkIban.Checked = False
 
+    End Sub
+    Protected Sub grd_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles grd.RowDeleting 'FJCP 10290_CC 
+        Dim oDatos As DataSet
+        Dim oParametros As New Dictionary(Of String, Object)
+
+        Try
+            Dim row As GridViewRow = grd.Rows(e.RowIndex)
+            Dim cod_pais As String
+            cod_pais = row.Cells(0).Text
+
+            oParametros.Add("cod_pais", 1)
+            oParametros.Add("txt_pais", cod_pais)
+            oParametros.Add("Accion", 3)
+
+            oDatos = Funciones.ObtenerDatos("sp_pais_para_pago_internacional", oParametros)
+            CargarCombo()
+            CargarGrid()
+
+        Catch ex As Exception
+            MuestraMensaje("Exception", ex.Message, TipoMsg.Falla)
+        End Try
 
     End Sub
 End Class

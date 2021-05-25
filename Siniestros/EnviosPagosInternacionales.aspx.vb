@@ -1,5 +1,6 @@
 ﻿
 Imports System.Data
+Imports System.IO
 Imports System.Net.Mail
 Imports Mensaje
 Imports System.Diagnostics '>VZAVALETA_10290_CC7_PDF
@@ -71,11 +72,13 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 oTabla = oDatos.Tables(0)
 
                 If oTabla.Rows.Count > 0 Then
+                    AbrirExplorador.Visible = True
                     btnEnviar.Visible = True
                     btn_Imprimir.Visible = True
                     btn_Ninguna.Visible = True
                     btn_Todas.Visible = True
                 Else
+                    AbrirExplorador.Visible = False
                     btnEnviar.Visible = False
                     btn_Imprimir.Visible = False
                     btn_Ninguna.Visible = False
@@ -259,7 +262,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
         Dim archivos() As String = Nothing
         Dim Index As Integer = 0
         Dim pdf = New reportePDF
-        Dim RutaArchivo As String
+        Dim RutaArchivo As String()
 
         dtSelec = obtenerSeleccionadosImp()
         Dim strFoliosRep As String = ""
@@ -279,18 +282,35 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 Exit Sub
             End If
 
+            Dim archivo As String = "\Ordenes de Pago Pago Inter_SISTRAN.pdf"
+
 
             If archivos.Length > 0 AndAlso Index <> 0 Then
                 pdf.Cod_usuario = Master.cod_usuario.ToString()
                 pdf.Nro_ops = archivos
                 pdf.ReportePagosInter(True)
 
-                '>VZAVALETA_10290_CC7_PDF  
-                RutaArchivo = Replace(pdf.RutaArchivo_correo, " ", "%20")
-                RutaArchivo = Replace(RutaArchivo, "\", "/")
+                '>VZAVALETA_10290_CC7_PDF 
+                RutaArchivo = pdf.RutaArchivo_correo.Split("\")
 
-                Funciones.EjecutaFuncion("window.open('file:" + RutaArchivo + "', '_blank');", "PDF")
-                '<VZAVALETA_10290_CC7_PDF               
+                Dim max As Integer = RutaArchivo.Length
+                Dim pathToFiles As String
+
+                archivo = RutaArchivo(max - 1)
+                pathToFiles = Server.MapPath("/PDF")
+
+                If File.Exists(pathToFiles + "\" + archivo) Then
+                    File.Delete(pathToFiles + "\" + archivo)
+                End If
+
+                File.Copy(pdf.RutaArchivo_correo, pathToFiles + "\" + archivo)
+
+                MuestraMensaje("Impresión", "La Impresión fue correcta", TipoMsg.Advertencia)
+
+                Response.Redirect("../PDF/" + archivo)
+                'Response.Redirect("../Siniestros/EnviosPagosInternacionales.aspx")
+
+                '<VZAVALETA_10290_CC7_PDF   
             Else
                 Index = 0
                 MuestraMensaje("Validación", "Error al imprimir el PDF", TipoMsg.Falla)
@@ -299,7 +319,6 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
         Catch ex As Exception
             Mensaje.MuestraMensaje(Master.Titulo, ex.Message, TipoMsg.Falla)
-
         End Try
     End Sub
 
@@ -356,7 +375,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
             Return dtSel
         Catch ex As Exception
-            MuestraMensaje("Exception", "obtenerSeleccionados: " & ex.Message, TipoMsg.Falla)
+            MuestraMensaje("Exception", "obtenerSeleccionados:  " & ex.Message, TipoMsg.Falla)
             Return Nothing
         End Try
 
@@ -514,5 +533,60 @@ Partial Class Siniestros_EnviosPagosInternacionales
         Return html
     End Function
 
+    Private Sub AbrirExplorador_Click(sender As Object, e As EventArgs) Handles AbrirExplorador.Click
+        Dim dtSelec As DataTable
+        Dim folioRep As Integer
+        Dim dtPagosInter As DataTable
+        Dim archivos() As String = Nothing
+        Dim Index As Integer = 0
+        Dim pdf = New reportePDF
+        Dim RutaArchivo As String
+
+        dtSelec = obtenerSeleccionadosImp()
+        Dim strFoliosRep As String = ""
+
+
+        Try
+            If dtSelec.Rows.Count > 0 Then
+                ReDim archivos(dtSelec.Rows.Count - 1)
+                For Each row In dtSelec.Rows
+                    archivos(Index) = row(0).ToString()
+                    Index = Index + 1
+                    'Funciones.fn_Consulta("sp_consulta_para_envio_pago_internacional @Accion = 2, @nro_op_desde = " & row(0).ToString(), dtPagosInter)
+                Next
+            Else
+                Index = 0
+                MuestraMensaje("Validación", "No existen registros seleccionados para imprimir", TipoMsg.Advertencia)
+                Exit Sub
+            End If
+
+
+            If archivos.Length > 0 AndAlso Index <> 0 Then
+                pdf.Cod_usuario = Master.cod_usuario.ToString()
+                pdf.Nro_ops = archivos
+                pdf.ReportePagosInter(True)
+
+                '>VZAVALETA_10290_CC7_PDF  
+
+                RutaArchivo = Replace(pdf.RutaArchivo_correo, " ", "%20")
+                RutaArchivo = Replace(RutaArchivo, "\", "/")
+
+                'Funciones.EjecutaFuncion("window.open(RutaArchivo, '_blank');", "PDF")
+
+                Process.Start(pdf.Ruta_explorador)
+
+
+                '<VZAVALETA_10290_CC7_PDF               
+            Else
+                Index = 0
+                MuestraMensaje("Validación", "Error al imprimir el PDF", TipoMsg.Falla)
+            End If
+
+
+        Catch ex As Exception
+            Mensaje.MuestraMensaje(Master.Titulo, ex.Message, TipoMsg.Falla)
+
+        End Try
+    End Sub
 End Class
 
