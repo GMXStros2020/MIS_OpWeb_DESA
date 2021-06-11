@@ -325,7 +325,7 @@ Public Class OrdenPagoMasiva
 
     <WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Function ConceptpPago() As String
+    Public Function ConceptoPago() As String
 
         Dim oDatos As DataSet
         Dim oTabla As DataTable

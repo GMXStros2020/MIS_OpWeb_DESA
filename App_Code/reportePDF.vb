@@ -81,7 +81,7 @@ Public Class reportePDF
             If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
 
                 UrlReport = dt.Rows(0)("url").ToString
-                PathReport = "//" + dt.Rows(0)("NombreCarpeta").ToString + "//OrdenPago_stro"
+                PathReport = "/" + dt.Rows(0)("NombreCarpeta").ToString + "/OrdenPago_stro"
                 UsuaReport = dt.Rows(0)("UsuaReport").ToString
                 PwdReport = dt.Rows(0)("PwdReport").ToString
                 DomReport = dt.Rows(0)("DomReport").ToString
@@ -297,7 +297,7 @@ Public Class reportePDF
             If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
 
                 UrlReport = dt.Rows(0)("url").ToString
-                PathReport = "//" + dt.Rows(0)("NombreCarpeta").ToString + "//OP_PagoInternacional "
+                PathReport = "/" + dt.Rows(0)("NombreCarpeta").ToString + "/OP_PagoInternacional "
                 UsuaReport = dt.Rows(0)("UsuaReport").ToString
                 PwdReport = dt.Rows(0)("PwdReport").ToString
                 DomReport = dt.Rows(0)("DomReport").ToString
@@ -332,7 +332,7 @@ Public Class reportePDF
                 If Nro_ops.Length > 1 Then
                     rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "_" + Cod_usuario + ".pdf"
                 Else
-                    rutacompleta = RutaArchivo + "\\Ordenes de Pago Pago Inter" + "_" + Cod_usuario + ".pdf"
+                    rutacompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + ".pdf"
                 End If
 
                 Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
@@ -401,7 +401,7 @@ Public Class reportePDF
             sPathFile = sPathFile + "\\" + sAnio
         End If
 
-        sPathFile = sPathFile + "\\Pago Internacional"
+        sPathFile = sPathFile + "\\Pago_Internacional"
 
         'Mes
         If Directory.Exists(sPathFile + "\\" + sMes) Then
@@ -450,7 +450,7 @@ Public Class reportePDF
             Next
         Next
 
-        NuevoArchivo = "Ordenes de Pago Pago Inter"
+        NuevoArchivo = "Ordenes_de_Pago_Pago_Inter"
         RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + "_" + Cod_usuario + ".pdf"
         outputDocument.Save(RutaCompleta)
 

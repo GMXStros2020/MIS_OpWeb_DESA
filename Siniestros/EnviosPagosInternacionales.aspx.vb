@@ -303,11 +303,11 @@ Partial Class Siniestros_EnviosPagosInternacionales
                     File.Delete(pathToFiles + "\\" + archivo)
                 End If
 
-                File.Copy(pdf.RutaArchivo_correo, pathToFiles + "\\" + archivo)
+                'File.Copy(pdf.RutaArchivo_correo, pathToFiles + "\\" + archivo)
 
-                MuestraMensaje("Impresión", "La Impresión fue correcta", TipoMsg.Advertencia)
-
-                Response.Redirect("..//PDF//" + archivo)
+                ' MuestraMensaje("Impresión", "La Impresión fue correcta", TipoMsg.Advertencia)
+                Process.Start(pdf.RutaArchivo_correo)
+                'Response.Redirect("..//PDF//" + archivo)
                 'Response.Redirect("../Siniestros/EnviosPagosInternacionales.aspx")
 
                 '<VZAVALETA_10290_CC7_PDF   
@@ -587,6 +587,21 @@ Partial Class Siniestros_EnviosPagosInternacionales
             Mensaje.MuestraMensaje(Master.Titulo, ex.Message + "-" + pdf.Ruta_explorador, TipoMsg.Falla)
 
         End Try
+    End Sub
+
+    Private Sub btn_Click(sender As Object, e As EventArgs) Handles btn.Click
+        Dim ruta As String
+        Try
+            ruta = txt.Text.Trim()
+            Process.Start(ruta)
+
+        Catch ex As Exception
+            MuestraMensaje("Error", ex.Message, TipoMsg.Falla)
+
+        End Try
+
+        'Process.Start("\\GMXDESARROLLO\OrdenesPagoDesarrolloPDF\2021\Pago_Internacional\MAY\27\Ordenes_de_Pago_Pago_Inter_SISTRAN.pdf")
+
     End Sub
 End Class
 
