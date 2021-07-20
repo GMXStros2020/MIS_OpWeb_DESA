@@ -7,13 +7,11 @@ Imports System.IO
 Imports System.Diagnostics
 
 Public Class reportePDF
-
     'Dim PathReport As String
     Dim _nro_ops As String()
     Dim _rutaArchivo_correo As String
     Dim _cod_usuario As String
     Dim _ruta_explorador As String
-
 
     Public Property Nro_ops As String()
         Get
@@ -50,8 +48,6 @@ Public Class reportePDF
             _ruta_explorador = value
         End Set
     End Property
-
-
     'Dim NombreArchivo As String
 
     Public Sub GenerarRenombrar()
@@ -122,9 +118,6 @@ Public Class reportePDF
                     rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "-0-.pdf"
                 End If
 
-
-
-
                 Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
                 fs.Write(bytes, 0, bytes.Length)
                 fs.Close()
@@ -140,11 +133,9 @@ Public Class reportePDF
             End If
 
         Catch ex As Exception
-
-            ' Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
+            'Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
         End Try
     End Sub
-
 
     Private Sub unirPDFS(archivos As String(), RutaArchivo As String)
         Dim NuevoArchivo As String
@@ -175,7 +166,6 @@ Public Class reportePDF
         RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + ".pdf"
         outputDocument.Save(RutaCompleta)
 
-
         For Each archivo As String In archivos
             System.IO.File.Delete(archivo.ToString())
         Next
@@ -185,8 +175,6 @@ Public Class reportePDF
         Process.Start(RutaCompleta)
 
     End Sub
-
-
 
     Public Function inicializaArbolfolder(accion As Integer, sPathFile As String, nro_op As String) As String
 
@@ -224,29 +212,20 @@ Public Class reportePDF
             If iMes = 10 Then sMes = "OCT" ' "Octubre"
             If iMes = 11 Then sMes = "NOV" ' "Noviembre"
             If iMes = 12 Then sMes = "DIC" ' "Diciembre"
-
         End If
-
-
-
-
-
 
         'AÑO
         If Directory.Exists(sPathFile + "\\" + sAnio) Then
-
             sPathFile = sPathFile + "\\" + sAnio
         Else
             Directory.CreateDirectory(sPathFile + "\\" + sAnio)
             sPathFile = sPathFile + "\\" + sAnio
         End If
 
-
         If accion = 1 Then
             'Crea carpeta temporal
             Directory.CreateDirectory(sPathFile + "\\tmp") 'CAMBIAR NOMBRE DE LA CARPETA EN LA QUE SE GUARDARAN LOS PDFS CON VARIAS OPS
             sPathFile = sPathFile + "\\tmp"
-
         Else
             'Mes
             If Directory.Exists(sPathFile + "\\" + sMes) Then
@@ -350,15 +329,12 @@ Public Class reportePDF
                 If sn_impresion Then
                     ' Process.Start(rutacompleta) 'VZAVALETA_10290_CC7_PDF
                 End If
-
             End If
 
         Catch ex As Exception
-
             ' Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
         End Try
     End Sub
-
 
     Public Function inicializaArbolfolderPI(sPathFile As String) As String
 
@@ -369,13 +345,10 @@ Public Class reportePDF
         Dim sDia As String
         Dim dt As New DataTable
 
-
-
         sAnio = DateTime.Now.Year.ToString()
         sMes = DateTime.Now.Month.ToString()
         sDia = DateTime.Now.Day.ToString()
         iMes = DateTime.Now.Month
-
 
         If iMes = 1 Then sMes = "ENE" ' "Enero"
         If iMes = 2 Then sMes = "FEB" ' "Febrero"
@@ -389,8 +362,6 @@ Public Class reportePDF
         If iMes = 10 Then sMes = "OCT" ' "Octubre"
         If iMes = 11 Then sMes = "NOV" ' "Noviembre"
         If iMes = 12 Then sMes = "DIC" ' "Diciembre"
-
-
 
         'AÑO
         If Directory.Exists(sPathFile + "\\" + sAnio) Then
@@ -454,7 +425,6 @@ Public Class reportePDF
         RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + "_" + Cod_usuario + ".pdf"
         outputDocument.Save(RutaCompleta)
 
-
         For Each archivo As String In archivos
             System.IO.File.Delete(archivo.ToString())
         Next
@@ -464,7 +434,6 @@ Public Class reportePDF
         If sn_impresion Then
             'Process.Start(RutaCompleta) 'VZAVALETA_10290_CC7_PDF
         End If
-
 
     End Sub
 End Class

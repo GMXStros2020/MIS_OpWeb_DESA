@@ -51,8 +51,7 @@
         <br />
         <div style="width: 100%; text-align: right; border-top-style: inset; border-width: 1px; border-color: #003A5D"></div>
 
-
-        <div class="padding10">
+        
             <asp:LinkButton ID="btnLimpiar" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="130px">
                 <span>
                     <img class="btn-limpiar"/>&nbsp&nbsp Limpiar Filtros
@@ -167,13 +166,6 @@
                         </div>
                         <div class="col-md-6">                            
                             <div style="text-align: right">  
-                                 <asp:TextBox runat="server" ID="txt" CssClass="col-md-7 estandar-control" ></asp:TextBox>
-                                <asp:LinkButton ID="btn" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="120px" Visible="true">
-                                <span>
-                                    <img class="btn-aceptar"/>
-                                    Ruta Directa
-                                </span>
-                                </asp:LinkButton>
                                 <asp:LinkButton ID="btn_Imprimir" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="120px" Visible="false">
                                 <span>
                                     <img class="btn-imprimir"/>
@@ -184,12 +176,6 @@
                                     <span>
                                         <img class="btn-mail"/>&nbsp Enviar
 									</span>
-                                </asp:LinkButton>
-                                <asp:LinkButton ID="AbrirExplorador" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="120px" Visible="False">
-                                <span>
-                                    <img class="btn-imprimir"/>
-                                    Examinar
-                                </span>
                                 </asp:LinkButton>
                                           
                                <%-- <asp:LinkButton ID="btn_Continuar" runat="server" class="btn botones" Width="153px" data-toggle="modal" data-target="#mailPI" Visible="true">

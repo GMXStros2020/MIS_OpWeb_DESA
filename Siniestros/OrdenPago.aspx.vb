@@ -1187,7 +1187,7 @@ Partial Class Siniestros_OrdenPago
                                 End If
                             End If
                         Next
-                        '----------------------------------------------------
+                        ''----------------------------------------------------
                         txtConceptoOP.Text = String.Format("{0} {1}", txtConceptoOP.Text.Trim.ToString(), oClavesPago.Select(String.Format("cod_clase_pago = '{0}'", oTabla.Rows(0)("ClasePago")))(0)("txt_desc").ToString())
 
                         Me.txtBeneficiario.Text = Me.txtBeneficiario_stro.Text.Trim

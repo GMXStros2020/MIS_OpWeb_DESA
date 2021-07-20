@@ -72,6 +72,10 @@ function nroOPdesde(control) {
     
     
 }
+//>VZAVALETA_10290_CC7_PDF
+function fn_abrir_documento(documento) {
+    window.open('file:' + documento);
+}
 
 
 //$("#btnLimpiar").click(function() {   

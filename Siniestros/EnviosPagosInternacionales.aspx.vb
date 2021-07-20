@@ -1,5 +1,4 @@
-﻿
-Imports System.Data
+﻿Imports System.Data
 Imports System.IO
 Imports System.Net.Mail
 Imports Mensaje
@@ -31,17 +30,12 @@ Partial Class Siniestros_EnviosPagosInternacionales
         If Not IsPostBack Then
             arrOPS = Nothing
             tablas = ""
-            'txt_nro_op.Text = "320000"
-            'txt_nro_op_ini.Text = "320000"
-            'txt_nro_op_fin.Text = "999999"
         End If
 
     End Sub
 
     Protected Sub btn_BuscarOP_Click(sender As Object, e As EventArgs) Handles btn_BuscarOP.Click
-
         Try
-
             Dim oDatos As DataSet
             Dim oTabla As DataTable
             Dim oParametros As New Dictionary(Of String, Object)
@@ -72,21 +66,18 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 oTabla = oDatos.Tables(0)
 
                 If oTabla.Rows.Count > 0 Then
-                    AbrirExplorador.Visible = True
+                    ' AbrirExplorador.Visible = True
                     btnEnviar.Visible = True
                     btn_Imprimir.Visible = True
                     btn_Ninguna.Visible = True
                     btn_Todas.Visible = True
                 Else
-                    AbrirExplorador.Visible = False
+                    ' AbrirExplorador.Visible = False
                     btnEnviar.Visible = False
                     btn_Imprimir.Visible = False
                     btn_Ninguna.Visible = False
                     btn_Todas.Visible = False
                 End If
-
-
-
 
                 grd.DataSource = oTabla
                 grd.DataBind()
@@ -94,19 +85,10 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
         Catch ex As Exception
             MuestraMensaje("Exception", "BuscarOP: " & ex.Message, TipoMsg.Falla)
-
         End Try
     End Sub
 
-
-
-
     Protected Sub grd_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles grd.RowCommand
-        'Dim bflag As Boolean
-        'If bflag Then
-        '    bflag.ToString()
-        'End If
-
         If e.CommandName = "comVer" Then
             Dim index As Integer
             Dim nroOP As Integer
@@ -116,10 +98,8 @@ Partial Class Siniestros_EnviosPagosInternacionales
             index = CInt(e.CommandArgument.ToString())
             nroOP = CInt(grd.DataKeys(index).Value.ToString())
             generaReporte(nroOP)
-            'bflag = True
             Exit Sub
         End If
-
 
         If e.CommandName = "comEnviar" Then
             Dim indice As Integer
@@ -133,37 +113,20 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 hidOPmail.Value = nroOP
             End If
             Funciones.AbrirModal("#mailPI")
-            'bflag = True
             Exit Sub
         End If
     End Sub
 
-
     Private Function enviarMail(destinatarios As String, copias As String, asunto As String) As Boolean
-        'Dim oDatos As DataSet
-        'Dim oTabla As DataTable
         Dim pdf = New reportePDF
         Dim oParametros As New Dictionary(Of String, Object)
-        'Dim rutaAdjunto As String
         Try
-
-            'pdf.Cod_usuario = Master.cod_usuario.ToString()
-            'pdf.Nro_ops = arrOPS
-            'pdf.ReportePagosInter(False)
-
-            'rutaAdjunto = pdf.RutaArchivo_correo
-
-            ' oParametros.Add("nroOP", nroOP)
             oParametros.Add("para", destinatarios)
             oParametros.Add("cc", copias)
             oParametros.Add("asunto", asunto)
             oParametros.Add("tablas", tablas)
-
-
-
             Funciones.ObtenerDatos("usp_envio_mail_pago_inter", oParametros)
             'oDatos = Funciones.ObtenerDatos("usp_solicitud_aut_mail", oParametros)
-            'oTabla = oDatos.Tables(0)
             Return True
 
         Catch ex As Exception
@@ -182,7 +145,6 @@ Partial Class Siniestros_EnviosPagosInternacionales
         server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
-
     End Sub
 
     Private Sub btnCancEmail_Click(sender As Object, e As EventArgs) Handles btnCancEmail.Click
@@ -209,12 +171,6 @@ Partial Class Siniestros_EnviosPagosInternacionales
         End Try
     End Sub
 
-    'Public Sub EnviaEmailUsuarios(UserEmail As String, NumeroReporte As String, TipoFormato As String)
-    '    Dim message As MailMessage
-    '    message = New MailMessage()
-    '    Dim mBody As String = ""
-    'End Sub
-
     Public Sub limpCtrlCerrarModal()
         txtPara.Text = ""
         txtCC.Text = ""
@@ -224,7 +180,6 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
     Private Sub btn_Todas_Click(sender As Object, e As EventArgs) Handles btn_Todas.Click
         Try
-
             For Each row In grd.Rows
                 Dim chkImp As CheckBox = TryCast(row.FindControl("chk_Print"), CheckBox)
                 If chkImp.Enabled = True Then
@@ -232,9 +187,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 End If
             Next
         Catch ex As Exception
-
-            Mensaje.MuestraMensaje(Master.Titulo, ex.Message, TipoMsg.Falla)
-
+            Mensaje.MuestraMensaje("Validacion", ex.Message, TipoMsg.Falla)
         End Try
     End Sub
 
@@ -245,12 +198,10 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 If chkImp.Enabled = True Then
                     chkImp.Checked = False
                 End If
-
             Next
 
         Catch ex As Exception
-            Mensaje.MuestraMensaje(Master.Titulo, ex.Message, TipoMsg.Falla)
-
+            Mensaje.MuestraMensaje("Validacion", ex.Message, TipoMsg.Falla)
         End Try
 
     End Sub
@@ -263,18 +214,16 @@ Partial Class Siniestros_EnviosPagosInternacionales
         Dim Index As Integer = 0
         Dim pdf = New reportePDF
         Dim RutaArchivo As String()
+        Dim strFoliosRep As String = ""
+        Dim archivo As String
 
         dtSelec = obtenerSeleccionadosImp()
-        Dim strFoliosRep As String = ""
-
-
         Try
             If dtSelec.Rows.Count > 0 Then
                 ReDim archivos(dtSelec.Rows.Count - 1)
                 For Each row In dtSelec.Rows
                     archivos(Index) = row(0).ToString()
                     Index = Index + 1
-                    'Funciones.fn_Consulta("sp_consulta_para_envio_pago_internacional @Accion = 2, @nro_op_desde = " & row(0).ToString(), dtPagosInter)
                 Next
             Else
                 Index = 0
@@ -282,14 +231,10 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 Exit Sub
             End If
 
-            Dim archivo As String = "\\Ordenes de Pago Pago Inter_SISTRAN.pdf"
-
-
             If archivos.Length > 0 AndAlso Index <> 0 Then
                 pdf.Cod_usuario = Master.cod_usuario.ToString()
                 pdf.Nro_ops = archivos
                 pdf.ReportePagosInter(True)
-
                 '>VZAVALETA_10290_CC7_PDF 
                 RutaArchivo = pdf.RutaArchivo_correo.Split("\\")
 
@@ -297,33 +242,22 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 Dim pathToFiles As String
 
                 archivo = RutaArchivo(max - 1)
-                pathToFiles = Server.MapPath("//PDF")
+                pathToFiles = Server.MapPath("\\")
 
                 If File.Exists(pathToFiles + "\\" + archivo) Then
                     File.Delete(pathToFiles + "\\" + archivo)
                 End If
-
-                'File.Copy(pdf.RutaArchivo_correo, pathToFiles + "\\" + archivo)
-
-                ' MuestraMensaje("Impresión", "La Impresión fue correcta", TipoMsg.Advertencia)
-                Process.Start(pdf.RutaArchivo_correo)
-                'Response.Redirect("..//PDF//" + archivo)
-                'Response.Redirect("../Siniestros/EnviosPagosInternacionales.aspx")
-
-                '<VZAVALETA_10290_CC7_PDF   
+                'Dim rutaprueba As String = pdf.RutaArchivo_correo
+                Funciones.EjecutaFuncion("fn_abrir_documento('" + pdf.RutaArchivo_correo + "')")                '<VZAVALETA_10290_CC7_PDF   
             Else
                 Index = 0
                 MuestraMensaje("Validación", "Error al imprimir el PDF", TipoMsg.Falla)
             End If
 
-
         Catch ex As Exception
-            Mensaje.MuestraMensaje(Master.Titulo, ex.Message + "-" + pdf.RutaArchivo_correo, TipoMsg.Falla)
+            Mensaje.MuestraMensaje("Error", ex.Message + "-" + pdf.RutaArchivo_correo, TipoMsg.Falla)
         End Try
     End Sub
-
-
-
 
     Private Function obtenerSeleccionadosImp() As DataTable
 
@@ -334,16 +268,13 @@ Partial Class Siniestros_EnviosPagosInternacionales
             add = True
             indexTabla = 0
 
-
             If grd.Rows.Count = 0 Then
                 MuestraMensaje("Validacion", "No existen registros en la tabla", TipoMsg.Advertencia)
                 Return Nothing
                 Exit Function
             End If
 
-
             dtSel.Columns.Add("NRO_OP")
-
 
             For index = 0 To grd.Rows.Count - 1
                 Dim seleccionado As CheckBox
@@ -359,7 +290,6 @@ Partial Class Siniestros_EnviosPagosInternacionales
                     selecc = row.Cells(i).FindControl("chk_Print")
 
                     If selecc.Checked Then
-
                         If i = 1 Then
                             dtSel.Rows(indexTabla)(i - 1) = row.Cells(i).Text
                             add = True
@@ -375,7 +305,7 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
             Return dtSel
         Catch ex As Exception
-            MuestraMensaje("Exception", "obtenerSeleccionados:  " & ex.Message, TipoMsg.Falla)
+            'MuestraMensaje("Exception", "obtenerSeleccionados:  " & ex.Message, TipoMsg.Falla)
             Return Nothing
         End Try
 
@@ -387,7 +317,6 @@ Partial Class Siniestros_EnviosPagosInternacionales
         Dim archivos() As String = Nothing
         Dim Index As Integer = 0
         Dim pdf = New reportePDF
-        ' Dim tablas As String = ""
 
         dtSelec = obtenerSeleccionadosImp()
 
@@ -398,11 +327,8 @@ Partial Class Siniestros_EnviosPagosInternacionales
                     archivos(Index) = row(0).ToString()
                     Index = Index + 1
                     Funciones.fn_Consulta("sp_consulta_para_envio_pago_internacional @Accion = 2, @nro_op_desde = " & row(0).ToString(), dtPagosInter)
-
                     'arma tablas para cuerpo de correo
-
                     tablas = tablas + armaHTML(dtPagosInter)
-
                 Next
             Else
                 Index = 0
@@ -410,17 +336,14 @@ Partial Class Siniestros_EnviosPagosInternacionales
                 Exit Sub
             End If
 
-
             If archivos.Length > 0 AndAlso Index <> 0 Then
                 'arrOPS = archivos  'se comenta porque ya no manda el pdf en el correo
                 'pdf.Nro_ops = archivos
                 Funciones.AbrirModal("#mailPI")
             End If
 
-
         Catch ex As Exception
-            Mensaje.MuestraMensaje(Master.Titulo, ex.Message, TipoMsg.Falla)
-
+            Mensaje.MuestraMensaje("Validacion", ex.Message, TipoMsg.Falla)
         End Try
     End Sub
 
@@ -533,75 +456,5 @@ Partial Class Siniestros_EnviosPagosInternacionales
         Return html
     End Function
 
-    Private Sub AbrirExplorador_Click(sender As Object, e As EventArgs) Handles AbrirExplorador.Click
-        Dim dtSelec As DataTable
-        Dim folioRep As Integer
-        Dim dtPagosInter As DataTable
-        Dim archivos() As String = Nothing
-        Dim Index As Integer = 0
-        Dim pdf = New reportePDF
-        Dim RutaArchivo As String
-
-        dtSelec = obtenerSeleccionadosImp()
-        Dim strFoliosRep As String = ""
-
-
-        Try
-            If dtSelec.Rows.Count > 0 Then
-                ReDim archivos(dtSelec.Rows.Count - 1)
-                For Each row In dtSelec.Rows
-                    archivos(Index) = row(0).ToString()
-                    Index = Index + 1
-                    'Funciones.fn_Consulta("sp_consulta_para_envio_pago_internacional @Accion = 2, @nro_op_desde = " & row(0).ToString(), dtPagosInter)
-                Next
-            Else
-                Index = 0
-                MuestraMensaje("Validación", "No existen registros seleccionados para imprimir", TipoMsg.Advertencia)
-                Exit Sub
-            End If
-
-
-            If archivos.Length > 0 AndAlso Index <> 0 Then
-                pdf.Cod_usuario = Master.cod_usuario.ToString()
-                pdf.Nro_ops = archivos
-                pdf.ReportePagosInter(True)
-
-                '>VZAVALETA_10290_CC7_PDF  
-
-                RutaArchivo = Replace(pdf.RutaArchivo_correo, " ", "%20")
-                RutaArchivo = Replace(RutaArchivo, "\\", "//")
-
-                'Funciones.EjecutaFuncion("window.open(RutaArchivo, '_blank');", "PDF")
-
-                Process.Start(pdf.Ruta_explorador)
-
-
-                '<VZAVALETA_10290_CC7_PDF               
-            Else
-                Index = 0
-                MuestraMensaje("Validación", "Error al imprimir el PDF", TipoMsg.Falla)
-            End If
-
-
-        Catch ex As Exception
-            Mensaje.MuestraMensaje(Master.Titulo, ex.Message + "-" + pdf.Ruta_explorador, TipoMsg.Falla)
-
-        End Try
-    End Sub
-
-    Private Sub btn_Click(sender As Object, e As EventArgs) Handles btn.Click
-        Dim ruta As String
-        Try
-            ruta = txt.Text.Trim()
-            Process.Start(ruta)
-
-        Catch ex As Exception
-            MuestraMensaje("Error", ex.Message, TipoMsg.Falla)
-
-        End Try
-
-        'Process.Start("\\GMXDESARROLLO\OrdenesPagoDesarrolloPDF\2021\Pago_Internacional\MAY\27\Ordenes_de_Pago_Pago_Inter_SISTRAN.pdf")
-
-    End Sub
 End Class
 
