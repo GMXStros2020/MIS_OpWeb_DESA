@@ -385,8 +385,15 @@ function fn_CargaCatalogo(Catalogo, Condicion, Seleccion, Tipo, Control, Titulo,
                 //JJIMENEZ Si no existe el dato en el catalogo, se puede crear el dato en el catalogo
                 switch (Catalogo) {
                     case "BenTercero_stro":
-                        CargarRegistroTerceros();
-                        break;
+                        //VZAVALETA_10290_CC_INICIO
+                        if  ($("[id*=hid_Alta_Tercero]").val() == 1) {
+                            fn_MuestraMensaje('Catálogo', 'No se encontraron registros', 0);
+                        } 
+                        else {
+                            CargarRegistroTerceros();
+                            break;
+                        }                                                   
+                       //VZAVALETA_10290_CC_FIN
                     default:
                         fn_MuestraMensaje('Catálogo', 'No se encontraron registros', 0);
                         fn_CerrarModal('#EsperaModal');
@@ -889,7 +896,7 @@ function selecTercero() {
     $("[id*=txtCodigoBeneficiario_stro]").val(codTercero);
     $("[id*=txtBeneficiario_stro]").val(nomTercero);
     $("[id*=txtRFC]").val(rfcTercero);
-
+    
 }
 
 

@@ -10,7 +10,11 @@ Imports System.Net
 
 Public Class Funciones
 
-
+    Enum enumFormatoFecha : int
+        YYYYMMDD = 1
+        MMDDYYYY
+        DDMMYYYY
+    End Enum
 
     Public Shared Function IsAuthenticated(ByVal Domain As String, ByVal username As String, ByVal pwd As String) As Boolean
         Dim Success As Boolean = False
@@ -722,6 +726,7 @@ Public Class Funciones
 
             oComando = New SqlCommand(sProcedimiento, oConexion)
             oComando.CommandType = CommandType.StoredProcedure
+            oComando.CommandTimeout = 120000 'VZAVALETA_10290_CC
 
             If Not oParametros Is Nothing Then
 
@@ -839,24 +844,29 @@ Public Class Funciones
             Return Nothing
         End Try
     End Function
+    Public Shared Function agregaTodos(ByRef dt As DataTable) As DataTable
+        Try
+            Dim dtN As New DataTable
 
+            For Each col As DataColumn In dt.Columns
+                dtN.Columns.Add(col.ColumnName, col.DataType)
+            Next
 
+            'If dtN.Columns(0).DataType.ToString() = "System.Decimal" Then
 
+            'End If
 
+            dtN.Rows.Add(-1, "TODOS")
+            dtN.Merge(dt)
 
-    Enum enumFormatoFecha : int
-
-
-        YYYYMMDD = 1
-
-        MMDDYYYY
-
-        DDMMYYYY
-
-
-
-
-
-    End Enum
+            Return dtN
+        Catch ex As Exception
+            Mensaje.MuestraMensaje("Exepcion", ex.Message, TipoMsg.Falla)
+            Return Nothing
+        End Try
+    End Function
 
 End Class
+
+
+

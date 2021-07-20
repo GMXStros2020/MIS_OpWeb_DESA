@@ -7,26 +7,16 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
 
     Sub Page_Load(ByVal Sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-        cmbTipoComprobante.Items.Clear()
-        Dim dt As New DataTable
-        Funciones.fn_Consulta("sp_Catalogos_OPMasivas 'COMPROBANTE','',''", dt)
-
-        If cmbTipoComprobante.Items.Count = 0 Then
-
-            cmbTipoComprobante.DataSource = dt
-            cmbTipoComprobante.DataTextField = "Descripcion"
-            cmbTipoComprobante.DataValueField = "CodigoComprobante"
-            cmbTipoComprobante.DataBind()
-
-
-        End If
-
-        CargarAnalistasFondos()
-
         If Not IsPostBack Then
+            'txt_fecha_ini.Text = "01/11/2020"
+            'txt_fecha_fin.Text = "15/11/2020"
+            'cmbPagarA.SelectedValue = 10
+            'cmbSubsiniestro.SelectedValue = -1
             Me.txtFechaEstimadaPago.Text = FechaEstimPago()
         End If
 
+        CargarAnalistasFondos()
+        Cargar_combos() 'FJCP_10290_CC	INI 
 
     End Sub
 
@@ -185,4 +175,74 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
 
         FechaEstimPago = result
     End Function
+    Private Sub Cargar_combos() 'FJCP_10290_CC	
+
+        cmbTipoPago.Items.Clear()
+        Dim dt As New DataTable
+        Funciones.fn_Consulta("sp_Catalogos_OPMasivas 'MIS_Tipo_Pago','',''", dt)
+
+        If cmbTipoPago.Items.Count = 0 Then
+            cmbTipoPago.DataSource = dt
+            cmbTipoPago.DataTextField = "Descripcion_Tipo_pago"
+            cmbTipoPago.DataValueField = "Id_Tipo_pago"
+            cmbTipoPago.DataBind()
+        End If
+
+        cmbTipoPagoPoT.Items.Clear()
+        Dim dtt As New DataTable
+        Funciones.fn_Consulta("sp_Catalogos_OPMasivas 'MIS_Pago_PoT','',''", dtt)
+
+        If cmbTipoPagoPoT.Items.Count = 0 Then
+            cmbTipoPagoPoT.DataSource = dtt
+            cmbTipoPagoPoT.DataTextField = "Descripcion_Pago"
+            cmbTipoPagoPoT.DataValueField = "Id_Pago"
+            cmbTipoPagoPoT.DataBind()
+        End If
+
+        cmbTipoComprobante.Items.Clear()
+        Dim dts As New DataTable
+        Funciones.fn_Consulta("sp_Catalogos_OPMasivas 'COMPROBANTE','',''", dtS)
+
+        If cmbTipoComprobante.Items.Count = 0 Then
+            cmbTipoComprobante.DataSource = dts
+            cmbTipoComprobante.DataTextField = "Descripcion"
+            cmbTipoComprobante.DataValueField = "CodigoComprobante"
+            cmbTipoComprobante.DataBind()
+        End If
+    End Sub
+
+    Private Sub btn_exportar_xls_Click(sender As Object, e As EventArgs) Handles btn_exportar_xls.Click
+        Dim ws As New ws_Generales.GeneralesClient
+        Dim server As String = ws.ObtieneParametro(3)
+        Dim RptFilters As String
+
+        Dim lote As String
+
+
+        lote = hid_nLote.Value
+
+
+        RptFilters = "&Num_Lote=" & lote.ToString()
+        RptFilters = RptFilters & "&Accion=0"
+
+        server = Replace(Replace(server, "@Reporte", "XLS_Varios_Multipago"), "@Formato", "EXCEL")
+        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = server & RptFilters
+        Funciones.EjecutaFuncion("window.open('" & server & "');")
+
+
+    End Sub
+
+    'Private Sub cmbPagarA_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPagarA.SelectedIndexChanged
+
+    '    If cmbPagarA.SelectedValue <> 10 Then
+    '        chkMultipago.Enabled = False
+    '        txtRFC.Enabled = False
+    '        txtSiniestro.Enabled = False
+    '    Else
+    '        chkMultipago.Enabled = True
+    '        txtRFC.Enabled = True
+    '        txtSiniestro.Enabled = True
+    '    End If
+    'End Sub
 End Class

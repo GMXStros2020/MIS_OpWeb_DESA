@@ -54,6 +54,8 @@ Partial Class Siniestros_CartasCheque
             oDatos = Funciones.ObtenerDatos("usp_cartas_cheque_op_web", oParametros)
             oTabla = oDatos.Tables(0)
 
+            chk_autoriza.Checked = False
+
             Return oTabla
 
         Catch ex As Exception
@@ -477,10 +479,12 @@ Partial Class Siniestros_CartasCheque
         'Dim oTabla As DataTable
         Dim oParametros As New Dictionary(Of String, Object)
         Try
+
+
             oParametros.Add("folio_carta", nro_folio)
             oParametros.Add("UsrSolicitante", Master.cod_usuario.ToString())
             oParametros.Add("url", HttpContext.Current.Request.Url.AbsoluteUri.Replace("CartasCheque", "CartasChequeAutorizacion"))
-
+            oParametros.Add("sn_autoriza", IIf(chk_autoriza.Checked = True, -1, 0))
 
             Funciones.ObtenerDatos("usp_solicitud_aut_mail", oParametros)
             'oDatos = Funciones.ObtenerDatos("usp_solicitud_aut_mail", oParametros)

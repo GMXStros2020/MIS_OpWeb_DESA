@@ -39,30 +39,19 @@
     //window.onunload = eliminar;
     window.onbeforeunload = eliminar;
 
-
-
+    
     function eliminar() { //FJCP 10290 MEJORAS FOLIO BLOQUEADO PARA DISTINTOS USUARIOS A LA VEZ
-
-
-        ////var uno = $("[id*=chkVariasFacturas]").val();
-
-        ////var dos = uno
-
-
-
-
-
-
-        //if (bPreguntar)
-        //    return "¿El folio bloqueado se liberará?";
+        
         var usuario = $("[id*=hidCodUsuario]").val();
+        var bBloqueo = $("[id*=hidBloqueoOnbase]").val() 
         var usuarioo = usuario;
-        alert(usuario);
 
+        //alert(usuario);
+           
         $.ajax({
 
             url: "../LocalServices/OrdenPagoMasiva.asmx/folioOnbaseBloqueado",
-            data: "{ 'codUsuario': '" + usuario + "'}",
+            data: "{ 'codUsuario': '" + usuario + "', 'bloqueo': '" + bBloqueo + "'}",            
             dataType: "json",
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -73,10 +62,12 @@
             },
             error: function (err) {
 
-                alert(err);
+                //alert(err);
 
             }
         });
+              
+
     }
 });
 
@@ -354,8 +345,14 @@ function FormatCurrency(ctrlx) {
             x1 = x1.replace(rgx, '$1' + ',' + '$2');
         }
 
-        //ctrl.value = x1 + x2;
-        ctrl.val(x1 + x2);
+        // FJCP 10290_CC
+        if (x2 == "") {
+            ctrl.val(x1 + ".00");
+        }
+        else {
+            ctrl.val(x1 + x2);
+        }
+        
 
 
     } catch (error) {

@@ -8,55 +8,41 @@ Partial Class Siniestros_CatalogodeDependencias
     Sub Page_Load(ByVal Sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         If Not IsPostBack Then
-
             CargarCombo()
             CargarGrid()
-
-
-
-
         End If
 
     End Sub
 
     Protected Sub btnAgregar_Click(sender As Object, e As EventArgs) Handles btnAgregar.Click
 
-
-
-
         Dim oDatos As DataSet
 
         Dim oParametros As New Dictionary(Of String, Object)
         Try
-            oParametros.Add("Accion", "1")
-            oParametros.Add("PagarA", cmbTipoUsuario.SelectedValue)
-            oParametros.Add("codigo", txtCodigoUsuario.Text)
-            oParametros.Add("banco", ddl_banco.SelectedValue)
-            oParametros.Add("sucursal", txt_sucursal.Text)
+            If ValidaDatos() Then
+                oParametros.Add("Accion", "1")
+                oParametros.Add("PagarA", cmbTipoUsuario.SelectedValue)
+                oParametros.Add("codigo", txtCodigoUsuario.Text)
+                oParametros.Add("banco", ddl_banco.SelectedValue)
+                oParametros.Add("sucursal", txt_sucursal.Text)
 
-            oParametros.Add("plaza", txt_planza.Text)
-            oParametros.Add("clabe", txt_clabe.Text)
-            oParametros.Add("dependencia", txt_dependencia.Text.Trim())
-            oParametros.Add("clave_referencia", txt_clave_referencia.Text)
-            oParametros.Add("clave_dependencia", txt_clave_dependencia.Text)
-            oParametros.Add("status", ddl_estatus.SelectedValue)
+                oParametros.Add("plaza", txt_planza.Text)
+                oParametros.Add("clabe", txt_clabe.Text)
+                oParametros.Add("dependencia", txt_dependencia.Text.Trim())
+                oParametros.Add("clave_referencia", txt_clave_referencia.Text)
+                oParametros.Add("clave_dependencia", txt_clave_dependencia.Text)
+                oParametros.Add("status", ddl_estatus.SelectedValue)
 
-
-            oDatos = Funciones.ObtenerDatos("sp_grabar_dependencias_gob", oParametros)
-            CargarGrid()
-            CargarCombo()
-
-
-
-
-            Return
-
+                oDatos = Funciones.ObtenerDatos("sp_grabar_dependencias_gob", oParametros)
+                CargarGrid()
+                CargarCombo()
+                Return
+            End If
         Catch ex As Exception
             MuestraMensaje("Exception", "BuscarOP: " & ex.Message, TipoMsg.Falla)
             Return
         End Try
-
-
     End Sub
 
 
@@ -113,30 +99,19 @@ Partial Class Siniestros_CatalogodeDependencias
             If String.IsNullOrEmpty(row("status").ToString()) = False Then
                 ddl_estatus.SelectedValue = row("status").ToString()
             End If
-
-
-
         Next
 
         If DT.Rows.Count = 0 Then
             txtNombre.Text = ""
             Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Usuario no encontrado", TipoMsg.Advertencia)
         End If
-
-
     End Sub
 
     Private Sub CargarCombo()
-
-
         Dim oDatos As DataSet
-
-
-
         Dim oParametros As New Dictionary(Of String, Object)
 
         oParametros.Add("Accion", 2)
-
 
         oDatos = Funciones.ObtenerDatos("sp_consulta_dependendcias", oParametros)
 
@@ -144,11 +119,6 @@ Partial Class Siniestros_CatalogodeDependencias
         ddl_banco.DataTextField = "txt_nombre"
         ddl_banco.DataValueField = "cod_banco"
         ddl_banco.DataBind()
-
-
-
-
-
     End Sub
 
     Private Sub CargarGrid()
@@ -156,15 +126,10 @@ Partial Class Siniestros_CatalogodeDependencias
         Dim oDatos As DataSet
         Dim oTabla As DataTable
         Dim oParametros As New Dictionary(Of String, Object)
-        Dim Num_Lote As String
-        Dim Fondos As String
-
 
         oParametros.Add("Accion", 3)
 
-
         oDatos = Funciones.ObtenerDatos("sp_consulta_dependendcias", oParametros)
-
 
         oTabla = oDatos.Tables(0)
 
@@ -172,8 +137,56 @@ Partial Class Siniestros_CatalogodeDependencias
 
         grd.DataBind()
 
-
-
     End Sub
+
+    Protected Sub grd_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles grd.RowDeleting 'FJCP 10290_CC 
+        Dim idLbl As Label
+        Try
+            idLbl = grd.Rows(e.RowIndex).FindControl("id_dep")
+            hid_id_dep.Value = idLbl.Text.Trim()
+            Funciones.AbrirModal("#ModConfirmar")
+        Catch ex As Exception
+            MuestraMensaje("Exception", ex.Message, TipoMsg.Falla)
+        End Try
+    End Sub
+
+    Public Sub grabar() 'FJCP 10290_CC 
+        Dim oParametros As New Dictionary(Of String, Object)
+        Dim id As Integer
+        Dim oDatos As DataSet
+
+        id = hid_id_dep.Value
+        oParametros.Add("Accion", 4)
+        oParametros.Add("id", id)
+
+        oDatos = Funciones.ObtenerDatos("sp_consulta_dependendcias", oParametros)
+
+        If oDatos.Tables(0).Rows(0).Item("err") <> 0 Then
+            Funciones.CerrarModal("#ModConfirmar")
+            MuestraMensaje("Eliminar Registro", oDatos.Tables(0).Rows(0).Item("err_desc").ToString, TipoMsg.Falla)
+            CargarGrid()
+        Else
+            Funciones.CerrarModal("#ModConfirmar")
+            'MuestraMensaje("Eliminar Registro", oDatos.Tables(0).Rows(0).Item("err_desc").ToString, TipoMsg.Advertencia)
+            CargarGrid()
+        End If
+    End Sub
+
+    Private Sub btnSi_Click(sender As Object, e As EventArgs) Handles btnSi.Click 'FJCP 10290_CC 
+        grabar()
+    End Sub
+
+    Private Function ValidaDatos() As Boolean 'FJCP 10290_CC 
+        Try
+            If Trim(txt_clabe.Text) = "" Then
+                ValidaDatos = False
+                MuestraMensaje("Guardar", "Clabe es un campo obligatorio", TipoMsg.Falla)
+            End If
+
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
 
 End Class

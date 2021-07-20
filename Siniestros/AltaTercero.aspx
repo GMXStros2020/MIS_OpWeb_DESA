@@ -18,6 +18,7 @@
             <asp:UpdatePanel runat="server" ID="upFiltros" >
                 <ContentTemplate>
                     <asp:HiddenField runat="server" ID="hid_Ventanas" Value="0|1" />
+                    <asp:HiddenField runat="server" ID="hid_Alta_Tercero" Value="0" />
                     <div class="padding10"></div>
 
 
@@ -25,7 +26,7 @@
                         <div class="col-md-6">
                             <asp:HiddenField runat="server" ID="hid_codTercero" Value="0" />
                             <asp:Label runat="server" class="col-md-2 etiqueta-control" Width="20%" Height="20px" ID="lblCodTercero">Código Tercero</asp:Label>
-                            <asp:TextBox runat="server" ID="txt_codTercero" CssClass="col-md-1 estandar-control" PlaceHolder="Ej: 115" Width="18%" Height="22px" onkeypress="return soloNumeros(event)"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="txt_codTercero" CssClass="col-md-1 estandar-control" PlaceHolder="Ingresar Código/Nombre " Width="25%" Height="22px" ></asp:TextBox>
 
 
 
@@ -261,6 +262,13 @@
                                             <img class="btn-refresh"/>&nbsp&nbsp Regresar
                                         </span>
                                     </asp:LinkButton>
+                                    <%--VZAVALETA_10290_CC_INICIO--%>
+                                    <asp:LinkButton ID="btnLimpiar" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="130px">
+                                        <span>
+                                            <img class="btn-limpiar"/>&nbsp&nbsp Limpiar
+                                        </span>
+                                    </asp:LinkButton>
+                                    <%--VZAVALETA_10290_CC_FIN--%>
                                     <asp:LinkButton ID="btnEditar" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="100px" Visible="False">
                                         <span>
                                             <img class="btn-modificar"/>&nbsp&nbsp Editar

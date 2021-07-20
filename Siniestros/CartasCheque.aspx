@@ -263,8 +263,11 @@
                         <asp:HiddenField runat="server" ID="hid_Folio" Value="0" />
 
                         <div class="row" style="width: 100%;">
+                            <div class="col-md-4" style="text-align: right;">
+                                <asp:CheckBox runat="server" ID="chk_autoriza" CssClass="etiqueta-control" AutoPostBack="true" Text="&nbsp&nbspAutorización Subdirector" />
+                                </div>
 
-                            <div class="col-md-12" style="text-align: right;">
+                            <div class="col-md-8" style="text-align: right;">
 
                                 <asp:LinkButton ID="btnPreview" runat="server" class="btn botones" Width="120px">
                                     <span>

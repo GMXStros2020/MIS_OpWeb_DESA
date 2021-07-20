@@ -1526,6 +1526,12 @@ textarea
     height: 16px;
 }
 
+.btn-mail {
+    background-image: url(../Images/email_mini2.png);
+    width: 19px;
+    height: 14px;
+}
+
 .img-firma {
     width: 216px;
     height: 90px;

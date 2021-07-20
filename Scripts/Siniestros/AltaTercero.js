@@ -272,3 +272,25 @@ $("body").on('click', '[id*=chkMoral]', function (e) {
         $("[id*=chkMoral]").prop('checked', true);
     }
 });
+
+//VZAVALETA_10290_CC_INICIO
+$("body").on('focusout', '[id*=txt_codTercero]', function (e) {
+    CargarBeneficiario(e);
+});
+
+function CargarBeneficiario(e) {
+
+    //if ($("[id*=txt_codTercero]").val() == '' && $("[id*=Catalogo]").is(":visible") == false) 
+        
+        var beneficiario = $("input[id$='txt_codTercero']")[0].value;
+        if (beneficiario.trim().length > 0) {
+
+            $('#EsperaModal').modal('toggle');
+            fn_CargaCatalogo("BenTercero_stro", beneficiario.trim(), "", "Unica", "txt_codTercero|txt_codTercero|txt_codTercero|txt_codTercero", "Terceros", "block");                   
+            }
+
+         ////else {
+        //    e.stopPropagation();
+        
+    }
+//VZAVALETA_10290_CC_FIN

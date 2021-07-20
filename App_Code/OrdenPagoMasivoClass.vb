@@ -33,6 +33,8 @@ Public Class OrdenPagoMasivoClass
     Private _Folio_Onbase_cuenta As String
     Private _Cuenta_Bancaria As String
     Private _Confirmar_Cuenta As String
+    Private _Cuenta_Bancaria_ok As String
+    Private _Confirmar_Cuenta_ok As String
     Private _Solicitante As String
     Private _Notas As String
     Private _Observaciones As String
@@ -299,6 +301,24 @@ Public Class OrdenPagoMasivoClass
         End Get
         Set(value As String)
             _Confirmar_Cuenta = value
+        End Set
+    End Property
+
+    Public Property Cuenta_Bancaria_ok As String
+        Get
+            Return _Cuenta_Bancaria_ok
+        End Get
+        Set(value As String)
+            _Cuenta_Bancaria_ok = value
+        End Set
+    End Property
+
+    Public Property Confirmar_Cuenta_ok As String
+        Get
+            Return _Confirmar_Cuenta_ok
+        End Get
+        Set(value As String)
+            _Confirmar_Cuenta_ok = value
         End Set
     End Property
 

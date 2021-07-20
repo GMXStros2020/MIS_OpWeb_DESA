@@ -172,6 +172,14 @@
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>
 
+                                                 <%----FJCP 10290_CC INI--%>
+                                                <asp:TemplateField HeaderText="Eliminar" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton ImageUrl="~/Images/delete_rojo.png" CommandName="Delete" runat="server" CssClass="btn Delete" Height="25" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>                                            
+                                                 <%----FJCP 10290_CC FIN--%>
+
                                              </Columns>
                                              <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
                                              <HeaderStyle BackColor="#003A5D" Font-Bold="True" ForeColor="White" />
@@ -194,14 +202,15 @@
                    </asp:UpdatePanel> 
                       </center>
             </div>
+            <br />
             <div class="row">
-                           <div class="form-group col-md-12">
-                             
-                                <asp:LinkButton ID="btnStatus" runat="server" class="btn btn-primary btn-xs pull-right Tablero" Style="background-color: #003A5D;">Guardar</asp:LinkButton>
-                           </div>
-            </div>
-          
-
+                <div class="form-group col-md-12">                             
+                    <asp:LinkButton ID="btnStatus" runat="server" class="btn btn-primary btn-xs pull-right Tablero" Style="background-color: #003A5D;">Guardar</asp:LinkButton>
+                </div>
+            </div>  
+            <br />
+            <br />
+            <br />
         </div>
  
 </asp:Content>

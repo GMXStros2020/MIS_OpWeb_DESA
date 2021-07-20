@@ -6,7 +6,10 @@
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
-**/
+**/    
+
+
+
 $.jgrid = $.jgrid || {};
 $.extend($.jgrid,{
 	defaults : {
@@ -58,7 +61,9 @@ $.extend($.jgrid,{
         caption: "Eliminar",
         msg: "Desea eliminar el registro seleccionado?",
         bSubmit: "Eliminar",
-		bCancel: "Cancelar"
+        bCancel: "Cancelar",
+        left:1050,
+        top: 460
 	},
 	nav : {
 		edittext: "",

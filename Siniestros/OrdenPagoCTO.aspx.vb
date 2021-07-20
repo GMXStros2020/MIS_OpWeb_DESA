@@ -2221,7 +2221,8 @@ Partial Class Siniestros_OrdenPago
                 oParametros.Add("ClasePago", CInt(sValor))
                 oParametros.Add("CodigoPres", Me.txtCodigoBeneficiario_stro.Text)
 
-                oDatos = Funciones.ObtenerDatos("usp_ObtenerConceptosPago_stro", oParametros)
+                'oDatos = Funciones.ObtenerDatos("usp_ObtenerConceptosPago_stro", oParametros)
+                oDatos = Funciones.ObtenerDatos("usp_ObtenerConceptosPago_stro_OPWEB", oParametros) 'FJCP_10290_CC
 
                 If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
 

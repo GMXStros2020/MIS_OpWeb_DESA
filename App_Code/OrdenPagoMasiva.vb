@@ -83,8 +83,14 @@ Public Class OrdenPagoMasiva
                 oParametros.Add("Concepto2", ValidarParametros(OP.Concepto2))
                 oParametros.Add("Tipo_Pago2", ValidarParametros(OP.Tipo_Pago2))
                 oParametros.Add("Folio_Onbase_cuenta", ValidarParametros(OP.Folio_Onbase_cuenta))
-                oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria))
-                oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta))
+
+                If OP.PagarA = "Proveedor" Then
+                    oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria))
+                    oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta))
+                Else
+                    oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria_ok))
+                    oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta_ok))
+                End If
                 oParametros.Add("Solicitante", ValidarParametros(OP.Solicitante))
                 oParametros.Add("Notas", ValidarParametros(OP.Notas))
                 oParametros.Add("Observaciones", ValidarParametros(OP.Observaciones))
@@ -111,7 +117,7 @@ Public Class OrdenPagoMasiva
 
                 oParametros.Add("IdSiniestro", ValidarParametros(OP.IdSiniestro))
                 oParametros.Add("CodigoTercero", ValidarParametros(OP.CodigoTercero))
-                oParametros.Add("Subtotal", ValidarParametros(OP.Subtotal))
+                oParametros.Add("Subtotal", ValidarParametros(OP.Importe))
                 oParametros.Add("Iva", ValidarParametros(OP.Iva))
                 oParametros.Add("Total", ValidarParametros(OP.Total))
                 oParametros.Add("Retencion", ValidarParametros(OP.Retencion))
@@ -254,6 +260,8 @@ Public Class OrdenPagoMasiva
                 OP.Folio_Onbase_cuenta = Webservices(row("Folio_Onbase_cuenta").ToString())
                 OP.Cuenta_Bancaria = row("Cuenta_Bancaria").ToString()
                 OP.Confirmar_Cuenta = row("Confirmar_Cuenta").ToString()
+                OP.Cuenta_Bancaria_ok = row("Cuenta_Bancaria").ToString()
+                OP.Confirmar_Cuenta_ok = row("Confirmar_Cuenta").ToString()
                 OP.Solicitante = row("Solicitante").ToString()
                 OP.Notas = row("Notas").ToString()
                 OP.Observaciones = row("Observaciones").ToString()
@@ -317,7 +325,7 @@ Public Class OrdenPagoMasiva
 
     <WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Function ConceptpPago() As String
+    Public Function ConceptoPago() As String
 
         Dim oDatos As DataSet
         Dim oTabla As DataTable
@@ -340,7 +348,8 @@ Public Class OrdenPagoMasiva
         oParametros.Add("CodigoPres", "52260")
 
 
-        oDatos = Funciones.ObtenerDatos("usp_ObtenerConceptosPago_stro", oParametros)
+        'oDatos = Funciones.ObtenerDatos("usp_ObtenerConceptosPago_stro", oParametros)
+        oDatos = Funciones.ObtenerDatos("usp_ObtenerConceptosPago_stro_OPWEB", oParametros) 'FJCP_10290_CC
 
         oTabla = oDatos.Tables(0)
 
@@ -406,11 +415,6 @@ Public Class OrdenPagoMasiva
         Try
 
 
-
-
-
-
-
             serializer.MaxJsonLength = 500000000
             oParametros.Add("strCatalogo", "Tercero")
 
@@ -445,7 +449,7 @@ Public Class OrdenPagoMasiva
 
     <WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Function folioOnbaseBloqueado(codUsuario As String) As String
+    Public Function folioOnbaseBloqueado(codUsuario As String, bloqueo As Integer) As String
 
         Dim oParametros As New Dictionary(Of String, Object)
         Dim serializer As New JavaScriptSerializer
@@ -457,9 +461,192 @@ Public Class OrdenPagoMasiva
         oParametros.Add("folioOnbase", 999)
         oParametros.Add("cod_usuario", codUsuario)
 
-        Funciones.ObtenerDatos("usp_bloqueoFolioOnbase_stro", oParametros)
+        If bloqueo <> 0 Then
+            Funciones.ObtenerDatos("usp_bloqueoFolioOnbase_stro", oParametros)
+        End If
+
 
         Return Nothing
+    End Function
+
+
+
+
+    <WebMethod()>
+    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
+    Public Function RecuperarClasePago(ByVal Cpto_pago As String, ByVal sn_prestador As String) As String
+
+
+
+        Dim oDatos As DataSet
+        Dim oTabla As DataTable
+        Dim oParametros As New Dictionary(Of String, Object)
+        Dim serializer As New JavaScriptSerializer
+
+
+        Try
+
+
+            serializer.MaxJsonLength = 500000000
+            oParametros.Add("cod_Concepto", Cpto_pago)
+
+            oParametros.Add("sn_prestador", sn_prestador)
+
+
+            oDatos = Funciones.ObtenerDatos("usp_ObtenerClasePagoMasivo_stro", oParametros)
+
+            oTabla = oDatos.Tables(0)
+
+            Return JsonConvert.SerializeObject(oTabla)
+        Catch ex As Exception
+            Return JsonConvert.SerializeObject(oTabla)
+        End Try
+
+
+    End Function
+
+    <WebMethod()>
+    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
+    Public Function RecuperarCtasDepend(ByVal CodCliente As String, ByVal FolioOnbase As String) As String
+        'VZAVALETA_10290_CC7
+        Dim oDatos As DataSet
+        Dim oTabla As DataTable
+        Dim oParametros As New Dictionary(Of String, Object)
+        Dim serializer As New JavaScriptSerializer
+        Try
+            serializer.MaxJsonLength = 500000000
+            oParametros.Add("Folio_OnBase", FolioOnbase)
+            oParametros.Add("cod_cliente", CodCliente)
+
+            oDatos = Funciones.ObtenerDatos("sp_Recuperar_Ctas_Depend", oParametros)
+            oTabla = oDatos.Tables(0)
+
+            Return JsonConvert.SerializeObject(oTabla)
+        Catch ex As Exception
+            Return JsonConvert.SerializeObject(oTabla)
+        End Try
+
+
+    End Function
+
+    <WebMethod()>
+    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
+    Public Function Export_xls(ByVal myArray As Object, Lote As String) As String
+        Dim oParametros As New Dictionary(Of String, Object)
+        Dim JS As New System.Web.Script.Serialization.JavaScriptSerializer
+        Dim lista As New List(Of OrdenPagoMasivoClass)
+        Dim Num_Lote As String
+
+
+        Try
+
+
+
+            lista = New JavaScriptSerializer().ConvertToType(Of List(Of OrdenPagoMasivoClass))(myArray)
+
+
+            Num_Lote = Funciones.fn_Ejecuta("DECLARE @ult_lote INT EXEC spiu_tvarias_ult_nro 0, nro_lote_aux_masivo_stro, @ult_nro = @ult_lote OUTPUT SELECT @ult_lote ")
+
+
+
+            For Each OP As OrdenPagoMasivoClass In lista
+
+                oParametros = New Dictionary(Of String, Object)
+                oParametros.Add("Accion", 1)
+                oParametros.Add("Num_Lote", ValidarParametros(Num_Lote))
+                oParametros.Add("Folio_Onbase", ValidarParametros(OP.Folio_Onbase))
+                oParametros.Add("Num_Pago", ValidarParametros(OP.Num_Pago))
+                oParametros.Add("id_Tipo_Doc", ValidarParametros(OP.Id_Tipo_Doc))
+                oParametros.Add("Tipo_comprobante", ValidarParametros(OP.Tipo_comprobante))
+
+
+                Select Case OP.PagarA
+                    Case "Asegurado"
+                        oParametros.Add("PagarA", "7")
+                    Case "Tercero"
+                        oParametros.Add("PagarA", "8")
+                    Case "Proveedor"
+                        oParametros.Add("PagarA", "10")
+                End Select
+
+
+                oParametros.Add("CodigoCliente", ValidarParametros(OP.CodigoCliente))
+                oParametros.Add("RFC", ValidarParametros(OP.RFC))
+                oParametros.Add("Nombre_Razon_Social", ValidarParametros(OP.Nombre_Razon_Social))
+                oParametros.Add("Siniestro", ValidarParametros(OP.Siniestro))
+                oParametros.Add("Subsiniestro", ValidarParametros(OP.Subsiniestro))
+                oParametros.Add("Cod_moneda", ValidarParametros(OP.Cod_moneda))
+                oParametros.Add("Moneda", ValidarParametros(OP.Moneda))
+                oParametros.Add("Tipo_Cambio", ValidarParametros(OP.Tipo_Cambio))
+                oParametros.Add("Reserva", ValidarParametros(OP.Reserva))
+                oParametros.Add("Cod_moneda_pago", ValidarParametros(OP.Cod_moneda_pago))
+                oParametros.Add("Moneda_Pago", ValidarParametros(OP.Moneda_Pago))
+                oParametros.Add("Importe", ValidarParametros(OP.Importe))
+                oParametros.Add("Deducible", ValidarParametros(OP.Deducible))
+                oParametros.Add("Importe_concepto", ValidarParametros(OP.Importe_concepto))
+                oParametros.Add("Concepto_Facturado", ValidarParametros(OP.Concepto_Factura))
+                oParametros.Add("Concepto_Pago", ValidarParametros(OP.Cod_concepto_pago))
+                oParametros.Add("Clase_pago", ValidarParametros(OP.Cod_clas_pago))
+                oParametros.Add("Tipo_Pago", ValidarParametros(OP.Cod_tipo_pago))
+                oParametros.Add("Concepto2", ValidarParametros(OP.Concepto2))
+                oParametros.Add("Tipo_Pago2", ValidarParametros(OP.Tipo_Pago2))
+                oParametros.Add("Folio_Onbase_cuenta", ValidarParametros(OP.Folio_Onbase_cuenta))
+
+                If OP.PagarA = "Proveedor" Then
+                    oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria))
+                    oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta))
+                Else
+                    oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria_ok))
+                    oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta_ok))
+                End If
+                oParametros.Add("Solicitante", ValidarParametros(OP.Solicitante))
+                oParametros.Add("Notas", ValidarParametros(OP.Notas))
+                oParametros.Add("Observaciones", ValidarParametros(OP.Observaciones))
+                oParametros.Add("id_persona", ValidarParametros(OP.Id_Persona))
+                oParametros.Add("CodigoSucursal", ValidarParametros(OP.CodigoSucursal))
+                oParametros.Add("TipoMovimiento", ValidarParametros(OP.TipoMovimiento))
+                oParametros.Add("VariasFacturas", ValidarParametros(OP.VariasFacturas))
+                oParametros.Add("Ramo", ValidarParametros(OP.Ramo))
+                oParametros.Add("SubRamo", ValidarParametros(OP.SubRamo))
+                oParametros.Add("ID_TipoComprobante", ValidarParametros(OP.ID_TipoComprobante))
+                oParametros.Add("NumeroComprobante", ValidarParametros(OP.NumeroComprobante))
+
+                OP.FechaComprobante = Funciones.FormatearFecha(OP.FechaComprobante, Funciones.enumFormatoFecha.YYYYMMDD)
+                OP.FechaIngreso = Funciones.FormatearFecha(OP.FechaIngreso, Funciones.enumFormatoFecha.YYYYMMDD)
+                OP.Fec_pago = Funciones.FormatearFecha(OP.Fec_pago, Funciones.enumFormatoFecha.YYYYMMDD)
+
+                oParametros.Add("FechaComprobante", ValidarParametros(OP.FechaComprobante))
+                oParametros.Add("CodTipoStro", ValidarParametros(OP.CodTipoStro))
+                oParametros.Add("CodigoOrigenPago", ValidarParametros(OP.CodigoOrigenPago))
+                oParametros.Add("FechaIngreso", ValidarParametros(OP.FechaIngreso))
+                oParametros.Add("CodigoBancoTransferencia", ValidarParametros(OP.CodigoBancoTransferencia))
+
+                oParametros.Add("IdSiniestro", ValidarParametros(OP.IdSiniestro))
+                oParametros.Add("CodigoTercero", ValidarParametros(OP.CodigoTercero))
+                oParametros.Add("Subtotal", ValidarParametros(OP.Importe))
+                oParametros.Add("Iva", ValidarParametros(OP.Iva))
+                oParametros.Add("Total", ValidarParametros(OP.Total))
+                oParametros.Add("Retencion", ValidarParametros(OP.Retencion))
+                oParametros.Add("CodItem", ValidarParametros(OP.CodItem))
+                oParametros.Add("CodIndCob", ValidarParametros(OP.CodIndCob))
+                oParametros.Add("NumeroCorrelaEstim", ValidarParametros(OP.NumeroCorrelaEstim))
+                oParametros.Add("NumeroCorrelaPagos", ValidarParametros(OP.NumeroCorrelaPagos))
+                oParametros.Add("SnCondusef", ValidarParametros(OP.SnCondusef))
+                oParametros.Add("NumeroOficioCondusef", ValidarParametros(OP.NumeroOficioCondusef))
+                oParametros.Add("TipoPagoDetalle", ValidarParametros(OP.TipoPagoDetalle))
+                oParametros.Add("Cod_objeto", ValidarParametros(OP.Cod_objeto))
+                oParametros.Add("Poliza", ValidarParametros(OP.Poliza))
+                oParametros.Add("Fec_pago", ValidarParametros(OP.Fec_pago))
+
+                Funciones.ObtenerDatos("sp_grabar_temporal_xls_OP", oParametros)
+            Next
+
+
+            Return Num_Lote
+
+        Catch ex As Exception
+            Return ex.Message
+        End Try
     End Function
 
 End Class

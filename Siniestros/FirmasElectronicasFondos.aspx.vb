@@ -2552,15 +2552,15 @@ Partial Class Siniestros_FirmasElectronicas
     'End Sub
 
     Private Sub btn_Imprimir_Click(sender As Object, e As EventArgs) Handles btn_Imprimir.Click
-
-        Dim strOrdenPago As String = "-1"
-
+        Dim OPS() As String = Nothing
+        Dim Index As Integer = 0
+        Dim pdf = New reportePDF
+        Dim RutaArchivo As String()
+        Dim seleccionados As Integer = 0
         Dim server As String = String.Empty
 
         Try
-
             'ActualizaDataOP()
-
             Dim ws As New ws_Generales.GeneralesClient
 
             server = ws.ObtieneParametro(3)
@@ -2569,22 +2569,29 @@ Partial Class Siniestros_FirmasElectronicas
             server = Replace(server, "OrdenPago", "OrdenPago_stro")
 
             For Each row In grdOrdenPago.Rows
-
-                If TryCast(row.FindControl("chk_Print"), CheckBox).Checked Then
-                    strOrdenPago = String.Format("{0}, {1}", strOrdenPago, DirectCast(row.FindControl("lblOrdenPago"), Label).Text.Trim)
-
+                If TryCast(row.FindControl("chk_Print"), CheckBox).Checked = True Then
+                    seleccionados = seleccionados + 1
                 End If
-
             Next
 
-            If strOrdenPago <> "-1" Then
+            ReDim OPS(seleccionados - 1)
 
-                strOrdenPago = Replace(strOrdenPago, "-1,", "")
+            For Each row In grdOrdenPago.Rows
+                If TryCast(row.FindControl("chk_Print"), CheckBox).Checked = True Then
+                    OPS(Index) = DirectCast(row.FindControl("lblOrdenPago"), Label).Text.Trim
+                    Index = Index + 1
+                End If
+            Next
 
-                Funciones.EjecutaFuncion(String.Format("fn_Imprime_OP('{0}','{1}');",
-                                                                   server,
-                                                                   strOrdenPago))
-
+            If OPS.Length > 0 AndAlso Index <> 0 Then
+                pdf.Cod_usuario = Master.cod_usuario.ToString()
+                pdf.Nro_ops = OPS
+                pdf.GenerarRenombrar()
+                '>VZAVALETA_10290_CC7_PDF 
+                Funciones.EjecutaFuncion("fn_abrir_documento('" + pdf.RutaArchivo_correo + "')")
+            Else
+                Index = 0
+                MuestraMensaje("Validación", "Error al imprimir el PDF", TipoMsg.Falla)
             End If
 
         Catch ex As Exception

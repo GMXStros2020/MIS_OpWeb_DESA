@@ -35,8 +35,12 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
         Dim VariasFacturas As String
         Dim aux_pagaA As String
         Dim ID As Int32
-
+        Dim cta_pagoInter As String
+        Dim cta_pagoTesofe As String
         Dim funciones As Funciones
+        Dim TipoPago_PoT As String
+        Dim sn_multipago As String
+        Dim Siniestro As String
 
 
         fecha_ini = context.Request.QueryString("fecha_ini")
@@ -52,6 +56,11 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
         MonedaPago = context.Request.QueryString("MonedaPago")
         RFC = context.Request.QueryString("RFC")
         SubSiniestro = context.Request.QueryString("SubSiniestro")
+
+        Siniestro = context.Request.QueryString("Siniestro")
+        TipoPago_PoT = context.Request.QueryString("TipoPago_PoT")
+        sn_multipago = context.Request.QueryString("sn_multipago")
+
 
         cod_analista = context.Request.QueryString("cod_analista")
         VariasFacturas = context.Request.QueryString("VariasFacturas")
@@ -78,7 +87,7 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
             End If
 
 
-            If TipoPago <> 9 Then
+            If TipoPago <> "-1" Then
                 oParametros.Add("TipoPago", TipoPago)
             End If
 
@@ -109,103 +118,126 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
                 oParametros.Add("sn_varias_facturas", VariasFacturas)
             End If
 
+            If Siniestro <> "" Then
+                oParametros.Add("Siniestro", Siniestro)
+            End If
+
+            If TipoPago_PoT <> -1 Then
+                oParametros.Add("TipoPago_PoT", TipoPago_PoT)
+            End If
+
+
+            oParametros.Add("sn_Multipago", sn_multipago)
+
+
+
+
 
             oDatos = Funciones.ObtenerDatos("sp_op_stro_consulta_folio_OnBase_Masivo", oParametros)
+            'oDatos = Funciones.ObtenerDatos("sp_op_stro_consulta_folio_OnBase_Masivo_PBA", oParametros)
             oTabla = oDatos.Tables(0)
 
             ID = 1
             For Each row As DataRow In oTabla.Rows
+                'FJCP_10290_CC
+                cta_pagoInter = obt_cta_pagoInter()
+                cta_pagoTesofe = obt_cta_pagoTesofe()
+                If row("Cuenta_Bancaria").ToString().Trim() <> cta_pagoInter AndAlso row("Cuenta_Bancaria").ToString().Trim() <> cta_pagoTesofe Then
 
-                OP = New OrdenPagoMasivoClass
+                    OP = New OrdenPagoMasivoClass
+                    'FJCP_10290_CC
 
-                OP.ID = row("ID").ToString()
-                ' OP.Folio_Onbase = "<a href=""http://172.16.40.66/AppNet/docpop/docpop.aspx?KT1419_0_0_0=" + row("Folio_Onbase").ToString() + "&clienttype=html&cqid=203""  target=""_blank""><i class=""fa fa-newspaper-o""></i>&nbsp; " + row("Folio_Onbase").ToString() + "</a>"
-                OP.Folio_Onbase = Webservices(row("Folio_Onbase").ToString())
-                OP.Num_Pago = row("Num_Pago").ToString()
-                OP.Tipo_comprobante = row("Tipo_comprobante").ToString()
-
-
-
-                Select Case row("PagarA").ToString()
-                    Case "7"
-                        OP.PagarA = "Asegurado"
-                    Case "8"
-                        OP.PagarA = "Tercero"
-                    Case "10"
-                        OP.PagarA = "Proveedor"
-                End Select
+                    OP.ID = row("ID").ToString()
+                    ' OP.Folio_Onbase = "<a href=""http://172.16.40.66/AppNet/docpop/docpop.aspx?KT1419_0_0_0=" + row("Folio_Onbase").ToString() + "&clienttype=html&cqid=203""  target=""_blank""><i class=""fa fa-newspaper-o""></i>&nbsp; " + row("Folio_Onbase").ToString() + "</a>"
+                    OP.Folio_Onbase = Webservices(row("Folio_Onbase").ToString())
+                    OP.Num_Pago = row("Num_Pago").ToString()
+                    OP.Tipo_comprobante = row("Tipo_comprobante").ToString()
 
 
 
-
-                OP.CodigoCliente = row("CodigoCliente").ToString()
-                OP.RFC = row("RFC").ToString()
-                OP.Nombre_Razon_Social = row("Nombre_Razon_Social").ToString()
-                OP.Siniestro = row("Siniestro").ToString()
-                OP.Subsiniestro = row("Subsiniestro").ToString()
-                OP.Moneda = row("Moneda").ToString()
-                OP.Tipo_Cambio = row("Tipo_Cambio").ToString()
-                OP.Reserva = row("Reserva").ToString()
-                OP.Moneda_Pago = row("Moneda_Pago").ToString()
-                OP.Importe = row("Importe").ToString()
-                OP.Deducible = row("Deducible").ToString()
-                OP.Importe_concepto = row("Importe_concepto").ToString()
-                OP.Concepto_Factura = row("Concepto_Facturado").ToString()
-                OP.Cod_concepto_pago = row("Cod_concepto_pago").ToString()
-                OP.Concepto_Pago = row("Concepto_Pago").ToString()
-                OP.Clase_pago = row("Clase_pago").ToString()
-                OP.Tipo_Pago = row("Tipo_Pago").ToString()
-                OP.Concepto2 = row("Concepto2").ToString()
-                OP.Cod_tipo_pago = row("Cod_tipo_pago").ToString()
-                OP.Tipo_Pago2 = row("Tipo_Pago2").ToString()
-                OP.Folio_Onbase_cuenta = Webservices(row("Folio_Onbase_cuenta").ToString())
-                OP.Folio_Onbase_cuentaHidden = row("Folio_Onbase_cuenta").ToString()
-                OP.Cuenta_Bancaria = row("Cuenta_Bancaria").ToString()
-                OP.Confirmar_Cuenta = row("Confirmar_Cuenta").ToString()
-                OP.Solicitante = row("Solicitante").ToString()
-                OP.Notas = row("Notas").ToString()
-                OP.Observaciones = row("Observaciones").ToString()
-                OP.Id_Tipo_Doc = row("Id_Tipo_Doc").ToString()
-                OP.Cod_moneda = row("Cod_moneda").ToString()
-                OP.Cod_moneda_pago = row("Cod_moneda_pago").ToString()
-                OP.FolioOnbaseHidden = row("Folio_Onbase").ToString()
-                OP.Id_Persona = row("id_persona").ToString()
-                OP.CodigoSucursal = row("CodigoSucursal").ToString()
-                OP.TipoMovimiento = row("TipoMovimiento").ToString()
-                OP.VariasFacturas = row("VariasFacturas").ToString()
-                OP.Ramo = row("Ramo").ToString()
-                OP.SubRamo = row("SubRamo").ToString()
-                OP.ID_TipoComprobante = row("ID_TipoComprobante").ToString()
-                OP.NumeroComprobante = row("NumeroComprobante").ToString()
-                OP.FechaComprobante = row("FechaComprobante").ToString()
-                OP.CodTipoStro = row("CodTipoStro").ToString()
-                OP.CodigoOrigenPago = row("CodigoOrigenPago").ToString()
-                OP.FechaIngreso = row("FechaIngreso").ToString()
-                OP.CodigoBancoTransferencia = row("CodigoBancoTransferencia").ToString()
-
-                OP.IdSiniestro = row("IdSiniestro").ToString()
-                OP.CodigoTercero = row("CodigoTercero").ToString()
-                OP.Subtotal = row("Subtotal").ToString()
-                OP.Iva = row("Iva").ToString()
-                OP.Total = row("Total").ToString()
-                OP.Retencion = row("Retencion").ToString()
-                OP.CodItem = row("CodItem").ToString()
-                OP.CodIndCob = row("CodIndCob").ToString()
-                OP.NumeroCorrelaEstim = row("NumeroCorrelaEstim").ToString()
-                OP.NumeroCorrelaPagos = row("NumeroCorrelaPagos").ToString()
-                OP.SnCondusef = row("SnCondusef").ToString()
-                OP.NumeroOficioCondusef = row("NumeroOficioCondusef").ToString()
-                OP.TipoPagoDetalle = row("TipoPagoDetalle").ToString()
-                OP.Cod_objeto = row("Cod_objeto").ToString()
-                OP.Poliza = row("Poliza").ToString()
-                OP.AltaTercero = "<input class=""btn btn-primary"" type=""button""  id=""" + ID.ToString() + "_row"" OnClick=""Terceros(" + ID.ToString() + ")"" value=""..."">"
+                    Select Case row("PagarA").ToString()
+                        Case "7"
+                            OP.PagarA = "Asegurado"
+                        Case "8"
+                            OP.PagarA = "Tercero"
+                        Case "10"
+                            OP.PagarA = "Proveedor"
+                    End Select
 
 
-                ID = ID + 1
 
 
-                lstOp.Add(OP)
+                    OP.CodigoCliente = row("CodigoCliente").ToString()
+                    OP.RFC = row("RFC").ToString()
+                    OP.Nombre_Razon_Social = row("Nombre_Razon_Social").ToString()
+                    OP.Siniestro = row("Siniestro").ToString()
+                    OP.Subsiniestro = row("Subsiniestro").ToString()
+                    OP.Moneda = row("Moneda").ToString()
+                    OP.Tipo_Cambio = row("Tipo_Cambio").ToString()
+                    OP.Reserva = row("Reserva").ToString()
+                    OP.Moneda_Pago = row("Moneda_Pago").ToString()
+                    OP.Importe = row("Importe").ToString()
+                    OP.Deducible = row("Deducible").ToString()
+                    OP.Importe_concepto = row("Importe_concepto").ToString()
+                    OP.Concepto_Factura = row("Concepto_Facturado").ToString()
+                    OP.Cod_concepto_pago = row("Cod_concepto_pago").ToString()
+                    OP.Concepto_Pago = row("Concepto_Pago").ToString()
+                    OP.Cod_clas_pago = row("Cod_Clase_pago").ToString()
+                    OP.Clase_pago = row("Clase_pago").ToString()
+                    OP.Tipo_Pago = row("Tipo_Pago").ToString()
+                    OP.Concepto2 = row("Concepto2").ToString()
+                    OP.Cod_tipo_pago = row("Cod_tipo_pago").ToString()
+                    OP.Tipo_Pago2 = row("Tipo_Pago2").ToString()
+                    OP.Folio_Onbase_cuenta = Webservices(row("Folio_Onbase_cuenta").ToString())
+                    OP.Folio_Onbase_cuentaHidden = row("Folio_Onbase_cuenta").ToString()
+                    OP.Cuenta_Bancaria = row("Cuenta_Bancaria").ToString()
+                    OP.Confirmar_Cuenta = row("Confirmar_Cuenta").ToString()
+                    OP.Cuenta_Bancaria_ok = row("Cuenta_Bancaria").ToString()
+                    OP.Confirmar_Cuenta_ok = row("Confirmar_Cuenta").ToString()
+                    OP.Solicitante = row("Solicitante").ToString()
+                    OP.Notas = row("Notas").ToString()
+                    OP.Observaciones = row("Observaciones").ToString()
+                    OP.Id_Tipo_Doc = row("Id_Tipo_Doc").ToString()
+                    OP.Cod_moneda = row("Cod_moneda").ToString()
+                    OP.Cod_moneda_pago = row("Cod_moneda_pago").ToString()
+                    OP.FolioOnbaseHidden = row("Folio_Onbase").ToString()
+                    OP.Id_Persona = row("id_persona").ToString()
+                    OP.CodigoSucursal = row("CodigoSucursal").ToString()
+                    OP.TipoMovimiento = row("TipoMovimiento").ToString()
+                    OP.VariasFacturas = row("VariasFacturas").ToString()
+                    OP.Ramo = row("Ramo").ToString()
+                    OP.SubRamo = row("SubRamo").ToString()
+                    OP.ID_TipoComprobante = row("ID_TipoComprobante").ToString()
+                    OP.NumeroComprobante = row("NumeroComprobante").ToString()
+                    OP.FechaComprobante = row("FechaComprobante").ToString()
+                    OP.CodTipoStro = row("CodTipoStro").ToString()
+                    OP.CodigoOrigenPago = row("CodigoOrigenPago").ToString()
+                    OP.FechaIngreso = row("FechaIngreso").ToString()
+                    OP.CodigoBancoTransferencia = row("CodigoBancoTransferencia").ToString()
 
+                    OP.IdSiniestro = row("IdSiniestro").ToString()
+                    OP.CodigoTercero = row("CodigoTercero").ToString()
+                    OP.Subtotal = row("Subtotal").ToString()
+                    OP.Iva = row("Iva").ToString()
+                    OP.Total = row("Total").ToString()
+                    OP.Retencion = row("Retencion").ToString()
+                    OP.CodItem = row("CodItem").ToString()
+                    OP.CodIndCob = row("CodIndCob").ToString()
+                    OP.NumeroCorrelaEstim = row("NumeroCorrelaEstim").ToString()
+                    OP.NumeroCorrelaPagos = row("NumeroCorrelaPagos").ToString()
+                    OP.SnCondusef = row("SnCondusef").ToString()
+                    OP.NumeroOficioCondusef = row("NumeroOficioCondusef").ToString()
+                    OP.TipoPagoDetalle = row("TipoPagoDetalle").ToString()
+                    OP.Cod_objeto = row("Cod_objeto").ToString()
+                    OP.Poliza = row("Poliza").ToString()
+                    OP.AltaTercero = "<input class=""btn btn-primary"" type=""button""  id=""" + ID.ToString() + "_row"" OnClick=""Terceros(" + ID.ToString() + ")"" value=""..."">"
+
+
+                    ID = ID + 1
+
+
+                    lstOp.Add(OP)
+                End If
 
 
 
@@ -261,4 +293,27 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
 
     End Function
 
+    Public Function obt_cta_pagoInter() As String
+        Try
+            Dim ctaParam As String
+            ctaParam = Funciones.fn_EjecutaStr("usp_CargarDatosBancariosDepGob_stro @Accion = 10") 'FJCP_10290_CC
+
+            Return ctaParam
+        Catch ex As Exception
+            Return ""
+        End Try
+
+    End Function
+
+    Public Function obt_cta_pagoTesofe() As String
+        Try
+            Dim ctaParam As String
+            ctaParam = Funciones.fn_EjecutaStr("usp_CargarDatosBancariosDepGob_stro @Accion = 2") 'FJCP_10290_CC
+
+            Return ctaParam
+        Catch ex As Exception
+            Return ""
+        End Try
+
+    End Function
 End Class

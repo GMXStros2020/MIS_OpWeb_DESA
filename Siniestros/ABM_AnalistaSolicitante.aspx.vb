@@ -126,4 +126,35 @@ Partial Class Siniestros_ABM_AnalistaSolicitante
 
 
     End Sub
+    Protected Sub grd_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles grd.RowDeleting
+
+        Dim dt As New DataTable
+        Dim oDatos As DataSet
+        Dim oTabla As DataTable
+        Dim iClave As Integer
+        Dim oParametros As New Dictionary(Of String, Object)
+
+        Try
+            Dim row As GridViewRow = grd.Rows(e.RowIndex)
+            Dim Usuario As String
+            Dim OrigenPago As String
+            Usuario = row.Cells(0).Text
+            OrigenPago = row.Cells(2).Text
+
+
+            oParametros.Add("UsuarioSolicitante", Usuario)
+            oParametros.Add("cod_origen_pago", "0")
+            oParametros.Add("sn_activo", "-1")
+            oParametros.Add("Accion", "2")
+            oParametros.Add("origen_pago", OrigenPago)
+
+            oDatos = Funciones.ObtenerDatos("sp_grabar_analista_solicitante", oParametros)
+            CargarGrid()
+
+
+        Catch ex As Exception
+            MuestraMensaje("Exception", ex.Message, TipoMsg.Falla)
+        End Try
+    End Sub
+
 End Class

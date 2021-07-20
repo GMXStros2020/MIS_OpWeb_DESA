@@ -23,7 +23,9 @@ Partial Class Siniestros_AltaTercero
         If Not IsPostBack Then
             LimpiaControles()
             txt_edad.Enabled = False
+            hid_Alta_Tercero.Value = 1 'VZAVALETA_10290_CC_INICIO
         End If
+
     End Sub
 
 
@@ -98,6 +100,12 @@ Partial Class Siniestros_AltaTercero
     Private Sub btnRegresar_Click(sender As Object, e As EventArgs) Handles btnRegresar.Click
         Response.Redirect("AltaTercero.aspx")
     End Sub
+    'VZAVALETA_10290_CC_INICIO
+    Private Sub btnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click
+        Response.Redirect("AltaTercero.aspx")
+    End Sub
+    'VZAVALETA_10290_CC_FIN
+
 #End Region
 
 #Region "Metodos"

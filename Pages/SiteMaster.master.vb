@@ -560,8 +560,12 @@ Partial Class Pages_SiteMaster
                                     'gvd_GridView.DataBind()
 
                                 End If
+                            Case 4
+                                'VZAVALETA_10290_CC_INICIO
+                                Dim txt_Clave As TextBox = DirectCast(cph_principal.FindControl(Controles(0)), TextBox)
 
-
+                                txt_Clave.Text = Split(Datos(0), "~")(0)
+                                'VZAVALETA_10290_CC_FIN
                         End Select
                     End If
 
@@ -1061,8 +1065,15 @@ Partial Class Pages_SiteMaster
 
     Private Sub lnk_CerrarSesion_Click(sender As Object, e As EventArgs) Handles lnk_CerrarSesion.Click
         Try
+            Dim oParametros As New Dictionary(Of String, Object)
             FormsAuthentication.SignOut()
             Response.Redirect("../Pages/Login.aspx", False)
+            oParametros.Add("Accion", 3)
+            oParametros.Add("folioOnbase", 999)
+            oParametros.Add("cod_usuario", cod_usuario)
+
+            Funciones.ObtenerDatos("usp_bloqueoFolioOnbase_stro", oParametros)
+
         Catch ex As Exception
             Mensaje.MuestraMensaje(Titulo, ex.Message, TipoMsg.Falla)
             Funciones.fn_InsertaExcepcion(cod_modulo, cod_submodulo, cod_usuario, "lnk_CerrarSesion_Click: " & ex.Message)
@@ -2133,7 +2144,8 @@ Partial Class Pages_SiteMaster
 
                 Funciones.CerrarModal("#Transferencias_stro")
             Else
-                Mensaje.MuestraMensaje("Cuentas bancarias", "Error al validar la confirmacion de la cuenta bancaria", TipoMsg.Falla)
+                'Mensaje.MuestraMensaje("Cuentas bancarias", "Error al validar la confirmacion de la cuenta bancaria", TipoMsg.Falla)
+                Mensaje.MuestraMensaje("Cuentas bancarias", "La cuenta bancaria y la confirmación de la cuenta no coinciden.", TipoMsg.Falla)
                 txtCuentaBancariaT_stro_Confirmacion.Text = String.Empty
                 txtCuentaBancariaT_stro.Text = String.Empty
             End If
@@ -2239,7 +2251,12 @@ Partial Class Pages_SiteMaster
                                                         Optional ByVal sn_submod_web As Integer = -1)
 
         Try
-
+            'VZAVALETA_10290_CC_INI
+            If chkPagoInter.Checked Then
+                Funciones.AbrirModal("#Transferencias_stro")
+                Exit Sub
+            End If
+            'VZAVALETA_10290_CC_FIN
             'Carga de catalogos de bancos
             If cmbBancoT_stro.Items.Count > 0 Then
                 cmbBancoT_stro.Items.Clear()
@@ -2339,7 +2356,8 @@ Partial Class Pages_SiteMaster
                         linkOnBase.HRef = ""
                         hrefOnBase = ""
                         'cambiar a id 2 cuando se habilite el ws del folio onbase edo cta
-                        hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id = 2,  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim)
+                        'hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id = 2,  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim)
+                        hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id_pagar_a =" & oValoresActuales("tipoUsuario") & ",  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim)
                         linkOnBase.HRef = hrefOnBase
                         lblFoliOnbaseEdoCtaDesc.Visible = True
                         lblFoliOnbaseEdoCta.Visible = True
@@ -2536,12 +2554,19 @@ Partial Class Pages_SiteMaster
 
                 Dim ctaParam As String
                 ctaParam = Funciones.fn_EjecutaStr("usp_CargarDatosBancariosDepGob_stro @Accion = 10") 'FJCP MEJORAS PAGO INTERNACIONAL 
-                txtCuentaBancariaT_stro.Text = ctaParam
-                txtCuentaBancariaT_stro_Confirmacion.Text = ctaParam
 
                 Funciones.CerrarModal("#PagoInternacional")
                 Funciones.AbrirModal("#Transferencias_stro")
                 'Response.Redirect("Eliminar.aspx")
+                'VZAVALETA_10290_CC_INI
+                Me.txtCuentaBancariaT_stro.Enabled = False
+                Me.txtCuentaBancariaT_stro_Confirmacion.Enabled = False
+                Me.txtCuentaBancariaT_stro.TextMode = TextBoxMode.Number
+                Me.txtCuentaBancariaT_stro_Confirmacion.TextMode = TextBoxMode.Number
+
+                txtCuentaBancariaT_stro.Text = ctaParam
+                txtCuentaBancariaT_stro_Confirmacion.Text = ctaParam
+                'VZAVALETA_10290_CC_FIN
 
             Else
                 MuestraMensaje("Validación", "Falta capturar campos", TipoMsg.Falla)

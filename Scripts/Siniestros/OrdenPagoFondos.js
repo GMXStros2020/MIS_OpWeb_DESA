@@ -15,25 +15,35 @@
     //var bPreguntar = true;
     //window.onunload = eliminar;
     window.onbeforeunload = eliminar;
-    function eliminar() { //FJCP 10290 MEJORAS FOLIO BLOQUEADO PARA DISTINTOS USUARIOS A LA VEZ
-        //if (bPreguntar)
-        //    return "¿El folio bloqueado se liberará?";
-        var usuario = $("[id*=hidCodUsuario]").val();
-        var usuarioo = usuario;
-        alert(usuario);
-        $.ajax({
-            url: "../LocalServices/OrdenPagoMasiva.asmx/folioOnbaseBloqueado",
-            data: "{ 'codUsuario': '" + usuario + "'}",
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                return;
-            },
-            error: function (err) {
-                alert(err);
-            }
-        });
+           function eliminar() { //FJCP 10290 MEJORAS FOLIO BLOQUEADO PARA DISTINTOS USUARIOS A LA VEZ
+
+            var usuario = $("[id*=hidCodUsuario]").val();
+            var bBloqueo = $("[id*=hidBloqueoOnbase]").val()
+            var usuarioo = usuario;
+
+            //alert(usuario);
+
+            $.ajax({
+
+                url: "../LocalServices/OrdenPagoMasiva.asmx/folioOnbaseBloqueado",
+                data: "{ 'codUsuario': '" + usuario + "', 'bloqueo': '" + bBloqueo + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+
+                    return;
+
+                },
+                error: function (err) {
+
+                   // alert(err);
+
+                }
+            });
+
+
+
     }
 });
 

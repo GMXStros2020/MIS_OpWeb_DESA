@@ -513,7 +513,8 @@
                                             <asp:Label runat="server" class="etiqueta-control">CUENTA BANCARIA</asp:Label>
                                         </div>
                                         <div class="col-md-8">
-                                            <asp:TextBox runat="server" ID="txtCuentaBancariaT_stro" oncopy="return nocopy()" onkeypress="return cuenta(event,'txtCuentaBancariaT_stro')" OnFocusOut="validaLong('txtCuentaBancariaT_stro')" CssClass="estandar-control Tablero" placeholder="Cuenta bancaria"></asp:TextBox>
+                                           <%-- <asp:TextBox runat="server" ID="txtCuentaBancariaT_stro" oncopy="return nocopy()" onkeypress="return cuenta(event,'txtCuentaBancariaT_stro')" OnFocusOut="validaLong('txtCuentaBancariaT_stro')" CssClass="estandar-control Tablero" placeholder="Cuenta bancaria"></asp:TextBox>--%>
+                                                <asp:TextBox runat="server" ID="txtCuentaBancariaT_stro" oncopy="return nocopy()" onkeypress="return cuenta(event,'txtCuentaBancariaT_stro')" CssClass="estandar-control Tablero" placeholder="Cuenta bancaria"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -521,7 +522,8 @@
                                             <asp:Label runat="server" class="etiqueta-control">CONFIRMA CUENTA</asp:Label>
                                         </div>
                                         <div class="col-md-8">
-                                            <asp:TextBox runat="server" onpaste="return false" ID="txtCuentaBancariaT_stro_Confirmacion" onkeypress="return cuenta(event,'txtCuentaBancariaT_stro_Confirmacion')" OnFocusOut="validaLong('txtCuentaBancariaT_stro_Confirmacion')" CssClass="estandar-control Tablero" placeholder="Confirma Cuenta bancaria"></asp:TextBox>
+                                            <%--<asp:TextBox runat="server" onpaste="return false" ID="txtCuentaBancariaT_stro_Confirmacion" onkeypress="return cuenta(event,'txtCuentaBancariaT_stro_Confirmacion')" OnFocusOut="validaLong('txtCuentaBancariaT_stro_Confirmacion')" CssClass="estandar-control Tablero" placeholder="Confirma Cuenta bancaria"></asp:TextBox>--%>
+                                            <asp:TextBox runat="server" onpaste="return false" ID="txtCuentaBancariaT_stro_Confirmacion" onkeypress="return cuenta(event,'txtCuentaBancariaT_stro_Confirmacion')" CssClass="estandar-control Tablero" placeholder="Confirma Cuenta bancaria"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="row">

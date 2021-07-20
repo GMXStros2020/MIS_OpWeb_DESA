@@ -41,3 +41,14 @@ function convMayusculas(control) {
     $("[id*=" + control + "]").val(strMayus);
 }
 
+
+function validaLong(control) { // FJCP_10290_CC
+    var dato = $("[id*=" + control + "]").val();
+    var long = dato.length;
+
+    if (long < 17) {
+        fn_MuestraMensaje('Validación', 'Se deben capturar 18 digitos', 2);
+        $("[id*=" + control + "]").val("");
+    }
+
+}

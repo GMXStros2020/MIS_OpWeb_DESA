@@ -284,7 +284,7 @@
                                                
                                             <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Reserva" Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:TextBox ReadOnly="true" runat="server" Text='<%# Eval("Reserva") %>' CssClass="estandar-control Reserva"></asp:TextBox>
+                                                    <asp:TextBox ReadOnly="true" runat="server" Text='<%# Eval("Reserva") %>' CssClass="estandar-control Reserva" style="text-align:right"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="ImportePagos" Visible="false">
@@ -316,13 +316,13 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Pago">
                                                 <ItemTemplate>
-                                                    <asp:TextBox AutoPostBack="True" OnSelectedIndexChanged="cmb_SelectedIndexChanged" OnTextChanged="grid_TextChanged" runat="server" Text='<%# Eval("Pago") %>' CssClass="estandar-control pago" autocomplete="off" placeholder="0.00" ID="txt_pago"></asp:TextBox>
+                                                    <asp:TextBox AutoPostBack="True" OnSelectedIndexChanged="cmb_SelectedIndexChanged" OnTextChanged="grid_TextChanged" runat="server" Text='<%# String.Format("{0:N2}", Decimal.Parse(Eval("Pago")), 2) %>' CssClass="estandar-control pago" autocomplete="off" placeholder="0.00" ID="txt_pago" style="text-align:right"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <%--<asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Descuentos">--%>
                                             <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Deducible">
                                                 <ItemTemplate>
-                                                    <asp:TextBox AutoPostBack="True" OnTextChanged="grid_TextChanged" runat="server" Text='<%# Eval("Descuentos") %>' CssClass="estandar-control Descuentos" autocomplete="off" placeholder="0.00"></asp:TextBox>
+                                                    <asp:TextBox AutoPostBack="True" OnTextChanged="grid_TextChanged" runat="server" Text='<%# String.Format("{0:N2}", Decimal.Parse(Eval("Descuentos")), 2) %>' CssClass="estandar-control Descuentos" autocomplete="off" placeholder="0.00" style="text-align:right"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="RFC">
@@ -370,20 +370,20 @@
                         <div class="form-group col-md-2">
                             <%--En este caso es el subtotal para terceros y asegurados --%>
                             <asp:Label runat="server" class="etiqueta-control">Importe Autorización</asp:Label>
-                            <asp:TextBox ReadOnly="true" ID="txtTotalAutorizacion" runat="server" Text='<%# Eval("TotalAutorizacion") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="txtTotalAutorizacion" runat="server" Text='<%# Eval("TotalAutorizacion") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-2">
                             <asp:Label runat="server" class="etiqueta-control">Total de IVA</asp:Label>
-                            <asp:TextBox ReadOnly="true" ID="txtTotalImpuestos" runat="server" Text='<%# Eval("TotalImpuestos") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="txtTotalImpuestos" runat="server" Text='<%# Eval("TotalImpuestos") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-2">
                             <asp:Label runat="server" class="etiqueta-control">Total Retenciones</asp:Label>
-                            <asp:TextBox ReadOnly="true" ID="txtTotalRetenciones" runat="server" Text='<%# Eval("TotalRetenciones") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="txtTotalRetenciones" runat="server" Text='<%# Eval("TotalRetenciones") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-2">
                             <asp:Label runat="server" class="etiqueta-control">Total</asp:Label>
-                            <asp:TextBox ReadOnly="true" ID="txtTotal" runat="server" Text='<%# Eval("Total") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
-                            <asp:TextBox Visible="false" ID="txtTotalNacional" runat="server" CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="txtTotal" runat="server" Text='<%# Eval("Total") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
+                            <asp:TextBox Visible="false" ID="txtTotalNacional" runat="server" CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                     </div>
 
@@ -393,17 +393,17 @@
                             <asp:Label runat="server" class="etiqueta-control">Importes en Moneda del Pago</asp:Label>
                         </div>
                         <div class="form-group col-md-2">
-                            <asp:TextBox ReadOnly="true" ID="iptxtTotalAutorizacion" runat="server" CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="iptxtTotalAutorizacion" runat="server" CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-2">
-                            <asp:TextBox ReadOnly="true" ID="iptxtTotalImpuestos" runat="server" CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="iptxtTotalImpuestos" runat="server" CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-2">
-                            <asp:TextBox ReadOnly="true" ID="iptxtTotalRetenciones" runat="server" CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="iptxtTotalRetenciones" runat="server" CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-2">
-                            <asp:TextBox ReadOnly="true" ID="iptxtTotal" runat="server" CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
-                            <asp:TextBox Visible="false" ID="iptxtTotalNacional" runat="server" CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                            <asp:TextBox ReadOnly="true" ID="iptxtTotal" runat="server" CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
+                            <asp:TextBox Visible="false" ID="iptxtTotalNacional" runat="server" CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                         </div>
                     </div>
 
@@ -415,20 +415,20 @@
                             </div>
                             <div class="form-group col-md-2">
                                 <asp:Label runat="server" class="etiqueta-control"> </asp:Label>
-                                <asp:TextBox ReadOnly="true" ID="txtTotalAutorizacionFac" runat="server" Text='<%# Eval("TotalAutorizacionFac") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                                <asp:TextBox ReadOnly="true" ID="txtTotalAutorizacionFac" runat="server" Text='<%# Eval("TotalAutorizacionFac") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                             </div>
                             <div class="form-group col-md-2">
                                 <asp:Label runat="server" class="etiqueta-control"></asp:Label>
-                                <asp:TextBox ReadOnly="true" ID="txtTotalImpuestosFac" runat="server" Text='<%# Eval("TotalImpuestosFac") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                                <asp:TextBox ReadOnly="true" ID="txtTotalImpuestosFac" runat="server" Text='<%# Eval("TotalImpuestosFac") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                             </div>
                             <div class="form-group col-md-2">
                                 <asp:Label runat="server" class="etiqueta-control"></asp:Label>
-                                <asp:TextBox ReadOnly="true" ID="txtTotalRetencionesFac" runat="server" Text='<%# Eval("TotalRetencionesFac") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                                <asp:TextBox ReadOnly="true" ID="txtTotalRetencionesFac" runat="server" Text='<%# Eval("TotalRetencionesFac") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                             </div>
                             <div class="form-group col-md-2">
                                 <asp:Label runat="server" class="etiqueta-control"></asp:Label>
-                                <asp:TextBox ReadOnly="true" ID="txtTotalFac" runat="server" Text='<%# Eval("TotalFac") %>' CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
-                                <asp:TextBox Visible="false" ID="txtTotalNacionalFac" runat="server" CssClass="estandar-control Tablero" placeholder="0.00"></asp:TextBox>
+                                <asp:TextBox ReadOnly="true" ID="txtTotalFac" runat="server" Text='<%# Eval("TotalFac") %>' CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
+                                <asp:TextBox Visible="false" ID="txtTotalNacionalFac" runat="server" CssClass="estandar-control Tablero" placeholder="0.00" style="text-align:right"></asp:TextBox>
                             </div>
                         </div>
                     </div>
@@ -468,6 +468,7 @@
                 <asp:HiddenField runat="server" ID="oAbaT_stro" Value="" />
                 <asp:HiddenField runat="server" ID="hidCodUsuario" Value="" />
                 <asp:HiddenField runat="server" ID="FondoSinIva" Value="" />
+                <asp:HiddenField runat="server" ID="hidBloqueoOnbase" Value="1" />    <%--FJCP_10290_CC--%>
                 <div class="panel-contenido ventana2">
                     <div class="row">
                         <div class="form-group col-md-2">

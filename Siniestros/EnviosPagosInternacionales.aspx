@@ -22,7 +22,7 @@
 
             <div class="col-md-6">
                 <asp:Label runat="server" class="col-md-3 etiqueta-control">Por Rango OP</asp:Label>
-                <asp:TextBox runat="server" ID="txt_nro_op_ini" CssClass="col-md-3 estandar-control"  enabled="false" onkeypress="return soloNumeros(event)" PlaceHolder="Núm OP desde"></asp:TextBox>
+                <asp:TextBox runat="server" ID="txt_nro_op_ini" CssClass="col-md-3 estandar-control" Enabled="false" onkeypress="return soloNumeros(event)" PlaceHolder="Núm OP desde"></asp:TextBox>
 
                 <asp:Label runat="server" class="col-md-1 etiqueta-control">A</asp:Label>
                 <asp:TextBox runat="server" ID="txt_nro_op_fin" CssClass="col-md-3 estandar-control" onkeypress="return soloNumeros(event)" PlaceHolder="Núm OP hasta"></asp:TextBox>
@@ -42,25 +42,30 @@
 
             <div class="col-md-6">
                 <asp:Label runat="server" class="col-md-3 etiqueta-control">Beneficiario</asp:Label>
-                <asp:TextBox runat="server" ID="txt_beneficiario" CssClass="col-md-7 estandar-control"  OnFocusOut="convMayusculas('txt_beneficiario')" PlaceHolder="Beneficiario"></asp:TextBox>
+                <asp:TextBox runat="server" ID="txt_beneficiario" CssClass="col-md-7 estandar-control" OnFocusOut="convMayusculas('txt_beneficiario')" PlaceHolder="Beneficiario"></asp:TextBox>
 
             </div>
-
 
         </div>
 
         <br />
         <div style="width: 100%; text-align: right; border-top-style: inset; border-width: 1px; border-color: #003A5D"></div>
 
-
-        <div class="padding10">
-            <asp:LinkButton ID="btn_BuscarOP" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="105px">
-                                <span>
-                                    <img class="btn-buscar"/>&nbsp Buscar
-                                </span>
+        
+            <asp:LinkButton ID="btnLimpiar" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="130px">
+                <span>
+                    <img class="btn-limpiar"/>&nbsp&nbsp Limpiar Filtros
+                </span>
+            </asp:LinkButton>
+            <asp:LinkButton ID="btn_BuscarOP" runat="server" class="btn botones pull-right" BorderWidth="2" BorderColor="White" Width="120px">
+                <span>
+                    <img class="btn-buscar"/>&nbsp Buscar
+                </span>
             </asp:LinkButton>
 
-           <%-- <asp:LinkButton ID="btn_Continuar" runat="server" class="btn botones" Width="153px" data-toggle="modal" data-target="#CorreosPI" Visible="TRUE">
+            
+
+            <%-- <asp:LinkButton ID="btn_Continuar" runat="server" class="btn botones" Width="153px" data-toggle="modal" data-target="#CorreosPI" Visible="TRUE">
                         <span>
                             <img class="btn-aceptar"/>&nbspModal
                         </span>
@@ -71,122 +76,135 @@
                             <img class="btn-aceptar"/>&nbspModal
                         </span>
             </asp:LinkButton>--%>
-
         </div>
     </div>
 
+    <div class="padding30"></div>
 
-
-    <div class="row">
+    <div class="row" >
         <center>
-                   <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional" >
-                       <ContentTemplate>
-
-                                       <asp:Panel runat="server" ID="pnlUsuario" Width="100%" Height="300" ScrollBars="Auto" >
-                                         <%--<asp:GridView ID="grd" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#003A5D" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical" Width="95%">--%>
-                                           
-                                           <asp:GridView ID="grd" runat="server" AutoGenerateColumns="False" OnRowCommand="grd_RowCommand" DataKeyNames="nro_OP" CssClass="table-condensed table-hover" Font-Size="11px" GridLines="Vertical" HeaderStyle-CssClass="header" Height="35px" HorizontalAlign="Center" ShowHeaderWhenEmpty="True">
-                                             <AlternatingRowStyle BackColor="#DCDCDC" />
-                                             <Columns>
-                                                 
-                                                 <asp:BoundField DataField="nro_OP" HeaderText="Nro OP" />
-                                                 <asp:BoundField DataField="pais" HeaderText="Pais" />
-                                                 <asp:BoundField DataField="banco" HeaderText="Banco" />
-                                                 <asp:BoundField DataField="num_banco" HeaderText="Num Banco" />
-                                                 <asp:BoundField DataField="domicilio" HeaderText="Domicilio" />
-                                                 <asp:BoundField DataField="cuenta" HeaderText="Cuenta" />
-                                                 <asp:BoundField DataField="aba_routing" HeaderText="Aba/Routing" />
-                                                 <asp:BoundField DataField="swift" HeaderText="Swift" />
-                                                 <asp:BoundField DataField="transit" HeaderText="Transit" />
-                                                 <asp:BoundField DataField="iban" HeaderText="Iban" />
-                                                 <asp:BoundField DataField="triangulado" HeaderText="Triangulado" />
-                                                 <asp:BoundField DataField="banco_triang" HeaderText="Banco" />
-                                                 <asp:BoundField DataField="cuenta_triang" HeaderText="Cuenta" />
-                                                 <asp:BoundField DataField="aba_routing_triang" HeaderText="Aba/Routing" />                                                
-
-
-                                                  <asp:ButtonField Text="" HeaderText="Ver" CommandName="comVer" ButtonType="Image" ImageUrl="../Images/buscar_mini_inv.png" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:ButtonField>
-                                                  <asp:ButtonField Text="" HeaderText="Enviar" CommandName="comEnviar" ButtonType="Image" ImageUrl="../Images/email_mini.png" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:ButtonField>
-                               
-                                             </Columns>
-                                             <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
-                                             <HeaderStyle BackColor="#003A5D" Font-Bold="False" ForeColor="White" />
-                                             <PagerStyle BackColor="#999999" ForeColor="Black" HorizontalAlign="Center" />
-                                             <RowStyle BackColor="#EEEEEE" ForeColor="Black" />
-                                             <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
-                                             <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                             <SortedAscendingHeaderStyle BackColor="#0000A9" />
-                                             <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                             <SortedDescendingHeaderStyle BackColor="#000065" />
-                                         </asp:GridView>
-                                           </asp:Panel>
-
-                       </ContentTemplate>
-                       <Triggers>
-                           
-                            <asp:AsyncPostBackTrigger ControlID="btn_BuscarOP" EventName="Click" />
-                            
-                       </Triggers>
-                   </asp:UpdatePanel> 
-                      </center>
+            <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional" >
+                <ContentTemplate>
+                    <asp:Panel runat="server" ID="pnlUsuario" Width="100%" Height="300" ScrollBars="Auto" >
+                    <%--<asp:GridView ID="grd" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#003A5D" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical" Width="95%">--%>                                           
+                        <asp:GridView ID="grd" runat="server" AutoGenerateColumns="False" OnRowCommand="grd_RowCommand" DataKeyNames="nro_OP" CssClass="table-condensed table-hover" Font-Size="11px" GridLines="Vertical" HeaderStyle-CssClass="header" Height="35px" HorizontalAlign="Center" ShowHeaderWhenEmpty="True">
+                            <AlternatingRowStyle BackColor="#DCDCDC" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="Sel." ItemStyle-HorizontalAlign="Center" ShowHeader="False">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chk_Print" runat="server" Checked="False" />
+                                    </ItemTemplate>
+                                    <HeaderStyle Font-Size="12px" />
+                                    <ItemStyle HorizontalAlign="Center" />
+                                </asp:TemplateField>
+                                <asp:BoundField DataField="nro_OP" HeaderText="Nro OP" />
+                                <asp:BoundField DataField="pais" HeaderText="Pais" />
+                                <asp:BoundField DataField="banco" HeaderText="Banco" />
+                                <asp:BoundField DataField="num_banco" HeaderText="Num Banco" />
+                                <asp:BoundField DataField="domicilio" HeaderText="Domicilio" />
+                                <asp:BoundField DataField="cuenta" HeaderText="Cuenta" />
+                                <asp:BoundField DataField="aba_routing" HeaderText="Aba/Routing" />
+                                <asp:BoundField DataField="swift" HeaderText="Swift" />
+                                <asp:BoundField DataField="transit" HeaderText="Transit" />
+                                <asp:BoundField DataField="iban" HeaderText="Iban" />
+                                <asp:BoundField DataField="triangulado" HeaderText="Triangulado" />
+                                <asp:BoundField DataField="banco_triang" HeaderText="Banco" />
+                                <asp:BoundField DataField="cuenta_triang" HeaderText="Cuenta" />
+                                <asp:BoundField DataField="aba_routing_triang" HeaderText="Aba/Routing" />                                                
+                               <%-- <asp:ButtonField Text="" HeaderText="Ver" CommandName="comVer" ButtonType="Image" ImageUrl="../Images/buscar_mini_inv.png" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                                </asp:ButtonField>
+                                <asp:ButtonField Text="" HeaderText="Enviar" CommandName="comEnviar" ButtonType="Image" ImageUrl="../Images/email_mini.png" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                                </asp:ButtonField> --%>                              
+                            </Columns>
+                            <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
+                            <HeaderStyle BackColor="#003A5D" Font-Bold="False" ForeColor="White" />
+                            <PagerStyle BackColor="#999999" ForeColor="Black" HorizontalAlign="Center" />
+                            <RowStyle BackColor="#EEEEEE" ForeColor="Black" />
+                            <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
+                            <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                            <SortedAscendingHeaderStyle BackColor="#0000A9" />
+                            <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                            <SortedDescendingHeaderStyle BackColor="#000065" />
+                        </asp:GridView>
+                    </asp:Panel>
+                </ContentTemplate>
+                <Triggers>                           
+                    <asp:AsyncPostBackTrigger ControlID="btn_BuscarOP" EventName="Click" />                            
+                    <asp:AsyncPostBackTrigger ControlID="btn_Todas" EventName="Click" />                            
+                    <asp:AsyncPostBackTrigger ControlID="btn_Ninguna" EventName="Click" />                            
+                    <asp:AsyncPostBackTrigger ControlID="btn_Imprimir" EventName="Click" />                            
+                </Triggers>
+            </asp:UpdatePanel> 
+        </center>
     </div>
 
 
-    <div id="CorreosPI" class="modal-catalogo" style="width: 25%;">
-        <asp:UpdatePanel runat="server" ID="upCorreos">
+    <div class="padding10">
+        <asp:UpdatePanel runat="server" ID="upPanelBotones" Width="99%" UpdateMode="Conditional">
             <ContentTemplate>
-                <div class="cuadro-titulo">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div class="titulo-modal">Enviar Correo</div>
-                </div>
-                <div class="clear padding5"></div>
-                <div id="div_CorreoPI" style="width: 100%; height: 300px; overflow-y: scroll; overflow-x: hidden;">
+                <asp:Panel runat="server" ID="PanelBotones" HorizontalAlign="Right">
+                    <div class="row" style="width: 100%">
+                        <%--<div class="col-md-1"></div>--%>
+                        <div class="col-md-6">
+                            <div style="width: 100%; text-align: left">
+                                
+                                <asp:LinkButton ID="btn_Todas" runat="server" class="btn botones Centrado" BorderWidth="2" BorderColor="White" Width="120px" Visible="false">
+                                    <span>
+                                        <img class="btn-todos"/>&nbsp Todas Imp.
+                                    </span>
+                                </asp:LinkButton>
 
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-11">
-                            <asp:Label runat="server" class="col-md-1 etiqueta-control">Para</asp:Label>
+                                <asp:LinkButton ID="btn_Ninguna" runat="server" class="btn botones Centrado" BorderWidth="2" BorderColor="White" Width="120px" Visible="false">
+                                    <span>
+                                        <img class="btn-ninguno"/>&nbsp Ninguna Imp.
+                                    </span>
+                                </asp:LinkButton>
+
+                            </div>
                         </div>
-                        <div class="col-md-1"></div>
-                        <div class="col-md-11">
-                            <asp:TextBox runat="server" ID="TextBox1" CssClass=" col-md-1 estandar-control" Width="95%"></asp:TextBox>
-                        </div>
+                        <div class="col-md-6">                            
+                            <div style="text-align: right">  
+                                <asp:LinkButton ID="btn_Imprimir" runat="server" class="btn botones" BorderWidth="2" BorderColor="White" Width="120px" Visible="false">
+                                <span>
+                                    <img class="btn-imprimir"/>
+                                    Imprimir
+                                </span>
+                                </asp:LinkButton>
+                                <asp:LinkButton ID="btnEnviar" runat="server" class="btn botones Centrado" BorderWidth="2" BorderColor="White" Width="120px" Visible="false">
+                                    <span>
+                                        <img class="btn-mail"/>&nbsp Enviar
+									</span>
+                                </asp:LinkButton>
+                                          
+                               <%-- <asp:LinkButton ID="btn_Continuar" runat="server" class="btn botones" Width="153px" data-toggle="modal" data-target="#mailPI" Visible="true">
+                                <span>
+                                    <img class="btn-aceptar"/>&nbspContinuar
+                                </span>
+                            </asp:LinkButton>--%>
+                            </div>
+                        </div>                        
                     </div>
-
-                    <asp:Label runat="server" class="col-md-1 etiqueta-control" Width="100%">Para</asp:Label>
-                    <asp:TextBox runat="server" ID="txt_Correo" CssClass="col-md-2 estandar-control" Width="92%"></asp:TextBox>
-                    <div class="clear padding5"></div>
-                    <asp:Label runat="server" class="col-md-1 etiqueta-control" Width="60%">CC</asp:Label>
-                    <asp:TextBox runat="server" ID="txt_Copia" CssClass="col-md-1 estandar-control" Text='<%# Eval("mail_copia") %>' Width="92%"></asp:TextBox>
-                    <div class="clear padding5"></div>
-                    <asp:Label runat="server" class="col-md-1 etiqueta-control" Width="60%">Asunto</asp:Label>
-                    <asp:TextBox runat="server" ID="txt_Asunto" CssClass="col-md-1 estandar-control" Text='<%# Eval("asunto") %>' Width="92%"></asp:TextBox>
-
-                    <%--<asp:Panel runat="server" ID="pnl_Correos" Width="100%" Height="550px" ScrollBars="Vertical">--%>
-                </div>
-
-
-                <div style="width: 100%; text-align: right; border-top-style: inset; border-width: 1px; border-color: #003A5D">
-                    <asp:LinkButton ID="btn_ConfirmaMail" runat="server" class="btn botones">
-                        <span>
-                            <img class="btn-enviar"/>
-                            enviar
-                        </span>
-                    </asp:LinkButton>
-                </div>
+                    <div class="padding10" />
+                </asp:Panel>
             </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="btn_BuscarOP" EventName="Click" />
+                <%--<asp:AsyncPostBackTrigger ControlID="btnSi" EventName="Click" />--%>
+            </Triggers>
         </asp:UpdatePanel>
     </div>
 
-    <%--FCRUZ 10290 - Registro de terceros Datos Mínimos--%>
+    <div class="padding53"></div>
+
+
+
+    
     <div id="mailPI" style="width: 400px; height: 220px" class="modal-catalogo">
         <div class="cuadro-titulo-flotante" style="height: 30px">
             <button type="button" id="btnClosemTer" class="close" hidden="hidden">&times;</button>
-            <div>
+            <div style="padding-top:10px">
                 <label id="lbl_RegTercero">Envío de Correo Electrónico</label>
             </div>
         </div>
@@ -205,23 +223,24 @@
                                     <div class="col-md-12">
                                         <asp:Label runat="server" class="etiqueta-control">Para</asp:Label>
                                     </div>
-                                    <div class="col-md-12">
-                                        <asp:TextBox runat="server" ID="txtPara" CssClass="estandar-control Tablero" placeholder="Ejemplo: correo1@gmx.com.mx ; correo2@gmx.com.mx"></asp:TextBox>
+                                    <div class="col-md-12" style="padding:10px">
+                                        <asp:TextBox runat="server" ID="txtPara" CssClass="estandar-control Tablero" placeholder="Ejemplo: correo1@gmx.com.mx ; correo2@gmx.com.mx" onkeypress="return espacio(event, 'txtPara')"></asp:TextBox>
                                     </div>
+                                    <%--onkeypress="return soloNumeros(event)"--%>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <asp:Label runat="server" class="etiqueta-control">Cc</asp:Label>
                                     </div>
-                                    <div class="col-md-12">
-                                        <asp:TextBox runat="server" ID="txtCC" CssClass="estandar-control Tablero" placeholder="Ejemplo: correo1@gmx.com.mx ; correo2@gmx.com.mx"></asp:TextBox>
+                                    <div class="col-md-12" style="padding:10px">
+                                        <asp:TextBox runat="server" ID="txtCC" CssClass="estandar-control Tablero" placeholder="Ejemplo: correo1@gmx.com.mx ; correo2@gmx.com.mx" onkeypress="return espacio(event, 'txtCC')"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <asp:Label runat="server" class="etiqueta-control">Asunto</asp:Label>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="padding:10px">
                                         <asp:TextBox runat="server" ID="txtAsunto" CssClass="estandar-control Tablero"></asp:TextBox>
                                     </div>
                                 </div>
@@ -236,21 +255,14 @@
                         </div>
                     </asp:Panel>
                     <div style="text-align: right;">
-                        <asp:LinkButton ID="btnAcepmEmail" runat="server" class="btn botones">
+                        <%--<asp:LinkButton ID="btnAcepmEmail" runat="server" class="btn botones"  BorderWidth="2" BorderColor="White" >
                         <span>
                             <img class="btn-enviar"/>
                             Enviar
                         </span>
-                        </asp:LinkButton>
-                        <%--<asp:Button runat="server" ID="btnAcepmEmail" class="btn botones" Text="Enviar" />--%>
-                        <asp:Button runat="server" ID="btnCancEmail" class="btn botones" Text="Cancelar" />
-                        <%--<asp:Button runat="server" ID="btnCancEmail" class="btn botones" Text="Cancelar"  data-dismiss="modal" />--%>
-
-                        <%-- <asp:LinkButton ID="btnCancela" runat="server" data-dismiss="modal" class="btn botones CierraFirma" Width="120px">
-                                    <span>
-                                        <img class="btn-cancelar"/>&nbspCancelar
-                                    </span>
-                                </asp:LinkButton>--%>
+                        </asp:LinkButton>                        --%>
+                        <asp:Button runat="server" ID="btnAcepmEmail" class="btn botones" Text="Enviar"  BorderWidth="2" BorderColor="White" Height="34px"  />                       
+                        <asp:Button runat="server" ID="btnCancEmail" class="btn botones" Text="Cancelar"  BorderWidth="2" BorderColor="White" Height="34px" />                       
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

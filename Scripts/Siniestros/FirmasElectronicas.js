@@ -553,5 +553,8 @@ function fn_SumaTotalesOP() {
 function fn_Abrir_Archivo(documento) {
     window.open('file:' + documento);
 }
-
+//>VZAVALETA_10290_CC7_PDF
+function fn_abrir_documento(documento) {
+    window.open('file:' + documento);
+}
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
