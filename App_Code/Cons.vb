@@ -73,7 +73,14 @@ Public Class Cons
         Autorizadas = 5
         Revisadas = 6
     End Enum
-
+    Public Enum TipoFiltroN
+        Todas = 0
+        Pendientes = 2
+        SinFirma = 7
+        Rechazadas = 4
+        Autorizadas = 5
+        NoProc = 6
+    End Enum
 
     'Tipo Consulta
     Public Enum TipoMov
