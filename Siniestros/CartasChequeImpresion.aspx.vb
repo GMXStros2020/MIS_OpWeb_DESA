@@ -402,12 +402,12 @@ Partial Class Siniestros_CartasChequeImpresion
                 Next
 
                 Dim ws As New ws_Generales.GeneralesClient
-                'Dim server As String = ws.ObtieneParametro(9)
-                Dim server As String = ws.ObtieneParametro(3)
+                Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
+
 
                 server = Replace(Replace(server, "@Reporte", "RepCartasCheque"), "@Formato", "PDF") & "&folio=@folio"
-                'server = Replace(server, "ReportesGMX_UAT", "ReportesOPSiniestros") 
-                server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+                server = Replace(server, Cons.ReposSource, Cons.ReposReport)
+
                 Funciones.EjecutaFuncion(String.Format("fn_ImprimirCartas('{0}','{1}');", server, strFoliosRep))
 
             Else

@@ -138,11 +138,11 @@ Partial Class Siniestros_EnviosPagosInternacionales
 
     Private Sub generaReporte(nroOP As Integer)
         Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
         Dim RptFilters As String
         RptFilters = "&nroOP=" & nroOP.ToString()
         server = Replace(Replace(server, "@Reporte", "OP_PagoInternacional"), "@Formato", "PDF")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
     End Sub
