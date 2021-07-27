@@ -3025,9 +3025,9 @@ Partial Class Siniestros_OrdenPago
                                 InicializarValores()
                                 'Impresión reporte
                                 Dim ws As New ws_Generales.GeneralesClient
-                                Dim server As String = ws.ObtieneParametro(3)
+                                Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
                                 server = Replace(Replace(server, "@Reporte", "OrdenPago"), "@Formato", "PDF") & "&nro_op=@nro_op"
-                                server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+                                server = Replace(server, Cons.ReposSource, Cons.ReposReport)
                                 server = Replace(server, "OrdenPago", "OrdenPago_stro")
                                 'Funciones.EjecutaFuncion("fn_ImprimirOrden('" & server & "','" & "234777" & "');")
                                 Funciones.EjecutaFuncion(String.Format("fn_ImprimirOrden('{0}','{1}');",

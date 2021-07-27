@@ -82,8 +82,8 @@ Partial Class Siniestros_ReporteListadoPagosFondos
 
     Private Sub GeneraReporte()
         Dim ws As New ws_Generales.GeneralesClient
-        'Dim server As String = ws.ObtieneParametro(9)
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
+
         Dim RptFilters As String
         RptFilters = "&Fondo=" & ddlFondo.SelectedValue.ToString()
         RptFilters = RptFilters & "&Fec_auto_ini=" & Funciones.FormatearFecha(txt_fec_gen_desde.Text, Funciones.enumFormatoFecha.YYYYMMDD) +
@@ -92,8 +92,8 @@ Partial Class Siniestros_ReporteListadoPagosFondos
                      " " + ddlHoraHasta.SelectedItem.ToString() + ":" + ddlMinutoHasta.SelectedItem.ToString()
 
         server = Replace(Replace(server, "@Reporte", "Rpt_op_web_pagos_fondos"), "@Formato", "EXCEL")
-        'server = Replace(server, "ReportesGMX_UAT", "ReportesOPSiniestros")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
+
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
     End Sub

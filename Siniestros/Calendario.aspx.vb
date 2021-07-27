@@ -110,13 +110,13 @@ Partial Class Siniestros_Calendario
     Protected Sub btn_Revisar_Click(sender As Object, e As EventArgs) Handles btn_Revisar.Click
 
         Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
         Dim RptFilters As String
         RptFilters = ""
 
 
         server = Replace(Replace(server, "@Reporte", "DiasFeriados"), "@Formato", "EXCEL")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
 

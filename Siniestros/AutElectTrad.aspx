@@ -177,7 +177,7 @@
                                                     <asp:imagebutton ID="btn_VerDocs" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerDocs" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
                                             </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Nro.OP">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Nro.OP" ItemStyle-Width="60px">
                                             <ItemTemplate>
                                                 <asp:Label ReadOnly="true" ID="nro_op_" runat="server" Text='<%# Eval("nro_op") %>'  Width="50px"></asp:Label>
                                             </ItemTemplate>

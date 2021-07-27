@@ -427,13 +427,13 @@ Partial Class Siniestros_CartasChequeAutorizacion
 
     Private Sub generaReporte(nrofolio As Integer)
         Dim ws As New ws_Generales.GeneralesClient
-        'Dim server As String = ws.ObtieneParametro(9)
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
+
         Dim RptFilters As String
         RptFilters = "&folio=" & nrofolio.ToString()
         server = Replace(Replace(server, "@Reporte", "RepCartasCheque"), "@Formato", "PDF")
-        'server = Replace(server, "ReportesGMX_UAT", "ReportesOPSiniestros")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
+
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
 

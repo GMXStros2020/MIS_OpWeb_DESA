@@ -26,13 +26,13 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
     Protected Sub btn_Revisar_Click(sender As Object, e As EventArgs) Handles btn_Revisar.Click
 
         Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
         Dim RptFilters As String
         RptFilters = "&NumLote=" & txt_NumLote.Text
 
 
         server = Replace(Replace(server, "@Reporte", "RevisionOrdenPagoMasiva"), "@Formato", "EXCEL")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
 
@@ -213,7 +213,7 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
 
     Private Sub btn_exportar_xls_Click(sender As Object, e As EventArgs) Handles btn_exportar_xls.Click
         Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
         Dim RptFilters As String
 
         Dim lote As String
@@ -226,7 +226,7 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
         RptFilters = RptFilters & "&Accion=0"
 
         server = Replace(Replace(server, "@Reporte", "XLS_Varios_Multipago"), "@Formato", "EXCEL")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
 

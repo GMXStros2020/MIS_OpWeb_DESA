@@ -63,9 +63,9 @@ Partial Class Siniestros_ResumenOPMasivo
     Private Sub generaReporte(nrofolio As String)
 
         Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
         server = Replace(Replace(server, "@Reporte", "OrdenPago"), "@Formato", "PDF") & "&nro_op=" + nrofolio
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
         server = Replace(server, "OrdenPago", "OrdenPago_stro")
         'Funciones.EjecutaFuncion("fn_ImprimirOrden('" & server & "','" & "234777" & "');")
         'Funciones.EjecutaFuncion(String.Format("fn_ImprimirOrden('{0}','{1}');", server, nrofolio))
@@ -75,7 +75,7 @@ Partial Class Siniestros_ResumenOPMasivo
 
     Private Sub btnExportar_Click(sender As Object, e As EventArgs) Handles btnExportar.Click
         Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
         Dim Random As New Random()
         Dim numero As Integer = Random.Next(1, 1000)
         Dim Num_Lote As String
@@ -83,7 +83,7 @@ Partial Class Siniestros_ResumenOPMasivo
         Dim RptFilters As String
         RptFilters = "&NumLote=" & Num_Lote
         server = Replace(Replace(server, "@Reporte", "ResumenOP"), "@Formato", "EXCEL")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
         server = server & RptFilters
         Funciones.EjecutaFuncion("window.open('" & server & "');")
 
