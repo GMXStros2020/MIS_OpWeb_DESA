@@ -37,6 +37,9 @@ Public Class OrdenPagoMasiva
             If Lote = "0" Then
                 Num_Lote = Funciones.fn_EjecutaStr("Declare @ult_lote int  EXEC sp_ult_nro_lote @ult_lote=@ult_lote out Select @ult_lote ")
             Else
+                'VZAVALETA_10290_Incidencias
+                Funciones.fn_EjecutaStr("Declare @ult_lote int  EXEC sp_ult_nro_lote @Action = " + Lote + "  ,@ult_lote=@ult_lote out Select @ult_lote ")
+
                 Num_Lote = Lote
             End If
 
