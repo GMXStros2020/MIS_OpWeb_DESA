@@ -177,7 +177,7 @@
                                                     <asp:imagebutton ID="btn_VerDocs" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerDocs" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
                                             </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Nro.OP">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Nro.OP" ItemStyle-Width="60px">
                                             <ItemTemplate>
                                                 <asp:Label ReadOnly="true" ID="nro_op_" runat="server" Text='<%# Eval("nro_op") %>'  Width="50px"></asp:Label>
                                             </ItemTemplate>
@@ -210,7 +210,7 @@
                                     </asp:TemplateField>  
                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Supervisor">
                                         <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# Eval("NombreJefe") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
+                                            <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# If(CBool(Eval("Jefe") = "RRAMOS"), "", Eval("NombreJefe")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>  
                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="SubGerente">

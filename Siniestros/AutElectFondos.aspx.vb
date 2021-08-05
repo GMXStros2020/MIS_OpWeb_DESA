@@ -4,7 +4,7 @@ Imports Mensaje
 Imports Funciones
 Imports System.IO
 
-Partial Class Siniestros_AutElectTrad
+Partial Class Siniestros_AutElectFondos
     Inherits System.Web.UI.Page
 
     Private Enum Operacion
@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectTrad
                 End If
             End If
             EstadoDetalleOrden()
-            Master.cod_usuario = "CLOPEZ"
+            'Master.cod_usuario = "EAMPUDIA"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -153,8 +153,8 @@ Partial Class Siniestros_AutElectTrad
 
         Dim FiltrosUsuStr As String
         Dim FiltroFechaTope As String
-        FiltrosUsuStr = ws.ObtieneParametro(30)
-        FiltroFechaTope = ws.ObtieneParametro(41) 'Obtiene fecha tope
+        FiltrosUsuStr = ws.ObtieneParametro(Cons.TargetFiltrosAdminStro)
+        FiltroFechaTope = ws.ObtieneParametro(Cons.FechaFiltroStrosTec) 'Obtiene fecha tope
 
         If InStr(FiltrosUsuStr, Master.cod_usuario) Then
             'If Master.cod_usuario = "CLOPEZ" Or Master.cod_usuario = "AMEZA" Or Master.cod_usuario = "CREYES" Or Master.cod_usuario = "MMQUINTERO" Then
@@ -241,8 +241,8 @@ Partial Class Siniestros_AutElectTrad
 
             Dim ws1 As New ws_Generales.GeneralesClient
 
-            Dim FechaTope As String = ws1.ObtieneParametro(41) 'Obtiene fecha tope
-            Dim FiltroUsuStr As String = ws1.ObtieneParametro(30) 'Obtiene usuarios admin
+            Dim FechaTope As String = ws1.ObtieneParametro(Cons.FechaFiltroStrosTec) 'Obtiene fecha tope
+            Dim FiltroUsuStr As String = ws1.ObtieneParametro(Cons.TargetFiltrosAdminStro) 'Obtiene usuarios admin
 
             Dim FechaStop As Date
 
@@ -560,7 +560,7 @@ Partial Class Siniestros_AutElectTrad
                     EdoControl(Operacion.Consulta)
                     MuestraChecksAccion()
 
-
+                    OcultaCols()
                     ' DesHabilitaChecksFirma()
                     Funciones.EjecutaFuncion("fn_EstadoFilas('grdOrdenPago',true);")
                 Else
@@ -1149,6 +1149,24 @@ Partial Class Siniestros_AutElectTrad
         End Try
 
     End Sub
+    Private Sub OcultaCols()
+        Dim ws As New ws_Generales.GeneralesClient
+        Dim Usunicho1 As String
+
+        Usunicho1 = ws.ObtieneParametro(Cons.UsuariosNicho1)
+
+        If InStr(Usunicho1, Master.cod_usuario) Then
+            grdOrdenPago.Columns(9).Visible = False
+            grdOrdenPago.Columns(10).Visible = False
+
+        Else
+            grdOrdenPago.Columns(9).Visible = True
+            grdOrdenPago.Columns(10).Visible = True
+        End If
+
+    End Sub
+
+
     Private Sub MuestraChecksAccion()
         If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then  'si Administracion de siniestros
             grdOrdenPago.Columns(17).Visible = True 'no procede
@@ -1303,7 +1321,7 @@ Partial Class Siniestros_AutElectTrad
             End If
 
 
-            AdminUsuStr = ws.ObtieneParametro(30)
+            AdminUsuStr = ws.ObtieneParametro(Cons.TargetFiltrosAdminStro)
 
             If InStr(AdminUsuStr, Master.cod_usuario) Then
                 'If Master.cod_usuario = "CLOPEZ" Or Master.cod_usuario = "AMEZA" Or Master.cod_usuario = "CREYES" Then
@@ -1519,7 +1537,7 @@ Partial Class Siniestros_AutElectTrad
             Dim ws As New ws_Generales.GeneralesClient
 
             Dim AdminUsuStr As String
-            AdminUsuStr = ws.ObtieneParametro(30)
+            AdminUsuStr = ws.ObtieneParametro(Cons.TargetFiltrosAdminStro)
 
             If InStr(AdminUsuStr, Master.cod_usuario) Then
                 If fn_Autorizaciones(True) = False Then
@@ -1592,15 +1610,15 @@ Partial Class Siniestros_AutElectTrad
             Dim OrdenPago = grdOrdenPago.DataKeys(Index)("nro_op")
             Dim FolioOnBase_ = grdOrdenPago.DataKeys(Index)("FolioOnbase")
             Dim ws As New ws_Generales.GeneralesClient
-            Dim server As String = ws.ObtieneParametro(3)
-            Dim strURLOnBase As String = ws.ObtieneParametro(40)
+            Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
+            Dim strURLOnBase As String = ws.ObtieneParametro(Cons.RutaWebServOnBase)
             Dim RptFilters As String
             RptFilters = "&nro_op=" & OrdenPago
 
             If e.CommandName = "VerOP" Then
 
                 server = Replace(Replace(server, "@Reporte", "OrdenPago"), "@Formato", "PDF")
-                server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+                server = Replace(server, Cons.ReposSource, Cons.ReposReport)
                 server = Replace(server, "OrdenPago", "OrdenPago_stro")
                 server = server & RptFilters
                 Funciones.EjecutaFuncion("window.open('" & server & "','_blank');")
@@ -1608,13 +1626,13 @@ Partial Class Siniestros_AutElectTrad
 
             ElseIf e.CommandName = "VerEdoCta"
                 Dim hrefOnBase As String
-                hrefOnBase = ws.ObtieneParametro(40)
+                hrefOnBase = ws.ObtieneParametro(Cons.RutaWebServOnBase)
                 hrefOnBase = Replace(hrefOnBase, "@Folio", FolioOnBase_)
                 Funciones.EjecutaFuncion("window.open('" & hrefOnBase & "','_blank');")
 
             ElseIf e.CommandName = "VerDocs"
                 Dim hrefOnBase As String
-                hrefOnBase = ws.ObtieneParametro(40)
+                hrefOnBase = ws.ObtieneParametro(Cons.RutaWebServOnBase)
                 hrefOnBase = Replace(hrefOnBase, "@Folio", FolioOnBase_)
                 Funciones.EjecutaFuncion("window.open('" & hrefOnBase & "','_blank');")
 
@@ -1645,11 +1663,15 @@ Partial Class Siniestros_AutElectTrad
 
     Private Sub generaReporte()
         Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(3)
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
 
         server = Replace(Replace(server, "@Reporte", "Rpt_Excel"), "@Formato", "EXCEL")
-        server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
         Funciones.EjecutaFuncion("window.open('" & server & "');")
+
+    End Sub
+
+    Private Sub Siniestros_AutElectTrad_Error(sender As Object, e As EventArgs) Handles Me.[Error]
 
     End Sub
 End Class

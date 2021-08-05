@@ -136,7 +136,7 @@ Partial Class Siniestros_FirmasElectronicas
 
         Dim FiltrosUsuStr As String
 
-        FiltrosUsuStr = ws.ObtieneParametro(30)
+        FiltrosUsuStr = ws.ObtieneParametro(Cons.TargetFiltrosAdminStro)
 
         If InStr(FiltrosUsuStr, Master.cod_usuario) Then
             'If Master.cod_usuario = "CLOPEZ" Or Master.cod_usuario = "AMEZA" Or Master.cod_usuario = "CREYES" Or Master.cod_usuario = "MMQUINTERO" Then
@@ -923,7 +923,7 @@ Partial Class Siniestros_FirmasElectronicas
 
                             If sn_proceso = True Then
                                 Dim AdminUsuStr As String
-                                AdminUsuStr = ws.ObtieneParametro(30)
+                                AdminUsuStr = ws.ObtieneParametro(Cons.TargetFiltrosAdminStro)
 
                                 If InStr(AdminUsuStr, Master.cod_usuario) Then
 
@@ -2174,7 +2174,7 @@ Partial Class Siniestros_FirmasElectronicas
             End If
 
 
-            AdminUsuStr = ws.ObtieneParametro(30)
+            AdminUsuStr = ws.ObtieneParametro(Cons.TargetFiltrosAdminStro)
 
             If InStr(AdminUsuStr, Master.cod_usuario) Then
                 'If Master.cod_usuario = "CLOPEZ" Or Master.cod_usuario = "AMEZA" Or Master.cod_usuario = "CREYES" Then
@@ -2558,9 +2558,9 @@ Partial Class Siniestros_FirmasElectronicas
             'ActualizaDataOP()
             Dim ws As New ws_Generales.GeneralesClient
 
-            server = ws.ObtieneParametro(3)
+            server = ws.ObtieneParametro(Cons.TargetReport)
             server = Replace(Replace(server, "@Reporte", "OrdenPago"), "@Formato", "PDF") & "&nro_op=@nro_op"
-            server = Replace(server, "ReportesGMX_DESA", "ReportesOPSiniestros_DESA")
+            server = Replace(server, Cons.ReposSource, Cons.ReposReport)
             server = Replace(server, "OrdenPago", "OrdenPago_stro")
 
             For Each row In grdOrdenPago.Rows
