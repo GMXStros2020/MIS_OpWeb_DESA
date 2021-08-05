@@ -4,7 +4,7 @@ Imports Mensaje
 Imports Funciones
 Imports System.IO
 
-Partial Class Siniestros_AutElectTrad
+Partial Class Siniestros_AutElectFondos
     Inherits System.Web.UI.Page
 
     Private Enum Operacion
@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectTrad
                 End If
             End If
             EstadoDetalleOrden()
-            ' Master.cod_usuario = "MNEGRETE"
+            'Master.cod_usuario = "EAMPUDIA"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -560,7 +560,7 @@ Partial Class Siniestros_AutElectTrad
                     EdoControl(Operacion.Consulta)
                     MuestraChecksAccion()
 
-
+                    OcultaCols()
                     ' DesHabilitaChecksFirma()
                     Funciones.EjecutaFuncion("fn_EstadoFilas('grdOrdenPago',true);")
                 Else
@@ -1149,6 +1149,24 @@ Partial Class Siniestros_AutElectTrad
         End Try
 
     End Sub
+    Private Sub OcultaCols()
+        Dim ws As New ws_Generales.GeneralesClient
+        Dim Usunicho1 As String
+
+        Usunicho1 = ws.ObtieneParametro(Cons.UsuariosNicho1)
+
+        If InStr(Usunicho1, Master.cod_usuario) Then
+            grdOrdenPago.Columns(9).Visible = False
+            grdOrdenPago.Columns(10).Visible = False
+
+        Else
+            grdOrdenPago.Columns(9).Visible = True
+            grdOrdenPago.Columns(10).Visible = True
+        End If
+
+    End Sub
+
+
     Private Sub MuestraChecksAccion()
         If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then  'si Administracion de siniestros
             grdOrdenPago.Columns(17).Visible = True 'no procede

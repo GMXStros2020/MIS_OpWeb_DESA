@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Pages/SiteMaster.master" AutoEventWireup="false" CodeFile="AutElectFondos.aspx.vb" Inherits="Siniestros_AutElectTrad" %>
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Pages/SiteMaster.master" AutoEventWireup="false" CodeFile="AutElectFondos.aspx.vb" Inherits="Siniestros_AutElectFondos" %>
 
 <%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 <%@ MasterType VirtualPath="~/Pages/SiteMaster.master" %>
@@ -210,7 +210,7 @@
                                     </asp:TemplateField>  
                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Supervisor">
                                         <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# Eval("NombreJefe") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
+                                            <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# If(CBool(Eval("Jefe") = "RRAMOS"), "", Eval("NombreJefe"))  %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>  
                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="SubGerente">
