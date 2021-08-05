@@ -11,6 +11,7 @@ Public Class Cons
     Public Const RutaWebServOnBase = 40
     Public Const FechaFiltroStrosTec = 41
     Public Const ConsultaExportExcel = 42
+    Public Const UsuariosNicho1 = 50
     '---------------------------------------------------------
 
     'Valores Reportes (cREP_Reportes)
