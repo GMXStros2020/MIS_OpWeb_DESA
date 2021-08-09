@@ -19,8 +19,8 @@ Partial Class Siniestros_DatosEnvioChequeABM
         If Not IsPostBack Then
             LlenaDDLEstado()
             Session("codPostalS") = 0
+            CargarGrid() 'VZAVALETA_10290_Incidencias
         End If
-
 
     End Sub
 
@@ -47,10 +47,6 @@ Partial Class Siniestros_DatosEnvioChequeABM
             Mensaje.MuestraMensaje("Exepcion", ex.Message, TipoMsg.Falla)
             Return Nothing
         End Try
-
-
-
-
     End Function
     Private Sub grabar()
         Dim objDestinatario As New DestinatariosCheque()
@@ -84,12 +80,11 @@ Partial Class Siniestros_DatosEnvioChequeABM
                 Funciones.CerrarModal("#ModConfirmar")
                 Funciones.AbrirModal("#Procesado")
             End If
+            CargarGrid() 'VZAVALETA_10290_Incidencias
         Else
-
             MuestraMensaje("Validación", "No fue posible grabar o actualizar los datos", TipoMsg.Advertencia)
         End If
     End Sub
-
 
     Protected Sub drEstado_SelectedIndexChanged(sender As Object, e As EventArgs) Handles drEstado.SelectedIndexChanged
         Dim codDpto As Integer
@@ -149,26 +144,18 @@ Partial Class Siniestros_DatosEnvioChequeABM
         Dim codPostal As String
 
         codPostal = ""
-
         cod_colonia = drColonia.SelectedValue
 
         'codPostal = Funciones.fn_EjecutaStr("usp_obtener_cat_direccion @catalogo = 'CodPostal', @cod_colonia = " & cod_colonia.ToString())
 
         codPostal = Funciones.fn_EjecutaStr("usp_obtener_cat_direccion @catalogo = 'CodPostal', @cod_colonia = " & cod_colonia.ToString() & ", @cod_dpto = " & drEstado.SelectedValue & ", @cod_ciudad = " & drCiudad.SelectedValue & ", @cod_municipio = " & drDeleg.SelectedValue
         )
-
-
-
-
-
         'For Each row As DataRow In dtResult.Rows
         '    If row("cod_colonia") = cod_colonia Then
         '        codPostal = row("cod_postal").ToString()
         '    End If
         'Next
-
         ''fjcp falta corregir
-
         txt_cod_postal.Text = codPostal
     End Sub
 
@@ -176,7 +163,6 @@ Partial Class Siniestros_DatosEnvioChequeABM
         'If Session("codPostalS") = 0 Then
         'ObtenerCP()
         'Else
-
         Dim a As String
         a = drColonia.SelectedItem.ToString()
         cargarDDLxColonia(drColonia.SelectedValue, txt_cod_postal.Text.Trim, drColonia.SelectedItem.ToString())
@@ -192,13 +178,9 @@ Partial Class Siniestros_DatosEnvioChequeABM
         Dim dt As New DataTable
 
         If cod_postal <> "" Then
-
             'Dim cod_pais As Integer
-
-
             'Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'RecuperaTodos', @cod_postal = '" & cod_postal & "'", dtResult)
             Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'RecuperaColonias', @cod_postal = '" & cod_postal & "'", dtResult)
-
 
             If dtResult.Rows.Count > 0 Then
                 dt = agregaSeleccionar(dtResult)
@@ -244,21 +226,16 @@ Partial Class Siniestros_DatosEnvioChequeABM
         btnExportar.Visible = False
         btnNuevo.Visible = False
         btnEditar.Visible = False
-
-
     End Sub
 
     Private Sub btnRegresar_Click(sender As Object, e As EventArgs) Handles btnRegresar.Click
         Response.Redirect("DatosEnvioChequeABM.aspx")
     End Sub
 
-
-
     Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click
         If hid_clave.Value <> txt_clave.Text Then
             txt_clave.Text = hid_clave.Value
         End If
-
 
         txt_clave.Enabled = False
         txt_nombre.Enabled = True
@@ -342,6 +319,18 @@ Partial Class Siniestros_DatosEnvioChequeABM
         txt_telefono.Text = ""
         chkActivo.Checked = True
     End Sub
+    'VZAVALETA_10290_Incidencias_INI
+    Private Sub CargarGrid()
+        Dim oDatos As DataSet
+        Dim oTabla As DataTable
+
+        oDatos = Funciones.ObtenerDatos("usp_cat_destinatarios_envio")
+        oTabla = oDatos.Tables(0)
+        grd.DataSource = oTabla
+        grd.DataBind()
+    End Sub
+    'VZAVALETA_10290_Incidencias_FIN
+
     Private Sub obtenerDestinatario(clave As Integer)
         Dim cod_dpto As Integer
         Dim cod_municipio As Integer
