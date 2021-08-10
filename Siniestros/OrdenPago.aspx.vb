@@ -806,6 +806,7 @@ Partial Class Siniestros_OrdenPago
                                                                                                 CDbl(oGrdOrden.Rows(iIndiceFila)("Reserva")),
                                                                                                 Environment.NewLine,
                                                                                                 CDbl(oGrdOrden.Rows(iIndiceFila)("ImportePagos"))), TipoMsg.Advertencia)
+                            limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
                         Else
                             oTxt.Text = pagoenmonedanacional
                             If oGrdOrden.Columns("Pago").ReadOnly Then
@@ -818,6 +819,7 @@ Partial Class Siniestros_OrdenPago
                         'FJCP 10290 MEJORAS Pago solicitado excede a la cobertura de la póliza
                         If validaPagoVSmontoCob(oGrdOrden.Rows(iIndiceFila)("Siniestro").ToString(), oGrdOrden.Rows(iIndiceFila)("Subsiniestro").ToString(), CDbl(oTxt.Text.Trim)) Then
                             MuestraMensaje("Alerta de Pago", "El importe de pago solicitado excede al monto de la cobertura de la póliza", TipoMsg.Advertencia)
+                            limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
                         End If
                     Else
                         oTxt.Text = IIf(IsDBNull(oGrdOrden.Rows(iIndiceFila)("Pago")), "", oGrdOrden.Rows(iIndiceFila)("Pago"))
@@ -2724,6 +2726,27 @@ Partial Class Siniestros_OrdenPago
         End Try
 
     End Sub
+
+    Public Sub limpiarCamposImporte()
+        Me.txtTotalAutorizacion.Text = "" 'importe de la poliza
+        Me.txtTotalImpuestos.Text = ""
+        Me.txtTotalRetenciones.Text = ""
+        Me.txtTotal.Text = ""  'importe de la poliza
+
+        Me.iptxtTotalAutorizacion.Text = "" 'importe de pago
+        Me.iptxtTotalImpuestos.Text = ""
+        Me.iptxtTotal.Text = ""
+        Me.iptxtTotalRetenciones.Text = ""
+        Me.iptxtTotalNacional.Text = ""
+
+        Me.txtTotalAutorizacionFac.Text = "" 'txt de facturas
+        Me.txtTotalImpuestosFac.Text = ""
+        Me.txtTotalRetencionesFac.Text = ""
+        Me.txtTotalFac.Text = ""
+        Me.txtTotalAutorizacionNacionalFac.Text = ""
+        Me.txtDescuentos.Text = "" 'txt de facturas
+    End Sub
+
     Public Sub Limpiartodo()
         Dim chkdelete As CheckBox
         For Each row In grd.Rows
@@ -2792,6 +2815,7 @@ Partial Class Siniestros_OrdenPago
         cmbTipoUsuario.Enabled = True
         chkVariasFacturas.Checked = False
         chkVariosConceptos.Checked = False
+
         'FJCP 10290 MEJORAS Nombre o Razón Social - Asegurado
         Dim dt As New DataTable
         drBeneficiario.DataSource = dt

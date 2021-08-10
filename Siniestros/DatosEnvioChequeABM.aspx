@@ -227,5 +227,46 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
+    
+<%--VZAVALETA_10290_Incidencias_ini--%>
+    <div class="row">
+        <center>
+            <asp:UpdatePanel runat="server" ID="UpdatePanel3" UpdateMode="Conditional" >
+                <ContentTemplate>          
+                        <asp:GridView ID="grd" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#003A5D" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical" Width="95%">
+                        <AlternatingRowStyle BackColor="#DCDCDC" />
+
+                            <Columns>                                                 
+                                <asp:BoundField DataField="clave" HeaderText="Clave" />
+                                <asp:BoundField DataField="txt_empresa" HeaderText="Empresa" />
+                                <asp:BoundField DataField="txt_atencion" HeaderText="Atención" />
+                                <asp:BoundField DataField="txt_dpto" HeaderText="Cod dpto." />  
+                                <asp:BoundField DataField="txt_ciudad" HeaderText="Ciudad" />
+                                <asp:BoundField DataField="txt_municipio" HeaderText="Municipio" />
+                                <asp:BoundField DataField="txt_colonia" HeaderText="Colonia" />
+                                <asp:BoundField DataField="txt_calle" HeaderText="Calle" />
+                                <asp:BoundField DataField="txt_cod_postal" HeaderText="Código postal" />
+                                <asp:BoundField DataField="txt_telefonos" HeaderText="Teléfono" />
+                                <asp:BoundField DataField="txt_activo" HeaderText="Activo" />                                    
+                            </Columns>
+
+                            <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
+                            <HeaderStyle BackColor="#003A5D" Font-Bold="True" ForeColor="White" />
+                            <PagerStyle BackColor="#999999" ForeColor="Black" HorizontalAlign="Center" />
+                            <RowStyle BackColor="#EEEEEE" ForeColor="Black" />
+                            <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
+                            <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                            <SortedAscendingHeaderStyle BackColor="#0000A9" />
+                            <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                            <SortedDescendingHeaderStyle BackColor="#000065" />
+
+                        </asp:GridView>
+                    
+                    </Grid>
+                </ContentTemplate>               
+            </asp:UpdatePanel> 
+        </center>
+    </div>
+<%--VZAVALETA_10290_Incidencias_fin--%>
 </asp:Content>
 

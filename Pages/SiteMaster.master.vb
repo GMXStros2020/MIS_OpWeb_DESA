@@ -2538,12 +2538,16 @@ Partial Class Pages_SiteMaster
             Funciones.fn_Consulta("usp_obt_pais_pago_inter", dt)
             Funciones.LlenaDDL(drPaisPI, dt, "cod_pais", "txt_desc", 0, False)
             drPaisPI.SelectedValue = -1
-
-
+            'VZAVALETA_10290_CC_INI
+            limpiarCtrlesDatosPagoInter()
+            'VZAVALETA_10290_CC_FIN
         Else
             txtCuentaBancariaT_stro.Text = hidCtaOriginal.Value
             txtCuentaBancariaT_stro_Confirmacion.Text = hidCtaOriginal.Value
-
+            'VZAVALETA_10290_CC_INI
+            txtCuentaBancariaT_stro.Enabled = True
+            txtCuentaBancariaT_stro_Confirmacion.Enabled = True
+            'VZAVALETA_10290_CC_FIN
         End If
     End Sub
     Private Sub btnPagoInternacionalAceptar_Click(sender As Object, e As EventArgs) Handles btnPagoInternacionalAceptar.Click
@@ -2621,6 +2625,25 @@ Partial Class Pages_SiteMaster
         txtSwiftPI.Enabled = IIf(dt.Rows(0)("sn_swift") = -1, True, False)
         txtTransitPI.Enabled = IIf(dt.Rows(0)("sn_transit") = -1, True, False)
         txtIbanPI.Enabled = IIf(dt.Rows(0)("sn_iban") = -1, True, False)
+
+    End Sub
+
+    Private Sub limpiarCtrlesDatosPagoInter()
+        limpiarCtrlesPagoInter()
+        txtBancoPI.Enabled = False
+        txtNroBancoPI.Enabled = False
+        txtDomBancoPI.Enabled = False
+        txtCuentaPI.Enabled = False
+        txtAbaPI.Enabled = False
+        txtSwiftPI.Enabled = False
+        txtTransitPI.Enabled = False
+        txtIbanPI.Enabled = False
+
+        limpiarCtrlesTriangulado()
+        chkTrianguladoPI.Checked = False
+        txtTrianNomBancoPI.Enabled = False
+        txtTrianCuentaPI.Enabled = False
+        txtTrianAbaPI.Enabled = False
 
     End Sub
     Private Sub limpiarCtrlesPagoInter()
