@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectTrad
                 End If
             End If
             EstadoDetalleOrden()
-            ' Master.cod_usuario = "RRAMOS"
+            ' Master.cod_usuario = "AARROYO"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -562,6 +562,16 @@ Partial Class Siniestros_AutElectTrad
                     EdoControl(Operacion.Consulta)
                     MuestraChecksAccion()
 
+                    'For Each row In dtOrdenPago.Rows
+
+                    '    Dim ddl_ConceptoRech = DirectCast(grdOrdenPago.FindControl("cmbConcepto"), DropDownList)
+
+                    '    Dim dtDll As DataTable = Nothing
+                    '    Funciones.fn_Consulta("mis_ConceptosAnulacion", dtDll)
+                    '    ddl_ConceptoRech.DataSource = dtDll
+                    '    ddl_ConceptoRech.DataBind()
+
+                    'Next
 
                     ' DesHabilitaChecksFirma()
                     Funciones.EjecutaFuncion("fn_EstadoFilas('grdOrdenPago',true);")
@@ -1658,6 +1668,19 @@ Partial Class Siniestros_AutElectTrad
     End Sub
 
     Private Sub grdOrdenPago_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdOrdenPago.RowDataBound
+        If (e.Row.RowType = DataControlRowType.DataRow) Then
+            If Not (e.Row.DataItem Is Nothing) Then
+                Dim ddl_ConceptoRech_ As DropDownList = (TryCast(e.Row.FindControl("cmbConcepto"), DropDownList))
+                Dim dtConceptos As New DataTable
+
+                Funciones.fn_Consulta("mis_ConceptosAnulacion", dtConceptos)
+                ddl_ConceptoRech_.DataValueField = "Clave"
+                ddl_ConceptoRech_.DataTextField = "Descripcion"
+                ddl_ConceptoRech_.DataSource = dtConceptos
+                ddl_ConceptoRech_.DataBind()
+
+            End If
+        End If
 
     End Sub
 End Class
