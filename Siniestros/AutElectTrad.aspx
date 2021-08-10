@@ -138,7 +138,7 @@
             Listado Ordenes de Pago
         </div>
 
-        <div class="panel-contenido ventana1" >
+        <div class="panel-contenido ventana1">
                 <asp:UpdatePanel runat="server" ID="upOrdenes" >
                   <ContentTemplate>
                       <asp:Label Text="Firmadas" class="etiqueta-control" Font-Bold="true" BackColor="LimeGreen"  runat="server" ></asp:Label>
@@ -148,10 +148,10 @@
                      <%-- <asp:Label id="lblFechaTope" Text="Fecha Tope:" class="etiqueta-control" Font-Bold="true"  BackColor="LightGray" runat="server" ></asp:Label>--%>
 
                       <asp:HiddenField runat="server" ID="hid_rechazo" Value="0" />
-                         <asp:Panel runat="server" id="pnlOrdenP" width="100%" Height="300px" ScrollBars="Vertical">
-                             <asp:GridView runat="server" ID="grdOrdenPago" Width="100%" AutoGenerateColumns="false"  ShowHeader="True"
-                                 CssClass="grid-view" HeaderStyle-CssClass="header" AlternatingRowStyle-CssClass="altern"
-                                 GridLines="None"  ShowHeaderWhenEmpty="true"
+                         <asp:Panel runat="server" id="pnlOrdenP" width="1500px" Height="300px" ScrollBars="Both" >
+                             <asp:GridView runat="server" ID="grdOrdenPago" Width="1500px" AutoGenerateColumns="false"  ShowHeader="True"
+                                 HeaderStyle-CssClass="header" AlternatingRowStyle-CssClass="altern"
+                                  CssClass="grid-view" GridLines="Vertical"  ShowHeaderWhenEmpty="true"
                                  DataKeyNames="FolioOnbase, nro_op,	FechaGeneracion,	FechaBaja,	NumeroRecibo,	NombreSucursal,	NombreSucursalPago,	CodigoAbona,	NombreModifica,	NombreUsuario,
                                                txt_cheque_a_nom,	FechaEstimadaPago,	imp_total,	Observaciones,	NombreAbona,	Direccion,	Calle,	NumeroExterior,	NumeroInterior,
                                                Colonia,	CodigoPostal,	Municipio,	Ciudad,	Departamento,	Sector,	Transferencia,	CodigoBanco,	NombreBanco,	Swift,	Aba,	NumeroCuenta,
@@ -162,7 +162,178 @@
                                                FechaFirmaJefe, FechaFirmaTesoreria ,FechaFirmaSubdirector ,FechaFirmaDirector ,FechaFirmaDirectorGeneral,FechaFirmaSubgerente, NivelAutorizacion, Preautorizada,Rechazada">
 
                                  <Columns>
-                                      <asp:TemplateField HeaderText="OP" ItemStyle-Width="60px">
+
+                                    <asp:TemplateField>
+                                            <HeaderTemplate><center>OP</center></HeaderTemplate>
+                                            <ItemTemplate>
+                                                        <asp:imagebutton ID="btn_VerPDF" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerOP" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
+                                            </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                    </asp:TemplateField>
+
+                                      <asp:TemplateField>
+                                           <HeaderTemplate><center>EdoCta</center></HeaderTemplate>
+                                            <ItemTemplate>
+                                                    <asp:imagebutton ID="btn_VerEdoCta" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerEdoCta" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
+                                            </ItemTemplate>
+                                          <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                    </asp:TemplateField>
+                                      <asp:TemplateField>
+                                          <HeaderTemplate><center>Docs</center></HeaderTemplate>
+                                            <ItemTemplate>
+                                                    <asp:imagebutton ID="btn_VerDocs" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerDocs" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField>
+                                          <HeaderTemplate><center>Nro.OP</center></HeaderTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label ReadOnly="true" ID="nro_op_" runat="server" Text='<%# Eval("nro_op") %>'></asp:Label>
+                                            </ItemTemplate>
+                                          <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
+                                     </asp:TemplateField>
+                                     <asp:TemplateField>
+                                           <HeaderTemplate><center>Siniestro</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" runat="server" Text='<%# Eval("NumeroSiniestro") %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="60px"></ItemStyle>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField>
+                                          <HeaderTemplate><center>Beneficiario</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="True" runat="server" Text='<%# Eval("txt_cheque_a_nom") %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Left" Width="150px"></ItemStyle>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField>
+                                         <HeaderTemplate><center>Monto</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" runat="server" Text='<%# String.Format("{0:#,#0.00}", CDbl(Eval("imp_total")))  %>' CssClass="text-left"></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Right" Width="60px"></ItemStyle>
+                                    </asp:TemplateField>       
+                                     <asp:TemplateField>
+                                         <HeaderTemplate><center>Mon</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" runat="server" Text='<%# Eval("Moneda") %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="5px"></ItemStyle>
+                                    </asp:TemplateField>  
+
+                                      <asp:TemplateField>
+                                         <HeaderTemplate><center>Solicitante</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" ID="Solicitante_" runat="server" Text='<%# Eval("NombreSolicitante") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Solicitante")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Solicitante")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSolicitante")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
+                                    </asp:TemplateField>  
+                                     <asp:TemplateField>
+                                         <HeaderTemplate><center>Supervisor</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# If(CBool(Eval("Jefe") = "RRAMOS"), "", Eval("NombreJefe")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="50"></ItemStyle>
+                                    </asp:TemplateField>  
+                                    <asp:TemplateField>
+                                        <HeaderTemplate><center>SubGerente</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" ID="Subgerente_" runat="server" Text='<%# Eval("NombreSubgerente") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubgerente")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 2  %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
+                                    </asp:TemplateField>   
+                                     <asp:TemplateField>
+                                         <HeaderTemplate><center>SubDirector</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" ID="Subdirector_" runat="server" Text='<%# Eval("NombreSubdirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubdirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 3  %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
+                                    </asp:TemplateField> 
+ 
+                                     <asp:TemplateField>
+                                         <HeaderTemplate><center>Director</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" ID="Director_" runat="server" Text='<%# Eval("NombreDirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 4  %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
+                                    </asp:TemplateField>     
+                                     <asp:TemplateField>
+                                         <HeaderTemplate><center>DirectorGeneral</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" ID="DirectorGeneral_" runat="server" Text='<%# Eval("NombreDirectorGeneral") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("DirectorGeneral")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("DirectorGeneral")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirectorGeneral")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>' Width="100px"  visible='<%# Eval("NivelAutorizacion") = 5  %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
+                                    </asp:TemplateField>  
+
+                                    <asp:TemplateField>
+                                        <HeaderTemplate><center>Firmar</center></HeaderTemplate>
+                                     <ItemTemplate>
+                                            <asp:RadioButton runat="server" TextAlign="Right"  ID="chkFirmar" GroupName="chkAcciones" Checked='false'/>
+                                     </ItemTemplate> 
+                                         <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <HeaderTemplate><center>Rechazar</center></HeaderTemplate>
+                                     <ItemTemplate>
+                                            <asp:RadioButton runat="server" TextAlign="Right"  ID="chkSolRechazo" GroupName="chkAcciones" Checked='false'/>
+                                     </ItemTemplate> 
+                                        <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                    </asp:TemplateField>
+                                    
+                                    <asp:TemplateField>
+                                        <HeaderTemplate><center>MotivoRechazo</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                             <asp:DropDownList ID="cmbConcepto" runat="server" Width="70px">
+                                           
+                                        </asp:DropDownList>
+                                     <%--    <asp:DropDownList ID="cmbConcepto" runat="server" Width="70px">
+                                            <asp:ListItem Value="0" Text="--Seleccione--"></asp:ListItem>
+                                            <asp:ListItem Value="1" Text="Importe incorrecto"></asp:ListItem>
+                                            <asp:ListItem Value="2" Text="Error en la cuenta bancaria"></asp:ListItem>
+                                            <asp:ListItem Value="3" Text="Error en el concepto de pago"></asp:ListItem> 
+                                            <asp:ListItem Value="4" Text="Error en la forma de pago"></asp:ListItem>
+                                            <asp:ListItem Value="5" Text="Error en la moneda de pago"></asp:ListItem>
+                                            <asp:ListItem Value="6" Text="Beneficiario incorrecto"></asp:ListItem>
+                                            <asp:ListItem Value="7" Text="Error en el tipo de pago"></asp:ListItem>
+                                            <asp:ListItem Value="8" Text="Error en el número del Siniestro o Subsiniestro"></asp:ListItem>
+                                            <asp:ListItem Value="9" Text="Siniestro improcedente de pago"></asp:ListItem>
+                                            <asp:ListItem Value="10" Text="No autorizada en tiempo (vencida)"></asp:ListItem>
+                                            <%--<asp:ListItem Value="11" Text="Otros (especificar)"></asp:ListItem>--%>
+                                   
+                                             </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                   </asp:TemplateField>
+                                    
+                                      <asp:TemplateField>
+                                          <HeaderTemplate><center>NoProcede</center></HeaderTemplate>
+                                         <ItemTemplate>
+                                                <asp:CheckBox runat="server" TextAlign="Right"  ID="chkNoProc" Checked='false' Visible='<%# If(CBool(Eval("Rechazada")), False, True) %>'/>
+                                         </ItemTemplate> 
+                                           <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                    </asp:TemplateField>
+                                      <asp:TemplateField>
+                                          <HeaderTemplate><center>2daRev</center></HeaderTemplate>
+                                         <ItemTemplate>
+                                                <asp:RadioButton runat="server" TextAlign="Right"  ID="chkSegRev" GroupName="chkAcciones" Checked='false' Visible='<%#If(Eval("Solicitante") = Master.cod_usuario, False, True) %>'/>
+                                         </ItemTemplate> 
+                                           <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                        </asp:TemplateField> 
+                                       
+                                     <asp:TemplateField>
+                                         <HeaderTemplate><center>Motiv.NoProc</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:TextBox runat="server" ID="txtMotivoNoProc" Visible='<%# If(CBool(Eval("Rechazada")), False, True) %>'></asp:TextBox>
+                                        </ItemTemplate>
+                                          <ItemStyle HorizontalAlign="Center" Width="60px"></ItemStyle>
+                                    </asp:TemplateField>  
+                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Folio" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" runat="server" ID="folioonbase" Text='<%# Eval("FolioOnbase") %>'  Width="40px" Visible="false" ></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>  
+
+
+                                   <%--   <asp:TemplateField HeaderText="OP" ItemStyle-Width="60px" HeaderStyle-Width>
                                             <ItemTemplate>
                                                     <asp:imagebutton ID="btn_VerPDF" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerOP" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
                                             </ItemTemplate>
@@ -182,74 +353,74 @@
                                                 <asp:Label ReadOnly="true" ID="nro_op_" runat="server" Text='<%# Eval("nro_op") %>'  Width="50px"></asp:Label>
                                             </ItemTemplate>
                                      </asp:TemplateField>
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Siniestro">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Siniestro" ItemStyle-Width="60px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" runat="server" Text='<%# Eval("NumeroSiniestro") %>'  Width="80px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Beneficiario">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Beneficiario" ItemStyle-Width="120px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="True" runat="server" Text='<%# Eval("txt_cheque_a_nom") %>' Width="240px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Monto">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Monto" ItemStyle-Width="60px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" runat="server" Text='<%# String.Format("{0:#,#0.00}", CDbl(Eval("imp_total")))  %>' CssClass="text-left" Width="80px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>       
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="Moneda">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="Moneda" ItemStyle-Width="30px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" runat="server" Text='<%# Eval("Moneda") %>'  Width="25px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>  
 
-                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Solicitante">
+                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Solicitante" ItemStyle-Width="100px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" ID="Solicitante_" runat="server" Text='<%# Eval("NombreSolicitante") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Solicitante")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Solicitante")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSolicitante")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>  
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Supervisor">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Supervisor" ItemStyle-Width="100px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# If(CBool(Eval("Jefe") = "RRAMOS"), "", Eval("NombreJefe")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>  
-                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="SubGerente">
+                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="SubGerente" ItemStyle-Width="100px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" ID="Subgerente_" runat="server" Text='<%# Eval("NombreSubgerente") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubgerente")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 2  %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>   
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="SubDirector">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="SubDirector" ItemStyle-Width="100px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" ID="Subdirector_" runat="server" Text='<%# Eval("NombreSubdirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubdirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 3  %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField> 
  
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Director">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Director" ItemStyle-Width="100px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" ID="Director_" runat="server" Text='<%# Eval("NombreDirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 4  %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>     
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="DirectorGeneral">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="DirectorGeneral" ItemStyle-Width="100px">
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" ID="DirectorGeneral_" runat="server" Text='<%# Eval("NombreDirectorGeneral") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("DirectorGeneral")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("DirectorGeneral")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirectorGeneral")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>' Width="100px"  visible='<%# Eval("NivelAutorizacion") = 5  %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>  
 
-                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="Firmar">
+                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="Firmar" ItemStyle-Width="20px">
                                      <ItemTemplate>
                                             <asp:RadioButton runat="server" TextAlign="Right"  ID="chkFirmar" GroupName="chkAcciones" Checked='false'/>
                                      </ItemTemplate> 
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="Rechazar">
+                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="Rechazar" ItemStyle-Width="20px">
                                      <ItemTemplate>
                                             <asp:RadioButton runat="server" TextAlign="Right"  ID="chkSolRechazo" GroupName="chkAcciones" Checked='false'/>
                                      </ItemTemplate> 
                                     </asp:TemplateField>
                                     
-                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="MotivoRechazo" ItemStyle-Width="80%">
+                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="MotivoRechazo" ItemStyle-Width="80px">
                                         <ItemTemplate>
                                          <asp:DropDownList ID="cmbConcepto" runat="server">
-                                              <asp:ListItem Value="0" Text="--Seleccione--"></asp:ListItem>
+                                            <asp:ListItem Value="0" Text="--Seleccione--"></asp:ListItem>
                                             <asp:ListItem Value="1" Text="Importe incorrecto"></asp:ListItem>
                                             <asp:ListItem Value="2" Text="Error en la cuenta bancaria"></asp:ListItem>
                                             <asp:ListItem Value="3" Text="Error en el concepto de pago"></asp:ListItem> 
@@ -261,22 +432,22 @@
                                             <asp:ListItem Value="9" Text="Siniestro improcedente de pago"></asp:ListItem>
                                             <asp:ListItem Value="10" Text="No autorizada en tiempo (vencida)"></asp:ListItem>
                                             <%--<asp:ListItem Value="11" Text="Otros (especificar)"></asp:ListItem>--%>
-                                        </asp:DropDownList>
+                                     <%--   </asp:DropDownList>
                                     </ItemTemplate>
                                    </asp:TemplateField>
                                     
-                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="NoProcede">
+                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderText="NoProcede" ItemStyle-Width="20px">
                                          <ItemTemplate>
                                                 <asp:CheckBox runat="server" TextAlign="Right"  ID="chkNoProc" Checked='false' Visible='<%# If(CBool(Eval("Rechazada")), False, True) %>'/>
                                          </ItemTemplate> 
                                     </asp:TemplateField>
-                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Right" HeaderText="2daRev">
+                                      <asp:TemplateField HeaderStyle-HorizontalAlign="Right" HeaderText="2daRev" ItemStyle-Width="20px">
                                          <ItemTemplate>
                                                 <asp:RadioButton runat="server" TextAlign="Right"  ID="chkSegRev" GroupName="chkAcciones" Checked='false' Visible='<%#If(Eval("Solicitante") = Master.cod_usuario, False, True) %>'/>
                                          </ItemTemplate> 
                                         </asp:TemplateField> 
                                        
-                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Motiv.NoProc">
+                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Motiv.NoProc" ItemStyle-Width="80px">
                                         <ItemTemplate>
                                             <asp:TextBox runat="server" ID="txtMotivoNoProc" Width="80px" Visible='<%# If(CBool(Eval("Rechazada")), False, True) %>'></asp:TextBox>
                                         </ItemTemplate>
@@ -285,7 +456,7 @@
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="true" runat="server" ID="folioonbase" Text='<%# Eval("FolioOnbase") %>'  Width="40px" Visible="false" ></asp:Label>
                                         </ItemTemplate>
-                                    </asp:TemplateField>  
+                                    </asp:TemplateField>  --%>
                                  </Columns>
                             </asp:GridView>
                         </asp:Panel>

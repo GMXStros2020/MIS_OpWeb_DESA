@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectFondos
                 End If
             End If
             EstadoDetalleOrden()
-            'Master.cod_usuario = "EAMPUDIA"
+            ' Master.cod_usuario = "MOSANCHEZ"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -1673,6 +1673,22 @@ Partial Class Siniestros_AutElectFondos
 
     Private Sub Siniestros_AutElectTrad_Error(sender As Object, e As EventArgs) Handles Me.[Error]
 
+    End Sub
+
+    Private Sub grdOrdenPago_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdOrdenPago.RowDataBound
+        If (e.Row.RowType = DataControlRowType.DataRow) Then
+            If Not (e.Row.DataItem Is Nothing) Then
+                Dim ddl_ConceptoRech_ As DropDownList = (TryCast(e.Row.FindControl("cmbConcepto"), DropDownList))
+                Dim dtConceptos As New DataTable
+
+                Funciones.fn_Consulta("mis_ConceptosAnulacion", dtConceptos)
+                ddl_ConceptoRech_.DataValueField = "Clave"
+                ddl_ConceptoRech_.DataTextField = "Descripcion"
+                ddl_ConceptoRech_.DataSource = dtConceptos
+                ddl_ConceptoRech_.DataBind()
+
+            End If
+        End If
     End Sub
 End Class
 
