@@ -75,6 +75,15 @@
                         </div>
 
                     </div>
+
+                     <div class="clear padding5"></div>
+
+                     <div class="row">
+                        <div class="col-md-6">
+                             <asp:label runat="server" class="col-md-1 etiqueta-control" Width="20%">Siniestro</asp:label>
+                            <asp:textbox runat="server" ID="txtSiniestro" CssClass="estandar-control" Width="80%"></asp:textbox>
+                        </div>
+                    </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
 
@@ -148,7 +157,22 @@
                      <%-- <asp:Label id="lblFechaTope" Text="Fecha Tope:" class="etiqueta-control" Font-Bold="true"  BackColor="LightGray" runat="server" ></asp:Label>--%>
 
                       <asp:HiddenField runat="server" ID="hid_rechazo" Value="0" />
+                      <%-- <div style =" background-color:#003A5D;  
+                                height:30px;width:600px; margin:0;padding:0">
+                                <table cellspacing="0" cellpadding = "0" rules="all" border="1" id="tblHeader" 
+                                 style="font-family:Arial;font-size:10px;width:1500px;color: white;
+                                 border-collapse:collapse;height:4px;">
+                                    <tr>
+                                       <td style ="width:5px;text-align:center">OP</td>
+                                       <td style ="width:5px;text-align:center">EdoCta</td>
+                                       <td style ="width:5px;text-align:center">Docs</td>
+                                       <td style ="width:10px;text-align:center">Nro.OP</td>
+                                    </tr>
+                                </table>
+                             </div>--%>
                          <asp:Panel runat="server" id="pnlOrdenP" width="1500px" Height="300px" ScrollBars="Both" >
+
+
                              <asp:GridView runat="server" ID="grdOrdenPago" Width="1500px" AutoGenerateColumns="false"  ShowHeader="True"
                                  HeaderStyle-CssClass="header" AlternatingRowStyle-CssClass="altern"
                                   CssClass="grid-view" GridLines="Vertical"  ShowHeaderWhenEmpty="true"
@@ -283,7 +307,7 @@
                                     <asp:TemplateField>
                                         <HeaderTemplate><center>MotivoRechazo</center></HeaderTemplate>
                                         <ItemTemplate>
-                                             <asp:DropDownList ID="cmbConcepto" runat="server" Width="70px">
+                                             <asp:DropDownList ID="cmbConcepto" runat="server" Width="75px">
                                            
                                         </asp:DropDownList>
                                      <%--    <asp:DropDownList ID="cmbConcepto" runat="server" Width="70px">
