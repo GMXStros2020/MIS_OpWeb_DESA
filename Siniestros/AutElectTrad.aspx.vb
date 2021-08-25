@@ -1,4 +1,4 @@
-﻿Imports System.Data
+Imports System.Data
 Imports System.Data.SqlClient
 Imports Mensaje
 Imports Funciones
@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectTrad
                 End If
             End If
             EstadoDetalleOrden()
-            ' Master.cod_usuario = "RRAMOS"
+            ' Master.cod_usuario = "MNEGRETE"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -236,7 +236,7 @@ Partial Class Siniestros_AutElectTrad
 
             If IsDate(txtFechaPagoDesde.Text) And IsDate(txtFechaPagoHasta.Text) Then
                 If CDate(txtFechaPagoDesde.Text) <= CDate(txtFechaPagoHasta.Text) Then
-                    sFiltroFechaPago = String.Format(" AND CONVERT(VARCHAR(10),mop.fec_pago,112) >= ''{0}'' AND CONVERT(VARCHAR(10),mop.fec_pago,112) <= ''{1}'' ", CDate(txtFechaPagoDesde.Text).ToString("yyyyMMdd"), CDate(txtFechaPagoHasta.Text).ToString("yyyyMMdd"))
+                    sFiltroFechaPago = String.Format(" AND CONVERT(VARCHAR(10),mop.fec_estim_pago,112) >= ''{0}'' AND CONVERT(VARCHAR(10),mop.fec_estim_pago,112) <= ''{1}'' ", CDate(txtFechaPagoDesde.Text).ToString("yyyyMMdd"), CDate(txtFechaPagoHasta.Text).ToString("yyyyMMdd"))
                 End If
             End If
 
@@ -258,20 +258,20 @@ Partial Class Siniestros_AutElectTrad
                     End If
                 End If
                 If IsDate(txtFechaPagoDesde.Text) And IsDate(txtFechaPagoHasta.Text) Then
-                        If CDate(txtFechaPagoDesde.Text.Trim) < FechaStop Then
-                            Mensaje.MuestraMensaje("Validacion filtro de Fecha", "La fecha de pago elegida, no puede ser menor a: " & FechaTope, TipoMsg.Advertencia)
-                            Exit Function
-                        End If
+                    If CDate(txtFechaPagoDesde.Text.Trim) < FechaStop Then
+                        Mensaje.MuestraMensaje("Validacion filtro de Fecha", "La fecha de pago elegida, no puede ser menor a: " & FechaTope, TipoMsg.Advertencia)
+                        Exit Function
                     End If
                 End If
-                'If IsDate(fecFilter_De.Text) And IsDate(fecFilter_Hasta.Text) Then
-                '    If CDate(fecFilter_De.Text) <= CDate(fecFilter_Hasta.Text) Then
-                '        sFiltroFecDe = CDate(fecFilter_De.Text).ToString("yyyy-MM-dd")
-                '        sFiltroFecHasta = CDate(fecFilter_Hasta.Text).ToString("yyyy-MM-dd")
-                '    End If
-                'End If
+            End If
+            'If IsDate(fecFilter_De.Text) And IsDate(fecFilter_Hasta.Text) Then
+            '    If CDate(fecFilter_De.Text) <= CDate(fecFilter_Hasta.Text) Then
+            '        sFiltroFecDe = CDate(fecFilter_De.Text).ToString("yyyy-MM-dd")
+            '        sFiltroFecHasta = CDate(fecFilter_Hasta.Text).ToString("yyyy-MM-dd")
+            '    End If
+            'End If
 
-                If IsNumeric(txtMontoDesde.Text.Trim) Then
+            If IsNumeric(txtMontoDesde.Text.Trim) Then
                 sFiltroMonto = String.Format(" AND mop.imp_total >= {0}", txtMontoDesde.Text.Trim)
             End If
 
@@ -294,7 +294,7 @@ Partial Class Siniestros_AutElectTrad
             Dim valorMoneda As String = ""
             If cmbMoneda.SelectedItem.Text <> ". . ." Then valorMoneda = cmbMoneda.SelectedItem.Text
 
-            'If txtSiniestro.Text <> "" Then sFiltroStro = txtSiniestro.Text
+            If txtSiniestro.Text <> "" Then sFiltroStro = txtSiniestro.Text
             If txtAsegurado.Text <> "" Then sFiltroBenef = txtAsegurado.Text
 
 
@@ -562,6 +562,16 @@ Partial Class Siniestros_AutElectTrad
                     EdoControl(Operacion.Consulta)
                     MuestraChecksAccion()
 
+                    'For Each row In dtOrdenPago.Rows
+
+                    '    Dim ddl_ConceptoRech = DirectCast(grdOrdenPago.FindControl("cmbConcepto"), DropDownList)
+
+                    '    Dim dtDll As DataTable = Nothing
+                    '    Funciones.fn_Consulta("mis_ConceptosAnulacion", dtDll)
+                    '    ddl_ConceptoRech.DataSource = dtDll
+                    '    ddl_ConceptoRech.DataBind()
+
+                    'Next
 
                     ' DesHabilitaChecksFirma()
                     Funciones.EjecutaFuncion("fn_EstadoFilas('grdOrdenPago',true);")
@@ -1186,7 +1196,7 @@ Partial Class Siniestros_AutElectTrad
             End If
 
             grdOrdenPago.Columns(19).Visible = False 'motivo
-            End If
+        End If
 
     End Sub
     Private Sub DesHabilitaChecksFirma()
@@ -1658,7 +1668,28 @@ Partial Class Siniestros_AutElectTrad
     End Sub
 
     Private Sub grdOrdenPago_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdOrdenPago.RowDataBound
+        If (e.Row.RowType = DataControlRowType.DataRow) Then
+            If Not (e.Row.DataItem Is Nothing) Then
+                Dim ddl_ConceptoRech_ As DropDownList = (TryCast(e.Row.FindControl("cmbConcepto"), DropDownList))
+                Dim dtConceptos As New DataTable
+
+                Funciones.fn_Consulta("mis_ConceptosAnulacion", dtConceptos)
+                ddl_ConceptoRech_.DataValueField = "Clave"
+                ddl_ConceptoRech_.DataTextField = "Descripcion"
+                ddl_ConceptoRech_.DataSource = dtConceptos
+                ddl_ConceptoRech_.DataBind()
+
+                Dim opcion As ListItem
+                opcion = New ListItem("--Seleccione--", "0")
+                ddl_ConceptoRech_.Items.Add(opcion)
+
+                Dim ultimoPts = ddl_ConceptoRech_.Items.Count
+                ddl_ConceptoRech_.SelectedIndex = ultimoPts - 1
+            End If
+        End If
 
     End Sub
 End Class
+
+
 

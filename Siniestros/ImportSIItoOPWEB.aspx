@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Pages/SiteMaster.master" AutoEventWireup="false" CodeFile="ImportSIItoOPWEB.aspx.vb" Inherits="ImportSIItoOPWEB" %>
+<%@ Page Title="" Language="VB" MasterPageFile="~/Pages/SiteMaster.master" AutoEventWireup="false" CodeFile="ImportSIItoOPWEB.aspx.vb" Inherits="ImportSIItoOPWEB" %>
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="cph_principal" runat="Server">
@@ -66,8 +66,8 @@
                             <asp:TextBox runat="server" ID="txt_NoPago" CssClass="col-md-3 estandar-control" Width="75%"></asp:TextBox>
                             <div class="clear padding5"></div>
 
-                            <asp:Label runat="server" class="col-md-1 etiqueta-control " Width="25%">Analista Fondos</asp:Label>
-                            <asp:DropDownList runat="server" ID="ddlAnalista" CssClass="col-md-3 estandar-control" Width="75%" Enabled="false"></asp:DropDownList>
+                            <asp:Label runat="server" id="lblanalista" class="col-md-1 etiqueta-control " Width="25%" Visible ="false" >Analista Fondos</asp:Label>
+                            <asp:DropDownList runat="server" ID="ddlAnalista" CssClass="col-md-3 estandar-control" Width="75%" Visible="false"></asp:DropDownList>
 
 
                          </div>
