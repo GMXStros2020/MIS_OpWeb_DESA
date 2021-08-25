@@ -1,4 +1,4 @@
-﻿Imports System.Data
+Imports System.Data
 Imports System.Data.SqlClient
 Imports Mensaje
 Imports Funciones
@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectFondos
                 End If
             End If
             EstadoDetalleOrden()
-            ' Master.cod_usuario = "MOSANCHEZ"
+            ' Master.cod_usuario = "CLOPEZ"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -235,7 +235,7 @@ Partial Class Siniestros_AutElectFondos
 
             If IsDate(txtFechaPagoDesde.Text) And IsDate(txtFechaPagoHasta.Text) Then
                 If CDate(txtFechaPagoDesde.Text) <= CDate(txtFechaPagoHasta.Text) Then
-                    sFiltroFechaPago = String.Format(" AND CONVERT(VARCHAR(10),mop.fec_pago,112) >= ''{0}'' AND CONVERT(VARCHAR(10),mop.fec_pago,112) <= ''{1}'' ", CDate(txtFechaPagoDesde.Text).ToString("yyyyMMdd"), CDate(txtFechaPagoHasta.Text).ToString("yyyyMMdd"))
+                    sFiltroFechaPago = String.Format(" AND CONVERT(VARCHAR(10),mop.fec_estim_pago,112) >= ''{0}'' AND CONVERT(VARCHAR(10),mop.fec_estim_pago,112) <= ''{1}'' ", CDate(txtFechaPagoDesde.Text).ToString("yyyyMMdd"), CDate(txtFechaPagoHasta.Text).ToString("yyyyMMdd"))
                 End If
             End If
 
@@ -293,7 +293,7 @@ Partial Class Siniestros_AutElectFondos
             Dim valorMoneda As String = ""
             If cmbMoneda.SelectedItem.Text <> ". . ." Then valorMoneda = cmbMoneda.SelectedItem.Text
 
-            'If txtSiniestro.Text <> "" Then sFiltroStro = txtSiniestro.Text
+            If txtSiniestro.Text <> "" Then sFiltroStro = txtSiniestro.Text
             If txtAsegurado.Text <> "" Then sFiltroBenef = txtAsegurado.Text
 
 
@@ -1687,8 +1687,17 @@ Partial Class Siniestros_AutElectFondos
                 ddl_ConceptoRech_.DataSource = dtConceptos
                 ddl_ConceptoRech_.DataBind()
 
+                Dim opcion As ListItem
+                opcion = New ListItem("--Seleccione--", "0")
+                ddl_ConceptoRech_.Items.Add(opcion)
+
+                Dim ultimoPts = ddl_ConceptoRech_.Items.Count
+                ddl_ConceptoRech_.SelectedIndex = ultimoPts - 1
+
             End If
         End If
     End Sub
 End Class
+
+
 

@@ -1,4 +1,4 @@
-﻿Imports Mensaje
+Imports Mensaje
 Imports System.Data
 Imports Funciones
 
@@ -50,11 +50,11 @@ Partial Class ImportSIItoOPWEB
 
     Private Sub ddl_Modulo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddl_Modulo.SelectedIndexChanged
         If ddl_Modulo.SelectedItem.Value = 3 Then
-            ddlAnalista.Enabled = True
-
+            ddlAnalista.Visible = True
+            lblanalista.Visible = True
         Else
-            ddlAnalista.Enabled = False
-
+            ddlAnalista.Visible = False
+            lblanalista.Visible = False
         End If
     End Sub
 
@@ -111,7 +111,8 @@ Partial Class ImportSIItoOPWEB
         txt_NoPago.Text = ""
         ddl_Modulo.SelectedIndex = 0
         ddlAnalista.SelectedIndex = 0
-        ddlAnalista.Enabled = False
+        ddlAnalista.Visible = False
+        lblanalista.Visible = False
 
     End Sub
 End Class

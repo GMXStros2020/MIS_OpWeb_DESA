@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Pages/SiteMaster.master" AutoEventWireup="false" CodeFile="AutElectFondos.aspx.vb" Inherits="Siniestros_AutElectFondos" %>
+<%@ Page Title="" Language="VB" MasterPageFile="~/Pages/SiteMaster.master" AutoEventWireup="false" CodeFile="AutElectFondos.aspx.vb" Inherits="Siniestros_AutElectFondos" %>
 
 <%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 <%@ MasterType VirtualPath="~/Pages/SiteMaster.master" %>
@@ -75,6 +75,16 @@
                         </div>
 
                     </div>
+
+                     <div class="clear padding5"></div>
+
+                     <div class="row">
+                        <div class="col-md-6">
+                             <asp:label runat="server" class="col-md-1 etiqueta-control" Width="20%">Siniestro</asp:label>
+                            <asp:textbox runat="server" ID="txtSiniestro" CssClass="estandar-control" Width="80%" ></asp:textbox>
+                        </div>
+                    </div>
+
                 </ContentTemplate>
             </asp:UpdatePanel>
 
