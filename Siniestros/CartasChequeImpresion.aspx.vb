@@ -201,12 +201,20 @@ Partial Class Siniestros_CartasChequeImpresion
         'FJCP 10267 - CC - OPs Web_Cartas_Cheque Ini
         Dim errorFolios As Boolean
         Dim foliosErrorFecha As String
+        Dim foliosErrorFechaEntrega As String 'FCRUZ_GMX-10290_INCIDENCIAS
         Dim foliosErrorMotivo As String
         'FJCP 10267 - CC - OPs Web_Cartas_Cheque Fin
+
+        'FCRUZ_GMX-10290_INCIDENCIAS INI
+        Dim fechaCreacion As Date
+        Dim fechaEntrega As Date
+        'FCRUZ_GMX-10290_INCIDENCIAS FIN
+
         dtSelec = obtenerSeleccionados()
         'FJCP 10267 - CC - OPs Web_Cartas_Cheque Ini
         foliosErrorFecha = ""
         foliosErrorMotivo = ""
+        foliosErrorFechaEntrega = "" 'FCRUZ_GMX-10290_INCIDENCIAS
         errorFolios = False
         msgError = ""
 
@@ -224,6 +232,15 @@ Partial Class Siniestros_CartasChequeImpresion
                 If row("ACCION").ToString() = 4 Then
                     If row("FECHA DE ENTREGA O RECHAZO").ToString() = "" Then
                         foliosErrorFecha = foliosErrorFecha & row("FOLIO CARTA").ToString() & ", "
+                        'FCRUZ_GMX-10290_INCIDENCIAS INI
+                    Else
+                        fechaCreacion = row("FECHA GENERADA").ToString()
+                        fechaEntrega = row("FECHA DE ENTREGA O RECHAZO").ToString()
+
+                        If fechaCreacion > fechaEntrega Then
+                            foliosErrorFechaEntrega = foliosErrorFechaEntrega & row("FOLIO CARTA").ToString() & ", "
+                        End If
+                        'FCRUZ_GMX-10290_INCIDENCIAS FIN
                     End If
                 End If
             Next
@@ -237,6 +254,13 @@ Partial Class Siniestros_CartasChequeImpresion
                 msgError = msgError + "Falta capturar motivo de rechazo para folio(s): " & foliosErrorMotivo
                 errorFolios = True
             End If
+
+            'FCRUZ_GMX-10290_INCIDENCIAS INI
+            If foliosErrorFechaEntrega <> "" Then
+                msgError = "La fecha de entrega no puede ser menor a la fecha de generación de la carta. Corregir fecha en folio(s): " + foliosErrorFechaEntrega + "<br>"
+                errorFolios = True
+            End If
+            'FCRUZ_GMX-10290_INCIDENCIAS FIN
 
             If errorFolios Then
                 MuestraMensaje("Fecha de Entrega", msgError, TipoMsg.Advertencia)

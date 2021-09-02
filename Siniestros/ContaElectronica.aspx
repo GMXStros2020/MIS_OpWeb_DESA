@@ -29,6 +29,11 @@
                         <div class="col-md-2">
                             <asp:TextBox runat="server" ID="txtFecGeneraA" CssClass="estandar-control Fecha Centro" Width="110px" ></asp:TextBox>
                         </div>
+                      <%--VZAVALETA_GMX-10290_INCIDENCIAS--%>
+                        <div class="col-md-4" style="text-align: center">
+                            <asp:CheckBox runat="server" ID="chk_Relacion" CssClass="etiqueta-control" AutoPostBack="true" Text="&nbsp&nbspRelacionado" />
+                        </div>
+                       <%--VZAVALETA_GMX-10290_INCIDENCIAS--%>
                        <br />
                        <br />
                        <div style="width:100%; text-align:right; border-top-style:inset; border-width:1px; border-color:#003A5D">

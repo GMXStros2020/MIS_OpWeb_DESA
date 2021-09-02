@@ -3803,7 +3803,23 @@ Partial Class Siniestros_OrdenPago
             oParametros.Add("cod_usuario", Master.cod_usuario)
 
             Funciones.ObtenerDatos("usp_bloqueoFolioOnbase_stro", oParametros)
+            'VZAVALETA_GMX-10290_INCIDENCIAS
+            oParametros = New Dictionary(Of String, Object)
 
+            oParametros.Add("Accion", 4)
+            oParametros.Add("folioOnbase", Me.txtOnBase.Text.Trim)
+            oParametros.Add("cod_usuario", Master.cod_usuario)
+
+            oDatos = Funciones.ObtenerDatos("usp_bloqueoFolioOnbase_stro", oParametros)
+
+            If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
+                If oDatos.Tables(0).Rows(0).Item("Folio_Onbase").ToString().Length > 0 Then
+                    Mensaje.MuestraMensaje("Folio OnBase Bloqueado", "El Folio: " + Me.txtOnBase.Text.Trim + " está siendo utilizado en el proceso automático".ToString(), TipoMsg.Falla)
+                    Limpiartodo()
+                    Return True
+                End If
+            End If
+            'VZAVALETA_GMX-10290_INCIDENCIAS
             'oDatos = New DataSet
             oParametros = New Dictionary(Of String, Object)
 
@@ -3820,6 +3836,7 @@ Partial Class Siniestros_OrdenPago
                     Return True
                 End If
             End If
+
             Return False
         Catch ex As Exception
             Return False
