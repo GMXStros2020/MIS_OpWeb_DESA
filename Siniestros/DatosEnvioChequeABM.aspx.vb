@@ -174,25 +174,45 @@ Partial Class Siniestros_DatosEnvioChequeABM
 
     Protected Sub txt_cod_postal_TextChanged(sender As Object, e As EventArgs) Handles txt_cod_postal.TextChanged
         Dim cod_postal As String
+        Dim cod_dpto As Integer
+        Dim cod_municipio As Integer
+        Dim cod_ciudad As Integer
+        Dim cod_colonia As Integer
+
         cod_postal = Trim(txt_cod_postal.Text)
         Dim dt As New DataTable
 
         If cod_postal <> "" Then
             'Dim cod_pais As Integer
             'Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'RecuperaTodos', @cod_postal = '" & cod_postal & "'", dtResult)
+            'Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'RecuperaColonias', @cod_postal = '" & cod_postal & "'", dtResult)
             Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'RecuperaColonias', @cod_postal = '" & cod_postal & "'", dtResult)
 
             If dtResult.Rows.Count > 0 Then
-                dt = agregaSeleccionar(dtResult)
-                Funciones.LlenaDDL(drColonia, dt, "cod_colonia", "txt_desc", 0, False)
+                cod_dpto = dtResult.Rows(0)("cod_dpto")
+                cod_municipio = dtResult.Rows(0)("cod_municipio")
+                cod_ciudad = dtResult.Rows(0)("cod_ciudad")
+                cod_colonia = dtResult.Rows(0)("cod_colonia")
 
-                'Funciones.LlenaDDL(drColonia, dtResult, "cod_colonia", "txt_desc", 0, False)
+                drEstado.SelectedValue = cod_dpto
+                LlenaDDLCiudad(cod_dpto)
+                drCiudad.SelectedValue = cod_ciudad
+                LlenaDDLMunicipio(cod_dpto)
+                drDeleg.SelectedValue = cod_municipio
+                'VZAVALETA_GMX-10290_INCIDENCIAS
+                LlenaDDLColonia(cod_dpto, cod_ciudad, cod_municipio, Nothing)
+                drColonia.SelectedValue = cod_colonia
+                'VZAVALETA_GMX-10290_INCIDENCIAS
+                'dt = agregaSeleccionar(dtResult)
+                'Funciones.LlenaDDL(drColonia, dt, "cod_colonia", "txt_desc", 0, False)
 
-                Session("codPostalS") = 1
-                drColonia.SelectedValue = -1
-                drEstado.SelectedValue = -1
-                drCiudad.SelectedValue = -1
-                drDeleg.SelectedValue = -1
+                'Funciones.LlenaDDL(drColonia, dtResult, "cod_colonia", "txt_desc", 0, True)
+
+                'Session("codPostalS") = 1
+                'drColonia.SelectedValue = -1
+                'drEstado.SelectedValue = -1
+                'drCiudad.SelectedValue = -1
+                'drDeleg.SelectedValue = -1
             Else
                 MuestraMensaje("Valida CP", "Las colonias con el C.P. ingresado no están actualmente activas", TipoMsg.Advertencia)
                 drDeleg.SelectedValue = -1
@@ -410,15 +430,18 @@ Partial Class Siniestros_DatosEnvioChequeABM
         Dim cod_municipio As Integer
         Dim cod_ciudad As Integer
         Dim cod_colonia As Integer
-
-        Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'ColoniaSel', @cod_colonia = " & codColonia & " ,@cod_postal = '" & codPostal & "', @coloniaDesc = '" & colDesc & "'", dtResult)
-
-
+        'VZAVALETA_GMX-10290_INCIDENCIAS
+        If codPostal <> "" Then
+            Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'ColoniaSel', @cod_colonia = " & codColonia & " ,@cod_postal = '" & codPostal & "', @coloniaDesc = '" & colDesc & "'", dtResult)
+        Else
+            Funciones.fn_Consulta("usp_obtener_cat_direccion @catalogo = 'ColoniaSel', @cod_colonia = " & codColonia & ", @coloniaDesc = '" & colDesc & "'", dtResult)
+        End If
+        'VZAVALETA_GMX-10290_INCIDENCIAS
         cod_dpto = dtResult.Rows(0)("cod_dpto")
         cod_municipio = dtResult.Rows(0)("cod_municipio")
         cod_ciudad = dtResult.Rows(0)("cod_ciudad")
         cod_colonia = dtResult.Rows(0)("cod_colonia")
-
+        txt_cod_postal.Text = dtResult.Rows(0)("cod_postal").ToString() 'VZAVALETA_GMX-10290_INCIDENCIAS
 
         drEstado.SelectedValue = cod_dpto
         LlenaDDLCiudad(cod_dpto)

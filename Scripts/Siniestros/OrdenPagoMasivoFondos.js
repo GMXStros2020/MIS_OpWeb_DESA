@@ -1948,6 +1948,7 @@ $("body").on('change', "#cmbPagarA", function () {
         $("[id*=chkMultipago]").prop('disabled', true);
         $("[id*=txtRFC]").prop('disabled', true);
         $("[id*=txtSiniestro]").prop('disabled', true);
+        $("[id*=txtRFCmTer]").prop('disabled', false);  //VZAVALETA_GMX-10290_INCIDENCIAS
 
     }
     else {
