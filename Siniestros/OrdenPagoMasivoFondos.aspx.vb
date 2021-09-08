@@ -175,6 +175,110 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
 
         FechaEstimPago = result
     End Function
+
+    Private Sub btnAcepmTer_Click(sender As Object, e As EventArgs) Handles btnAcepmTer.Click
+        Dim oDatos As DataSet
+        Dim oTabla As DataTable
+        Dim oParametros As New Dictionary(Of String, Object)
+        Dim dtResult As New DataTable
+        Dim Tercero As New Tercero()
+        'ELIMNAR
+        'drTipoPers.SelectedValue = "J"
+        'txt_apPatmTer.Text = "SISTRAN TEST"
+        'txt_fecNacmTer.Text = "04/04/1995"
+        'txtRFCmTer.Text = "SIS950404KY7"
+        If ValidaDatos() Then
+            Tercero.sApellido1 = txt_apPatmTer.Text.Trim
+            Tercero.sApellido2 = txt_apMatmTer.Text.Trim
+            Tercero.sNombre = txt_nombresmTer.Text.Trim
+            Tercero.sNit = txtRFCmTer.Text.Trim
+            Tercero.vFecNacim = Funciones.FormatearFecha(txt_fecNacmTer.Text.Trim, Funciones.enumFormatoFecha.YYYYMMDD)
+            Tercero.sTipoPersona = drTipoPers.SelectedValue
+            If Tercero.RFC Then
+                If drTipoPers.SelectedValue = "F" Then
+                    oParametros.Add("txtApellido1", txt_apPatmTer.Text.Trim)
+                    oParametros.Add("txtApellido2", txt_apMatmTer.Text.Trim)
+                    oParametros.Add("txtNombre", txt_nombresmTer.Text.Trim)
+                    oParametros.Add("codTipoDoc", 1)
+                    oParametros.Add("nroDoc", txtRFCmTer.Text.Trim)
+                    oParametros.Add("nroNit", txtRFCmTer.Text.Trim)
+                    oParametros.Add("fecNac", Funciones.FormatearFecha(txt_fecNacmTer.Text.Trim, Funciones.enumFormatoFecha.YYYYMMDD))
+                    oParametros.Add("txtSexo", drSexo.SelectedValue)
+                    oParametros.Add("codEstCivil", 1)
+                    oParametros.Add("codTipoPersona", drTipoPers.SelectedValue)
+                    oParametros.Add("txtOrigen", "T")
+                    oParametros.Add("codOcupacion", -1)
+                    oParametros.Add("codUsuario", Master.cod_usuario)
+                    oParametros.Add("nroEdad", hidEdadmTer.Value)
+                    oParametros.Add("dGenerales", 1)
+                Else
+                    oParametros.Add("txtApellido1", txt_apPatmTer.Text.Trim)
+                    oParametros.Add("codTipoDoc", 1)
+                    oParametros.Add("nroDoc", txtRFCmTer.Text.Trim)
+                    oParametros.Add("nroNit", txtRFCmTer.Text.Trim)
+                    oParametros.Add("txtSexo", "F")
+                    oParametros.Add("codEstCivil", 1)
+                    oParametros.Add("codTipoPersona", drTipoPers.SelectedValue)
+                    oParametros.Add("txtOrigen", "T")
+                    oParametros.Add("codUsuario", Master.cod_usuario)
+                    oParametros.Add("nroEdad", hidEdadmTer.Value)
+                    oParametros.Add("dGenerales", 1)
+                End If
+                oDatos = Funciones.ObtenerDatos("usp_Alta_Upt_Tercero", oParametros)
+                oTabla = oDatos.Tables(0)
+                If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
+                    Dim codError As Integer
+                    Dim msgError As String
+                    Dim codTerceroNvo As Integer
+                    codTerceroNvo = oTabla.Rows(0)("codTercero")
+                    codError = oTabla.Rows(0)("snFlag")
+                    msgError = oTabla.Rows(0)("msg_err").ToString()
+                    If codError <> -1 Then
+                        Funciones.CerrarModal("#RegistroTerceros")
+                        Funciones.fn_Consulta("spS_CatalogosSIR @strCatalogo = 'BenTercero_stro', @Condicion = " + codTerceroNvo.ToString(), dtResult)
+                        hidCodTercero.Value = dtResult.Rows(0)("Clave")
+                        hidNomTercero.Value = dtResult.Rows(0)("Descripcion").ToString()
+                        hidrfcTercero.Value = dtResult.Rows(0)("OcultaCampo1").ToString()
+                        limpRegTerceros()
+
+                        Funciones.EjecutaFuncion("selecTercero(" + ID_row.Value + ");")
+                    Else
+                        MuestraMensaje("Validación", "Error: " + msgError + ". No se pudo grabar el tercero.", TipoMsg.Advertencia)
+                    End If
+                End If
+            End If
+        End If
+    End Sub
+    Private Function ValidaDatos() As Boolean
+        Dim msgError As String
+        msgError = ""
+        If drTipoPers.SelectedValue = "F" Then
+            If Trim(txt_apPatmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "Apellido Paterno"
+            If Trim(txt_apMatmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "Apellido Materno "
+            If Trim(txt_nombresmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "Nombres "
+            If Trim(txt_fecNacmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "Fecha Nacimiento "
+            If Trim(txtRFCmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "RFC "
+        Else
+            If Trim(txt_apPatmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "Razón Social"
+            If Trim(txt_fecNacmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "Fecha Nacimiento "
+            If Trim(txtRFCmTer.Text) = "" Then msgError = msgError & IIf(msgError = "", "", ",") & "RFC "
+        End If
+        If msgError <> "" Then
+            MuestraMensaje("Valida campos", "Los campos " & msgError & "no puedes estar vacíos", TipoMsg.Advertencia)
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Sub limpRegTerceros()
+        drTipoPers.SelectedValue = "F"
+        txtRFCmTer.Text = ""
+        txt_apPatmTer.Text = ""
+        txt_apMatmTer.Text = ""
+        txt_nombresmTer.Text = ""
+        txt_fecNacmTer.Text = ""
+    End Sub
+
     Private Sub Cargar_combos() 'FJCP_10290_CC	
 
         cmbTipoPago.Items.Clear()

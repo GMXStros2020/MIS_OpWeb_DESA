@@ -126,12 +126,21 @@ Partial Class Siniestros_DatosEnvioChequeABM
     Private Sub LlenaDDLColonia(codDpto As Integer, codCiudad As Integer, codMunicipio As Integer, codPostal As String)
         Dim dt As New DataTable
         Dim sp As String
-
+        Dim cod_postal As String
+        cod_postal = Trim(txt_cod_postal.Text)
         sp = ""
-        sp = sp & "usp_obtener_cat_direccion @catalogo = 'Colonia', @cod_dpto = " & codDpto.ToString() & ", @cod_ciudad = " & codCiudad.ToString() & ", @cod_municipio = " & codMunicipio.ToString()
-        If Not IsNothing(codPostal) Then
-            sp = sp & ", @cod_postal = '" & codPostal & "'"
+        'VZAVALETA_GMX-10290_INCIDENCIAS
+        If cod_postal <> "" Then
+            sp = sp & "usp_obtener_cat_direccion @catalogo = 'Colonia', @cod_dpto = " & codDpto.ToString() & ", @cod_ciudad = " & codCiudad.ToString() & ", @cod_municipio = " & codMunicipio.ToString() & ", @cod_postal = '" & cod_postal & "'"
+        Else
+            sp = sp & "usp_obtener_cat_direccion @catalogo = 'Colonia', @cod_dpto = " & codDpto.ToString() & ", @cod_ciudad = " & codCiudad.ToString() & ", @cod_municipio = " & codMunicipio.ToString()
         End If
+        'VZAVALETA_GMX-10290_INCIDENCIAS
+
+        'sp = sp & "usp_obtener_cat_direccion @catalogo = 'Colonia', @cod_dpto = " & codDpto.ToString() & ", @cod_ciudad = " & codCiudad.ToString() & ", @cod_municipio = " & codMunicipio.ToString()
+        'If Not IsNothing(codPostal) Then
+        '    sp = sp & ", @cod_postal = '" & codPostal & "'"
+        'End If
 
         Funciones.fn_Consulta(sp, dtResult)
 
