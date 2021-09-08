@@ -15,7 +15,7 @@ Partial Class Siniestros_ContaElectronica
                     Dim RptFilters As String
                     RptFilters = "&FechaIni=" & CDate(txtFecGeneraDe.Text).ToString("yyyyMMdd")
                     RptFilters = RptFilters & "&Fechafin=" & CDate(txtFecGeneraA.Text).ToString("yyyyMMdd")
-                    RptFilters = RptFilters & "&sn_relacionado= " & IIf(chk_Relacion.Checked = True, -1, 0) 'VZAVALETA_GMX-10290_INCIDENCIAS
+                    RptFilters = RptFilters & "&sn_relacionado= " & ddl_Relacionado.SelectedValue.ToString() 'VZAVALETA_GMX-10290_INCIDENCIAS
 
                     server = Replace(Replace(server, "@Reporte", "ContaElect"), "@Formato", "EXCEL")
                     server = Replace(server, Cons.ReposSource, Cons.ReposReport)

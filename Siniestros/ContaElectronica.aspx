@@ -30,8 +30,15 @@
                             <asp:TextBox runat="server" ID="txtFecGeneraA" CssClass="estandar-control Fecha Centro" Width="110px" ></asp:TextBox>
                         </div>
                       <%--VZAVALETA_GMX-10290_INCIDENCIAS--%>
-                        <div class="col-md-4" style="text-align: center">
-                            <asp:CheckBox runat="server" ID="chk_Relacion" CssClass="etiqueta-control" AutoPostBack="true" Text="&nbsp&nbspRelacionado" />
+                       <div class="col-sm-1">
+                        <asp:label runat="server" class="etiqueta-control" Width="100px">Relacionado</asp:label>
+                       </div>
+                       <div class="col-md-2" style="text-align: center">
+                            <asp:DropDownList ID="ddl_Relacionado" runat="server" ClientIDMode="Static" CssClass="estandar-control tipoUsuario Tablero">
+                                 <asp:ListItem Value="1" >TODAS</asp:ListItem> 
+                                <asp:ListItem Value="-1" >RELACIONADAS</asp:ListItem> 
+                                <asp:ListItem Value="0">NO RELACIONADAS</asp:ListItem>
+                            </asp:DropDownList>
                         </div>
                        <%--VZAVALETA_GMX-10290_INCIDENCIAS--%>
                        <br />
