@@ -20,7 +20,7 @@
 
              
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-4">
                         <asp:Label runat="server" class="etiqueta-control">Clase de Pago</asp:Label>
                         <asp:DropDownList ID="ddl_clase_pago" runat="server" ClientIDMode="Static" CssClass="estandar-control Tablero" AutoPostBack="true">
                         </asp:DropDownList>
@@ -35,7 +35,7 @@
                     </div>
 
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-4">
                         <asp:Label runat="server" class="etiqueta-control">Origen de Pago</asp:Label>
                         <asp:DropDownList ID="cmbOrigen" runat="server" ClientIDMode="Static" CssClass="estandar-control Tablero">
                         </asp:DropDownList>

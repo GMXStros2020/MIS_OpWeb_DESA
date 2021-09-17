@@ -232,7 +232,8 @@
     <div class="row">
         <center>
             <asp:UpdatePanel runat="server" ID="UpdatePanel3" UpdateMode="Conditional" >
-                <ContentTemplate>          
+                <ContentTemplate>   
+                    <asp:Panel runat="server" ID="pnlUsuario" Width="100%" Height="300" ScrollBars="Auto" >
                         <asp:GridView ID="grd" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#003A5D" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical" Width="95%">
                         <AlternatingRowStyle BackColor="#DCDCDC" />
 
@@ -261,12 +262,17 @@
                             <SortedDescendingHeaderStyle BackColor="#000065" />
 
                         </asp:GridView>
-                    
+                    </asp:Panel>
                     </Grid>
                 </ContentTemplate>               
             </asp:UpdatePanel> 
         </center>
     </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 <%--VZAVALETA_10290_Incidencias_fin--%>
 </asp:Content>
 
