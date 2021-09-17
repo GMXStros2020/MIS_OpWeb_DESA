@@ -12268,7 +12268,7 @@ var xmlJsonClass = {
             });
         },
         columnChooser: function (opts) {
-            debugger;
+            //debugger;
             var self = this;
             if ($("#colchooser_" + $.jgrid.jqID(self[0].p.id)).length) { return; }
             var selector = $('<div id="colchooser_' + self[0].p.id + '" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
@@ -12434,7 +12434,7 @@ var xmlJsonClass = {
         //// FONDOS MASIVO
         //PROVEEDORES FONDOS MASIVO
         columnChooserFondosProv: function (opts) {
-            debugger;
+            //debugger;
             var self = this;
             if ($("#colchooser_" + $.jgrid.jqID(self[0].p.id)).length) { return; }
             var selector = $('<div id="colchooser_' + self[0].p.id + '" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
@@ -12600,7 +12600,7 @@ var xmlJsonClass = {
         },
         //ASEGURADOS FONDOS MASIVO
         columnChooserFondosAseg: function (opts) {
-            debugger;
+            //debugger;
             var self = this;
             if ($("#colchooser_" + $.jgrid.jqID(self[0].p.id)).length) { return; }
             var selector = $('<div id="colchooser_' + self[0].p.id + '" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
@@ -12766,7 +12766,7 @@ var xmlJsonClass = {
         },
         //TERCEROS FONDOS MASIVO
         columnChooserFondosTer: function (opts) {
-            debugger;
+            //debugger;
             var self = this;
             if ($("#colchooser_" + $.jgrid.jqID(self[0].p.id)).length) { return; }
             var selector = $('<div id="colchooser_' + self[0].p.id + '" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
@@ -12934,7 +12934,7 @@ var xmlJsonClass = {
 
         //PROVEEDORES TRADICIONAL MASIVO
         columnChooserTradProv: function (opts) {
-            debugger;
+            //debugger;
             var self = this;
             if ($("#colchooser_" + $.jgrid.jqID(self[0].p.id)).length) { return; }
             var selector = $('<div id="colchooser_' + self[0].p.id + '" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
@@ -13100,7 +13100,7 @@ var xmlJsonClass = {
         },
         //ASEGURADOS TRADICIONAL MASIVO
         columnChooserTradAseg: function (opts) {
-            debugger;
+            //debugger;
             var self = this;
             if ($("#colchooser_" + $.jgrid.jqID(self[0].p.id)).length) { return; }
             var selector = $('<div id="colchooser_' + self[0].p.id + '" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
@@ -13266,7 +13266,7 @@ var xmlJsonClass = {
         },
         //TERCEROS TRADICIONAL MASIVO
         columnChooserTradTer: function (opts) {
-            debugger;
+            //debugger;
             var self = this;
             if ($("#colchooser_" + $.jgrid.jqID(self[0].p.id)).length) { return; }
             var selector = $('<div id="colchooser_' + self[0].p.id + '" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
