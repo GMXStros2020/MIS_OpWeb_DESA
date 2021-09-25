@@ -1394,7 +1394,7 @@ Partial Class Siniestros_OrdenPago
 
                 Master.MuestraTransferenciasBancariasSiniestros(IO.Path.GetFileName(Request.Url.AbsolutePath),
                                                                 oCatalogoBancosT, oCatalogoTiposCuentaT, oCatalogoMonedasT,
-                                                                oParametros, bTieneDatosBancarios)
+                                                                oParametros, bTieneDatosBancarios, cmbNumPago.SelectedValue)
 
             End If
 
@@ -3559,15 +3559,18 @@ Partial Class Siniestros_OrdenPago
     Private Sub LlenaDDLAsegurado(poliza As String)
         Dim dt As New DataTable
         Dim param As String
+        Try
+            param = Replace(poliza, "-", ",")
 
-        param = Replace(poliza, "-", ",")
+            Funciones.fn_Consulta("SELECT DISTINCT cod_aseg, nombre FROM f_aseg_poliza(" & param & ") ", dt)
+            Dim codAseg = Funciones.fn_Ejecuta("SELECT cod_aseg FROM f_aseg_poliza(" & param & ") WHERE tipo_persona = 'Asegurado'")
+            Funciones.LlenaDDL(drBeneficiario, dt, "cod_aseg", "nombre", 0, False)
+            drBeneficiario.SelectedValue = codAseg
 
-        Funciones.fn_Consulta("SELECT DISTINCT cod_aseg, nombre FROM f_aseg_poliza(" & param & ") ", dt)
-        Dim codAseg = Funciones.fn_Ejecuta("SELECT cod_aseg FROM f_aseg_poliza(" & param & ") WHERE tipo_persona = 'Asegurado'")
-
-        Funciones.LlenaDDL(drBeneficiario, dt, "cod_aseg", "nombre", 0, False)
-        drBeneficiario.SelectedValue = codAseg
-
+        Catch ex As Exception
+            Mensaje.MuestraMensaje("OrdenPagoSiniestros", String.Format("El endoso no tiene ubicaciones: (" & param & ")", ex.Message), TipoMsg.Falla)
+            Limpiartodo()
+        End Try
     End Sub
 
     Private Sub habilitarCampos() 'FJCP 10290 MEJORAS 
@@ -3883,7 +3886,7 @@ Partial Class Siniestros_OrdenPago
             Dim hrefOnBase As String
             linkOnBase.HRef = ""
             hrefOnBase = ""
-            hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim)
+            hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim & ", @num_pago = " & cmbNumPago.SelectedValue)
             linkOnBase.HRef = hrefOnBase
 
             If validaFolioBloqueado() Then
