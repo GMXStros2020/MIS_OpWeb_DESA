@@ -434,7 +434,7 @@
                     ,
                     { name: 'Tipo_Pago', index: 'Tipo_Pago', width: 180 }
                     ,
-                    { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "100" } },
+                    { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "254" } },
                     { name: 'Tipo_Pago2', index: 'Tipo_Pago2', width: 90, hidden: false },
                     { name: 'Folio_Onbase_cuenta', index: 'Folio_Onbase_cuenta', width: 90, hidden: true },
                     { name: 'Cuenta_Bancaria', index: 'Cuenta_Bancaria', width: 180, editable: false, editoptions: { size: "30", maxlength: "18" }, editrules: { custom: true, custom_func: Validar, required: true } },
@@ -685,7 +685,7 @@
                     },
                     { name: 'Cod_tipo_pago', index: 'Cod_tipo_pago', width: 45, hidden: true },
                     { name: 'Tipo_Pago', index: 'Tipo_Pago', width: 180 },
-                    { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "100" } },
+                    { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "254" } },
                     { name: 'Tipo_Pago2', index: 'Tipo_Pago2', width: 90, hidden: false },
                     { name: 'Folio_Onbase_cuenta', index: 'Folio_Onbase_cuenta', width: 90 },
 
@@ -950,7 +950,7 @@
                     ,
                     { name: 'Cod_tipo_pago', index: 'Cod_tipo_pago', width: 45, hidden: true },
                     { name: 'Tipo_Pago', index: 'Tipo_Pago', width: 180 },
-                    { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "100" } },
+                    { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "254" } },
                     { name: 'Tipo_Pago2', index: 'Tipo_Pago2', width: 90, hidden: false },
                     { name: 'Folio_Onbase_cuenta', index: 'Folio_Onbase_cuenta', width: 90 },
 

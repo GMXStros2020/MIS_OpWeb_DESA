@@ -2248,7 +2248,8 @@ Partial Class Pages_SiteMaster
     Public Sub MuestraTransferenciasBancariasSiniestros(ByVal Control As String, ByVal oBancos As DataTable, ByVal oTiposCuenta As DataTable,
                                                         ByVal oMonedas As DataTable, ByVal oValoresActuales As Dictionary(Of String, Object),
                                                         ByVal bTieneDatosBancarios As Boolean,
-                                                        Optional ByVal sn_submod_web As Integer = -1)
+                                                        Optional ByVal sn_submod_web As Integer = -1,
+                                                        Optional ByVal NumPago As Integer = 1)
 
         Try
             'VZAVALETA_10290_CC_INI
@@ -2357,7 +2358,7 @@ Partial Class Pages_SiteMaster
                         hrefOnBase = ""
                         'cambiar a id 2 cuando se habilite el ws del folio onbase edo cta
                         'hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id = 2,  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim)
-                        hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id_pagar_a =" & oValoresActuales("tipoUsuario") & ",  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim)
+                        hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id_pagar_a =" & oValoresActuales("tipoUsuario") & ",  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim & ",  @num_pago = " & NumPago)
                         linkOnBase.HRef = hrefOnBase
                         lblFoliOnbaseEdoCtaDesc.Visible = True
                         lblFoliOnbaseEdoCta.Visible = True
