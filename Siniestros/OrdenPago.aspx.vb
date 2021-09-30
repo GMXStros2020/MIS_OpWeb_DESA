@@ -337,7 +337,12 @@ Partial Class Siniestros_OrdenPago
 
                 Case "tipo_pago_OP"
 
-                    Me.btnVerCuentas.Visible = IIf(cmbTipoPagoOP.SelectedValue = "C", False, True)
+                    'Me.btnVerCuentas.Visible = IIf(cmbTipoPagoOP.SelectedValue = "C", False, True)
+                    If cmbTipoPagoOP.SelectedValue = "T" Then
+                        Me.btnVerCuentas.Visible = True
+                    Else
+                        Me.btnVerCuentas.Visible = False
+                    End If
 
                 Case "clase_pago"
 
@@ -828,7 +833,7 @@ Partial Class Siniestros_OrdenPago
                     Funciones.EjecutaFuncion("FormatCurrency(" + iIndiceFila.ToString() + ")", "Formato")
             'JLC Mejoras -fin
 
-                Case "Descuentos"
+                        Case "Descuentos"
                     If cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor Then
                         If txtDescuentos.Text = "" Then
                             txtDescuentos.Text = oTxt.Text
@@ -3033,20 +3038,20 @@ Partial Class Siniestros_OrdenPago
                                 CInt(oDatos.Tables(oDatos.Tables.Count - 1).Rows(0).Item("OrdenPago")) = -1 Then
 
                                 Dim errorcuentacontable As String
-
-                                If oDatos.Tables(1).Rows.Count > 0 Then
-                                    errorcuentacontable = " Dar de alta la cuenta: " + oDatos.Tables(1).Rows(0).Item("cta_cble1").ToString()
-                                Else
-                                    errorcuentacontable = ""
+                                If cmbTipoPagoOP.SelectedValue = "T" Then
+                                    If oDatos.Tables(1).Rows.Count > 0 Then
+                                        errorcuentacontable = " Dar de alta la cuenta: " + oDatos.Tables(1).Rows(0).Item("cta_cble1").ToString()
+                                    Else
+                                        errorcuentacontable = ""
+                                    End If
                                 End If
-
 
                                 Mensaje.MuestraMensaje("OrdenPagoSiniestros", String.Format("No se pudo generar la orden de pago: {0}",
                                                                                             oDatos.Tables(oDatos.Tables.Count - 1).Rows(0).Item("MensajeError") +
                                                                                             errorcuentacontable), TipoMsg.Falla)
 
-                            Else
-                                InicializarValores()
+                                Else
+                                    InicializarValores()
                                 'Impresión reporte
                                 Dim ws As New ws_Generales.GeneralesClient
                                 Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
