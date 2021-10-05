@@ -3365,6 +3365,7 @@ Partial Class Siniestros_OrdenPago
 
 
         Try
+            Dim nPAgo As Integer = IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue)
             Dim PosibleDescuento As Decimal
             If chkVariasFacturas.Checked = False Then
                 Dim chkdelete As CheckBox
@@ -3378,7 +3379,10 @@ Partial Class Siniestros_OrdenPago
             Dim hrefOnBase As String
             linkOnBase.HRef = ""
             hrefOnBase = ""
-            hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim & ", @num_pago = " & cmbNumPago.SelectedValue)
+            'hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim & ", @num_pago = " & cmbNumPago.SelectedValue)
+
+            hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim & ", @num_pago = " & nPAgo)
+
             linkOnBase.HRef = hrefOnBase
             If validaFolioBloqueado() Then
                 'Exit Sub
@@ -3391,7 +3395,7 @@ Partial Class Siniestros_OrdenPago
                 Case eTipoUsuario.Proveedor
                     oParametros.Add("Accion", 2)
                     oParametros.Add("Folio_OnBase", Me.txtOnBase.Text.Trim)
-                    oParametros.Add("numPago", cmbNumPago.SelectedValue) 'FJCP MEJORAS FASE II NUMERO PAGO
+                    oParametros.Add("numPago", IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue)) 'FJCP MEJORAS FASE II NUMERO PAGO
                     oParametros.Add("Paga_a", Me.cmbTipoUsuario.SelectedValue)
 
                     oDatos = Funciones.ObtenerDatos("MIS_sp_cir_op_stro_Catalogos_Fondos", oParametros)
@@ -3559,7 +3563,7 @@ Partial Class Siniestros_OrdenPago
                     'ESTO ES PARA BUSCAR EN LA TABLA INTERMEDIA DEL MIS PARA ASEGURADOS Y TERCEROS CON FOLIO ONBASE
                     oParametros.Add("Accion", 2)
                     oParametros.Add("Folio_OnBase", Me.txtOnBase.Text.Trim)
-                    oParametros.Add("numPago", cmbNumPago.SelectedValue) 'FJCP MEJORAS FASE II NUMERO PAGO
+                    oParametros.Add("numPago", IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue)) 'FJCP MEJORAS FASE II NUMERO PAGO
                     oParametros.Add("Paga_a", Me.cmbTipoUsuario.SelectedValue)
 
 
