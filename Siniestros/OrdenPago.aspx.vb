@@ -3891,7 +3891,10 @@ Partial Class Siniestros_OrdenPago
             Dim hrefOnBase As String
             linkOnBase.HRef = ""
             hrefOnBase = ""
-            hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim & ", @num_pago = " & cmbNumPago.SelectedValue)
+            'hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim & ", @num_pago = " & cmbNumPago.SelectedValue)
+
+            hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws  @id_pagar_a = " & Me.cmbTipoUsuario.SelectedValue & ",  @folioOnbase = " & txtOnBase.Text.Trim & ", @num_pago = " & nPAgo)
+
             linkOnBase.HRef = hrefOnBase
 
             If validaFolioBloqueado() Then
@@ -4103,7 +4106,8 @@ Partial Class Siniestros_OrdenPago
                     End If
                 Case Else
                     oParametros.Add("Folio_OnBase", Me.txtOnBase.Text.Trim)
-                    oParametros.Add("numPago", cmbNumPago.SelectedValue) 'FJCP MEJORAS FASE II NUMERO PAGO
+                    'oParametros.Add("numPago", cmbNumPago.SelectedValue) 'FJCP MEJORAS FASE II NUMERO PAGO
+                    oParametros.Add("numPago", IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue))
                     oParametros.Add("id_PagarA", Me.cmbTipoUsuario.SelectedValue) 'VZAVALETA_10290_CC
 
                     oDatos = Funciones.ObtenerDatos("sp_op_stro_consulta_folio_OnBase", oParametros)
@@ -4129,7 +4133,7 @@ Partial Class Siniestros_OrdenPago
                         oParametros.Clear()
                         oParametros.Add("Numero_Siniestro", Me.txtSiniestro.Text.Trim)
                         oParametros.Add("FolioOnbase", Me.txtOnBase.Text.Trim)
-                        oParametros.Add("numPago", cmbNumPago.SelectedValue) 'FJCP MEJORAS FASE II NUMERO PAGO
+                        oParametros.Add("numPago", IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue)) 'FJCP MEJORAS FASE II NUMERO PAGO
 
                         oDatos = Funciones.ObtenerDatos("sp_op_stro_consulta_numero_siniestro", oParametros)
 
