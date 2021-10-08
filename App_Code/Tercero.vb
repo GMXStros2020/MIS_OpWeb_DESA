@@ -459,8 +459,12 @@ Public Class Tercero
 
 
             brfcGen = cadena.Contains(sNit)
-
-
+            'VZAVALETA_GMX-10290_INCIDENCIAS
+            If (Len(Trim(sNit)) < 12) Then
+                MuestraMensaje("Valida RFC", "RFC INCORRECTO", TipoMsg.Falla)
+                Return False
+            End If
+            'VZAVALETA_GMX-10290_INCIDENCIAS
             If brfcGen = False Then
                 If ValidaRFC() = False Then
                     MuestraMensaje("Valida RFC", "RFC Ó FECHA NACIMIENTO/CONSTITUCIÓN INCORRECTO", TipoMsg.Falla)

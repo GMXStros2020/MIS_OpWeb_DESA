@@ -149,7 +149,8 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
 
                     OP.ID = row("ID").ToString()
                     ' OP.Folio_Onbase = "<a href=""http://172.16.40.66/AppNet/docpop/docpop.aspx?KT1419_0_0_0=" + row("Folio_Onbase").ToString() + "&clienttype=html&cqid=203""  target=""_blank""><i class=""fa fa-newspaper-o""></i>&nbsp; " + row("Folio_Onbase").ToString() + "</a>"
-                    OP.Folio_Onbase = Webservices(row("Folio_Onbase").ToString())
+                    'VZAVALETA_GMX-10290_INCIDENCIAS Se agrega como parametro PagarA
+                    OP.Folio_Onbase = Webservices(row("Folio_Onbase").ToString(), row("PagarA").ToString())
                     OP.Num_Pago = row("Num_Pago").ToString()
                     OP.Tipo_comprobante = row("Tipo_comprobante").ToString()
 
@@ -188,7 +189,7 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
                     OP.Concepto2 = row("Concepto2").ToString()
                     OP.Cod_tipo_pago = row("Cod_tipo_pago").ToString()
                     OP.Tipo_Pago2 = row("Tipo_Pago2").ToString()
-                    OP.Folio_Onbase_cuenta = Webservices(row("Folio_Onbase_cuenta").ToString())
+                    OP.Folio_Onbase_cuenta = Webservices(row("Folio_Onbase_cuenta").ToString(), row("PagarA").ToString())
                     OP.Folio_Onbase_cuentaHidden = row("Folio_Onbase_cuenta").ToString()
                     OP.Cuenta_Bancaria = row("Cuenta_Bancaria").ToString()
                     OP.Confirmar_Cuenta = row("Confirmar_Cuenta").ToString()
@@ -270,7 +271,7 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
         End Get
     End Property
 
-    Public Function Webservices(Folio_Onbase As String) As String
+    Public Function Webservices(Folio_Onbase As String, Optional PagarA As String = "") As String
 
 
         Dim oDatos As DataSet
@@ -280,6 +281,7 @@ Public Class OrdenPagoMasivo : Implements IHttpHandler
         Dim salida As String
         url = ""
         oParametros.Add("strCatalogo", "WebServices")
+        oParametros.Add("Condicion", PagarA) 'VZAVALETA_GMX-10290_INCIDENCIAS
         oDatos = Funciones.ObtenerDatos("[sp_Catalogos_OPMasivas]", oParametros)
         oTabla = oDatos.Tables(0)
 
