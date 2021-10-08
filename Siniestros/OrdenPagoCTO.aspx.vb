@@ -1839,11 +1839,17 @@ Partial Class Siniestros_OrdenPago
             oDatos = Funciones.ObtenerDatos("usp_ObtenerImpuestos_stro", oParametros)
 
             If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
-                dImpuesto = CDbl(oDatos.Tables(0).Rows(0).Item("ImporteImpuesto"))
-                dRetencion = CDbl(oDatos.Tables(0).Rows(0).Item("PjeRetencion"))
-                'txtTotalImpuestos.Text = CDbl(oDatos.Tables(0).Rows(0).Item("ImporteImpuesto"))
-                'txtTotalRetenciones.Text = CDbl(oDatos.Tables(0).Rows(0).Item("PjeRetencion"))
-
+                'VZAVALETA_GMX-10290_INCIDENCIAS
+                If CDbl(oDatos.Tables(0).Rows(0).Item("ImporteImpuesto")) = 0 And CDbl(oDatos.Tables(0).Rows(0).Item("PjeRetencion")) = 0 Then
+                    dImpuesto = -1
+                    dRetencion = -1
+                Else
+                    dImpuesto = CDbl(oDatos.Tables(0).Rows(0).Item("ImporteImpuesto"))
+                    dRetencion = CDbl(oDatos.Tables(0).Rows(0).Item("PjeRetencion"))
+                    'txtTotalImpuestos.Text = CDbl(oDatos.Tables(0).Rows(0).Item("ImporteImpuesto"))
+                    'txtTotalRetenciones.Text = CDbl(oDatos.Tables(0).Rows(0).Item("PjeRetencion"))
+                End If
+                'VZAVALETA_GMX-10290_INCIDENCIAS
             Else
                 dImpuesto = -1
                 dRetencion = -1
@@ -1878,8 +1884,15 @@ Partial Class Siniestros_OrdenPago
             oDatos = Funciones.ObtenerDatos("usp_ObtenerImpuestos_stro", oParametros)
 
             If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
-                dImpuesto = CDbl(oDatos.Tables(0).Rows(0).Item("TotalImpuestos"))
-                dRetencion = CDbl(oDatos.Tables(0).Rows(0).Item("TotalRetenciones"))
+                'VZAVALETA_GMX-10290_INCIDENCIAS
+                If CDbl(oDatos.Tables(0).Rows(0).Item("TotalImpuestos")) = 0 And CDbl(oDatos.Tables(0).Rows(0).Item("TotalRetenciones")) = 0 Then
+                    dImpuesto = -1
+                    dRetencion = -1
+                Else
+                    dImpuesto = CDbl(oDatos.Tables(0).Rows(0).Item("TotalImpuestos"))
+                    dRetencion = CDbl(oDatos.Tables(0).Rows(0).Item("TotalRetenciones"))
+                End If
+                'VZAVALETA_GMX-10290_INCIDENCIAS
             Else
                 dImpuesto = -1
                 dRetencion = -1
