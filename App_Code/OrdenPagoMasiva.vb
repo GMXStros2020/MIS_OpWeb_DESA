@@ -31,8 +31,63 @@ Public Class OrdenPagoMasiva
             Dim lista As New List(Of OrdenPagoMasivoClass)
             Dim Num_Lote As String
 
+            Dim ErrorCode As Integer 'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS 
+            Dim ErrorMsg As String 'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS 
+            Dim ErrorMsgCta As String 'FCRUZ_GMX-10290_INCIDENCIAS VALIDA LONGITUD DE CTAS
+
+            ErrorMsgCta = ""
+            ErrorMsg = ""
+
             lista = New JavaScriptSerializer().ConvertToType(Of List(Of OrdenPagoMasivoClass))(myArray)
 
+            'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS ini
+            For Each OP As OrdenPagoMasivoClass In lista
+
+                oParametros = New Dictionary(Of String, Object)
+
+                oParametros.Add("Folio_Onbase", ValidarParametros(OP.Folio_Onbase))
+                oParametros.Add("Num_Pago", ValidarParametros(OP.Num_Pago))
+
+                Select Case OP.PagarA
+                    Case "Asegurado"
+                        oParametros.Add("PagarA", "7")
+                    Case "Tercero"
+                        oParametros.Add("PagarA", "8")
+                    Case "Proveedor"
+                        oParametros.Add("PagarA", "10")
+                End Select
+
+                oDatos = Funciones.ObtenerDatos("usp_valida_folio_bloqueado", oParametros)
+                ErrorCode = oDatos.Tables(0).Rows(0).Item("ID_ERROR")
+
+                If ErrorCode <> 0 Then
+                    ErrorMsg = ErrorMsg + oDatos.Tables(0).Rows(0).Item("MSG_ERROR") + "<br>"
+                End If
+
+
+                'Valida Cuentas 
+                If OP.Tipo_Pago2 = "TRANSFERENCIA" Then
+                    If OP.PagarA = "Proveedor" Then
+                        If OP.Cuenta_Bancaria.Length < 18 AndAlso OP.Confirmar_Cuenta.Length < 18 Then
+                            ErrorMsgCta = ErrorMsgCta + OP.Folio_Onbase.ToString() + "<br>"
+                        End If
+                    Else
+                        If OP.Cuenta_Bancaria_ok.Length < 18 AndAlso OP.Confirmar_Cuenta_ok.Length < 18 Then
+                            ErrorMsgCta = ErrorMsgCta + OP.Folio_Onbase.ToString() + "<br>"
+                        End If
+                    End If
+                End If
+
+            Next
+
+            If ErrorMsg <> "" Then
+                Throw New Exception(ErrorMsg)
+            End If
+
+            If ErrorMsgCta <> "" Then
+                Throw New Exception("El número de dígitos es menor a 18 para las cuentas de los siguientes Folios: <br>" + ErrorMsgCta)
+            End If
+            'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOsLIOS fin
 
             If Lote = "0" Then
                 Num_Lote = Funciones.fn_EjecutaStr("Declare @ult_lote int  EXEC sp_ult_nro_lote @ult_lote=@ult_lote out Select @ult_lote ")
