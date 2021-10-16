@@ -145,7 +145,7 @@
             myArray[i] = myRow;
         }
 
-        var json = JSON.stringify(myArray)
+        var json = JSON.stringify(myArray);
         if (txt_NumLote == "") {
             txt_NumLote = "0";
         }
@@ -158,12 +158,19 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
 
-                fn_MuestraMensaje('Atencion', 'Numero de Lote Generado ' + data.d, 0, "");
-                $("[id*=txt_NumLote]").val(data.d);
-                $("#loading").addClass("hidden");
-                $("#loading2").addClass("hidden");
-                $("[id*=btn_Enviar]").removeClass("hidden");
-                $("[id*=btn_Revisar]").removeClass("hidden");
+                if (data.d.length > 40) { //FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS 
+                    fn_MuestraMensaje('Atencion', data.d, 0, "");
+                    $("#loading").addClass("hidden");
+                    $("#loading2").addClass("hidden");
+                }
+                else {
+                    fn_MuestraMensaje('Atencion', 'Numero de Lote Generado ' + data.d, 0, "");
+                    $("[id*=txt_NumLote]").val(data.d);
+                    $("#loading").addClass("hidden");
+                    $("#loading2").addClass("hidden");
+                    $("[id*=btn_Enviar]").removeClass("hidden");
+                    $("[id*=btn_Revisar]").removeClass("hidden");
+                }
 
             },
             error: function (response) {
@@ -896,7 +903,7 @@
                 width: $("#txt_width").val(),
                 rowNum: 8000,
                 rowList: [10, 20, 30],
-                colNames: ['Folio Onbase', 'Num Pago', 'Tipo de comprobante', 'Pagar A', 'Codigo', 'RFC', 'Nombre /Razon Social', '', 'Siniestro', 'Subsinientro', 'Moneda', 'Tipo de Cambio', 'Reserva', 'Moneda de Pago', 'Importe', 'Deducible', 'Importe del concepto', 'Concepto Facturado', 'cod_clas_Pago', 'Clase de Pago', 'cod_concepto_pago', 'Concepto de pago', 'cod_tipo_pago', 'Tipo de Pago', 'Concepto 2', 'Tipo de Pago', 'Folio Onbase Estado de cuenta', 'Cuenta Bancaria', 'Cuenta_Bancaria_ok', 'Confirmar Cuenta', 'Confirmar Cuenta_ok', 'Solicitante', 'Notas', 'Observaciones', 'id_tipo_Doc', 'moneda', 'moneda pago', 'FolioOnbaseHidden', 'Folio_Onbase_cuentaHidden', 'Id_persona', '', '', , '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Poliza', '', 'Accion'], //FJCP_10290_CC
+                colNames: ['Folio Onbase', 'Num Pago', 'Tipo de comprobante', 'Pagar A', 'Codigo', 'RFC', 'Nombre /Razon Social', 'Alta Tercero', 'Siniestro', 'Subsinientro', 'Moneda', 'Tipo de Cambio', 'Reserva', 'Moneda de Pago', 'Importe', 'Deducible', 'Importe del concepto', 'Concepto Facturado', 'cod_clas_Pago', 'Clase de Pago', 'cod_concepto_pago', 'Concepto de pago', 'cod_tipo_pago', 'Tipo de Pago', 'Concepto 2', 'Tipo de Pago', 'Folio Onbase Estado de cuenta', 'Cuenta Bancaria', 'Cuenta_Bancaria_ok', 'Confirmar Cuenta', 'Confirmar Cuenta_ok', 'Solicitante', 'Notas', 'Observaciones', 'id_tipo_Doc', 'moneda', 'moneda pago', 'FolioOnbaseHidden', 'Folio_Onbase_cuentaHidden', 'Id_persona', '', '', , '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Poliza', '', 'Accion'], //FJCP_10290_CC
                 colModel: [
 
                     { name: 'Folio_Onbase', index: 'Folio_Onbase', width: 100, frozen: false },
@@ -906,7 +913,7 @@
                     { name: 'CodigoCliente', index: 'CodigoCliente', width: 90, editable: true },
                     { name: 'RFC', index: 'RFCc', width: 120, editable: true },
                     { name: 'Nombre_Razon_Social', index: 'Nombre_Razon_Social', width: 300 },
-                    { name: 'AltaTercero', index: 'AltaTercero', width: 40 },
+                    { name: 'AltaTercero', index: 'AltaTercero', width: 100 },
                     { name: 'Siniestro', index: 'Siniestro', width: 90 },
                     { name: 'Subsiniestro', index: 'Subsiniestro', width: 90 },
                     { name: 'Moneda', index: 'Moneda', width: 180 },

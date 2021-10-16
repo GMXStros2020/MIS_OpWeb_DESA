@@ -139,7 +139,7 @@
     });
 
 
-    $("#btn_Guardar").click(function () {
+    $("#btn_Guardar").click(function () {  //Inicia función btn_Guardar, los registros del gridview son guardados en una tabla con un número de lote
 
         var myGrid = $('#list47');
         var myArray = [];
@@ -227,7 +227,7 @@
 
         }
 
-        var json = JSON.stringify(myArray)
+        var json = JSON.stringify(myArray);
         if (txt_NumLote == "") {
             txt_NumLote = "0";
         }
@@ -235,7 +235,7 @@
 
 
 
-        $.ajax({
+        $.ajax({ //Inicia Ajax para guardar datos 
             url: "../LocalServices/OrdenPagoMasiva.asmx/SetOP",
             data: "{ 'myArray': " + json + ",'Lote':" + txt_NumLote + "}",
             dataType: "json",
@@ -243,28 +243,29 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
 
-                fn_MuestraMensaje('Atencion', 'Numero de Lote Generado ' + data.d, 0, "");
-                $("[id*=txt_NumLote]").val(data.d);
-                $("#loading").addClass("hidden");
-                $("#loading2").addClass("hidden");
-                $("[id*=btn_Revisar]").removeClass("hidden");
-                $("[id*=btn_Enviar]").removeClass("hidden");
+                if (data.d.length > 40) { //FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS 
+                    fn_MuestraMensaje('Atencion', data.d, 0, "");
+                    $("#loading").addClass("hidden");
+                    $("#loading2").addClass("hidden");
+                }
+                else {
+                    fn_MuestraMensaje('Atencion', 'Numero de Lote Generado ' + data.d, 0, "");
+                    $("[id*=txt_NumLote]").val(data.d);
+                    $("#loading").addClass("hidden");
+                    $("#loading2").addClass("hidden");
+                    $("[id*=btn_Enviar]").removeClass("hidden");
+                    $("[id*=btn_Revisar]").removeClass("hidden");
+                }
 
             },
             error: function (response) {
 
                 $("#loading").addClass("hidden");
 
-                fn_MuestraMensaje('Error', response.responseText, 0, "")
-
-            },
-        });
-
-
-
-
-
-    });
+                fn_MuestraMensaje('Error', response.responseText, 0, "");
+            }  //FJCP ANTES },
+        });//Termina Ajax SetOP
+    }); //Termina función btn_Guardar
 
     $("#btn_guardar_xls").click(function () { // Boton para guardar en una tabla temporal los registros para subsiniestros varios y multipago 
         var myGrid = $('#list47');
@@ -771,7 +772,7 @@
             width: $("#txt_width").val(),
             rowNum: 8000,
             rowList: [10, 20, 30],
-            colNames: ['Folio Onbase', 'Num Pago', 'Tipo de comprobante', 'Pagar A', 'Codigo', 'RFC', 'Nombre /Razon Social','AltaTercero', 'Siniestro', 'Subsinientro', 'Moneda', 'Tipo de Cambio', 'Reserva', 'Moneda de Pago', 'Importe', 'Deducible', 'Importe del concepto', 'Concepto Facturado', 'cod_concepto_pago', 'Concepto de pago', 'cod_clas_Pago', 'Clase de Pago', 'cod_tipo_pago', 'Tipo de Pago', 'Concepto 2', 'Tipo de Pago', 'Folio Onbase Estado de cuenta', 'Cuenta Bancaria', 'Cuenta_Bancaria_ok', 'Confirmar Cuenta', 'Confirmar Cuenta_ok', 'Solicitante', 'Notas', 'Observaciones', 'id_tipo_Doc', 'moneda', 'moneda pago', 'FolioOnbaseHidden', 'Folio_Onbase_cuentaHidden', 'Id_persona', '', '', , '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Poliza', 'Fec_pago', 'Accion'],
+            colNames: ['Folio Onbase', 'Num Pago', 'Tipo de comprobante', 'Pagar A', 'Codigo', 'RFC', 'Nombre /Razon Social','Alta Tercero', 'Siniestro', 'Subsinientro', 'Moneda', 'Tipo de Cambio', 'Reserva', 'Moneda de Pago', 'Importe', 'Deducible', 'Importe del concepto', 'Concepto Facturado', 'cod_concepto_pago', 'Concepto de pago', 'cod_clas_Pago', 'Clase de Pago', 'cod_tipo_pago', 'Tipo de Pago', 'Concepto 2', 'Tipo de Pago', 'Folio Onbase Estado de cuenta', 'Cuenta Bancaria', 'Cuenta_Bancaria_ok', 'Confirmar Cuenta', 'Confirmar Cuenta_ok', 'Solicitante', 'Notas', 'Observaciones', 'id_tipo_Doc', 'moneda', 'moneda pago', 'FolioOnbaseHidden', 'Folio_Onbase_cuentaHidden', 'Id_persona', '', '', , '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Poliza', 'Fec_pago', 'Accion'],
             colModel: [
 
                 { name: 'Folio_Onbase', index: 'Folio_Onbase', width: 100, frozen: false },
