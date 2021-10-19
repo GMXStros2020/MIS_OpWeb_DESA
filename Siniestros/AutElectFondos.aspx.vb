@@ -653,6 +653,8 @@ Partial Class Siniestros_AutElectFondos
         dtAutorizaciones.Columns.Add("Director")
         dtAutorizaciones.Columns.Add("DirectorGeneral")
         dtAutorizaciones.Columns.Add("Subgerente")
+        dtAutorizaciones.Columns.Add("DirectorEjecutivo")
+        dtAutorizaciones.Columns.Add("Gerente")
         'Switch Banderas
         dtAutorizaciones.Columns.Add("FirmadoSolicitante")
         dtAutorizaciones.Columns.Add("FirmadoJefe")
@@ -662,6 +664,8 @@ Partial Class Siniestros_AutElectFondos
         dtAutorizaciones.Columns.Add("FirmadoDirectorGeneral")
         dtAutorizaciones.Columns.Add("FirmadoSubgerente")
         dtAutorizaciones.Columns.Add("NombreModifica")
+        dtAutorizaciones.Columns.Add("FirmadoDirectorEjecutivo")
+        dtAutorizaciones.Columns.Add("FirmadoGerente")
 
         For Each row In dtOrdenPago.Rows
 
@@ -682,7 +686,11 @@ Partial Class Siniestros_AutElectFondos
                                         row("FirmadoDirector"),
                                         row("FirmadoDirectorGeneral"),
                                         row("FirmadoSubgerente"),
-                                        row("NombreModifica"))
+                                        row("NombreModifica"),
+                                        row("Gerente"),
+                                        row("DirectorEjecutivo"),
+                                        row("FirmadoGerente"),
+                                        row("FirmadoDirectorEjecutivo"))
             codRol = IIf(IsDBNull(row("RoleUsuario")) = vbTrue, "C", row("RoleUsuario"))
         Next
 
@@ -797,8 +805,8 @@ Partial Class Siniestros_AutElectFondos
                         UsuarioFirma = row("Jefe")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Subgerente")
-                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
-                        UsuarioFirma = row("Subdirector")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Gerente")
                         OPCompletada = True
                     End If
 
@@ -809,10 +817,10 @@ Partial Class Siniestros_AutElectFondos
                         UsuarioFirma = row("Jefe")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Subgerente")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Gerente")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Subdirector")
-                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
-                        UsuarioFirma = row("Director")
                         OPCompletada = True
                     End If
 
@@ -823,22 +831,61 @@ Partial Class Siniestros_AutElectFondos
                         UsuarioFirma = row("Jefe")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Subgerente")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Gerente")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Subdirector")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Director")
+                        OPCompletada = True
+                    End If
+
+                ElseIf row("NivelAutorizacion") = 6 Then
+                    If DirectCast(grdOrdenPago.Rows(contador).FindControl("Solicitante_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Solicitante")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Jefe_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Jefe")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Subgerente")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Gerente")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Subdirector")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Director")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("DirectorEjecutivo_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("DirectorEjecutivo")
+                        OPCompletada = True
+                    End If
+
+                ElseIf row("NivelAutorizacion") = 7 Then
+                    If DirectCast(grdOrdenPago.Rows(contador).FindControl("Solicitante_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Solicitante")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Jefe_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Jefe")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Subgerente")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Gerente")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Subdirector")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("Director")
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("DirectorEjecutivo_"), Label).BackColor = System.Drawing.Color.Orange Then
+                        UsuarioFirma = row("DirectorEjecutivo")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("DirectorGeneral_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("DirectorGeneral")
                         OPCompletada = True
                     End If
 
                 End If
+
                 If OPCompletada = False Then
 
                     If sn_proceso = True Then
                         If fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",-1,'" & codRol & "'") = 1 Then
                             'fn_Ejecuta("mis_InsertaOPsEnviadas " & strOP & ",'" & UsuarioFirma & "'," & Cons.StrosTradicional & ",0")
-                            If row("NivelAutorizacion") = 5 Then
+                            If row("NivelAutorizacion") >= 6 Then
                                 fn_Ejecuta("mis_EmailsOPStros '" & strOP & "','" & Cons.StrosFondos & "','" & UsuarioFirma & "','" & Master.usuario & "','" & codRol & "'")
                             End If
                             Mensaje.MuestraMensaje("Autorizaciones", "Se aplicaron las firmas correspondientes", Mensaje.TipoMsg.Confirma)
@@ -909,9 +956,8 @@ Partial Class Siniestros_AutElectFondos
                         End If
 
                     ElseIf row("NivelAutorizacion") = 3 Then
-
-                        If DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
-                            UsuarioFirma = row("Subdirector")
+                        If DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Gerente")
                             fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
                         ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
                             UsuarioFirma = row("Subgerente")
@@ -925,6 +971,25 @@ Partial Class Siniestros_AutElectFondos
                         End If
 
                     ElseIf row("NivelAutorizacion") = 4 Then
+
+                        If DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Subdirector")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Gerente")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Subgerente")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Jefe_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Jefe")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Solicitante_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Solicitante")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        End If
+
+                    ElseIf row("NivelAutorizacion") = 5 Then
                         If DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
                             UsuarioFirma = row("Director")
                             fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
@@ -946,6 +1011,58 @@ Partial Class Siniestros_AutElectFondos
 
                         If DirectCast(grdOrdenPago.Rows(contador).FindControl("DirectorGeneral_"), Label).BackColor = System.Drawing.Color.Orange Then
                             UsuarioFirma = row("DirectorGeneral")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Director")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Subdirector")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Gerente")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Subgerente")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Jefe_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Jefe")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Solicitante_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Solicitante")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        End If
+
+                    ElseIf row("NivelAutorizacion") = 6 Then
+                        If DirectCast(grdOrdenPago.Rows(contador).FindControl("DirectorEjecutivo_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("DirectorEjecutivo")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Director")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Subdirector")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Gerente")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subgerente_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Subgerente")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Jefe_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Jefe")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Solicitante_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("Solicitante")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        End If
+
+                    ElseIf row("NivelAutorizacion") = 7 Then
+
+                        If DirectCast(grdOrdenPago.Rows(contador).FindControl("DirectorGeneral_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("DirectorGeneral")
+                            fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
+                        ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("DirectorEjecutivo_"), Label).BackColor = System.Drawing.Color.Orange Then
+                            UsuarioFirma = row("DirectorEjecutivo")
                             fn_Ejecuta("mis_MailPeticionRechazo '" & strOP & "','" & UsuarioFirma & "','" & Master.usuario & "'")
                         ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
                             UsuarioFirma = row("Director")
@@ -984,22 +1101,41 @@ Partial Class Siniestros_AutElectFondos
                     Select Case Master.cod_usuario
 
                         Case row("DirectorGeneral")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("DirectorEjecutivo") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Director") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subdirector") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Gerente") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subgerente") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Jefe") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Solicitante") & "'")
 
+                        Case row("DirectorEjecutivo")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Director") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subdirector") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Gerente") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subgerente") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Jefe") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Solicitante") & "'")
+
+
                         Case row("Director")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subdirector") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Gerente") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subgerente") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Jefe") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Solicitante") & "'")
 
                         Case row("Subdirector")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Gerente") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subgerente") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Jefe") & "'")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Solicitante") & "'")
+
+                        Case row("Gerente")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Subgerente") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Jefe") & "'")
+                            fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Solicitante") & "'")
+
 
                         Case row("Subgerente")
                             fn_Ejecuta("mis_MailSegundaRev '" & strOP & "','" & Master.usuario & "','" & row("Jefe") & "'")
@@ -1168,39 +1304,41 @@ Partial Class Siniestros_AutElectFondos
 
 
     Private Sub MuestraChecksAccion()
-        If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then  'si Administracion de siniestros
-            grdOrdenPago.Columns(17).Visible = True 'no procede
-            grdOrdenPago.Columns(19).Visible = True 'motivo
+        If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then
+            grdOrdenPago.Columns(18).Visible = True 'no procede
+            grdOrdenPago.Columns(21).Visible = True 'motivo
 
-            grdOrdenPago.Columns(14).Visible = False
             grdOrdenPago.Columns(15).Visible = False
             grdOrdenPago.Columns(16).Visible = False
-            grdOrdenPago.Columns(18).Visible = False
+            grdOrdenPago.Columns(17).Visible = False
+            grdOrdenPago.Columns(19).Visible = False
 
 
         ElseIf chk_MisPend.Checked = False Then
 
-            grdOrdenPago.Columns(14).Visible = False
-            grdOrdenPago.Columns(15).Visible = False
+            'grdOrdenPago.Columns(15).Visible = False
             grdOrdenPago.Columns(16).Visible = False
             grdOrdenPago.Columns(17).Visible = False
             grdOrdenPago.Columns(18).Visible = False
             grdOrdenPago.Columns(19).Visible = False
+            grdOrdenPago.Columns(20).Visible = False
+            grdOrdenPago.Columns(21).Visible = False
 
         Else
-            grdOrdenPago.Columns(14).Visible = True  'Firmar
-            grdOrdenPago.Columns(15).Visible = True  'Rechazar
-            grdOrdenPago.Columns(16).Visible = True  'Motivo Rechazo   
-            grdOrdenPago.Columns(17).Visible = False 'solo oculta no proc
+            grdOrdenPago.Columns(16).Visible = True  'Firmar 
+            grdOrdenPago.Columns(17).Visible = True  'Rechazar 
+            grdOrdenPago.Columns(18).Visible = True  'Motivo Rechazo   
+            grdOrdenPago.Columns(19).Visible = False 'solo oculta no proc 
 
-            If chk_SinFirma.Visible = True Then  'si no es solicitante
-                grdOrdenPago.Columns(18).Visible = True
+            If chk_SinFirma.Visible = True Then  'si no es solicitante 19
+                grdOrdenPago.Columns(20).Visible = True
             Else
-                grdOrdenPago.Columns(18).Visible = False  '2da rev oculta
+                grdOrdenPago.Columns(20).Visible = False  '2da rev oculta
             End If
 
-            grdOrdenPago.Columns(19).Visible = False 'motivo
+            grdOrdenPago.Columns(21).Visible = False 'motivo 21
         End If
+
 
     End Sub
     Private Sub DesHabilitaChecksFirma()
