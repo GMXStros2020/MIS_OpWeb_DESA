@@ -45,58 +45,85 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
 
     Protected Sub btn_Aceptar_Click(sender As Object, e As EventArgs) Handles btn_Aceptar.Click
 
-
-
         Dim cadena As String
         Dim datos() As String
         cadena = HttpContext.Current.User.Identity.Name.ToString()
         datos = cadena.Split("|")
 
-
-
         Dim oDatos As DataSet
+        Dim oDatosErr As DataSet
         Dim oTabla As DataTable
         Dim oParametros As New Dictionary(Of String, Object)
         Dim snFondosSinIva As String
         Dim VariasFacturas As String
+        Try
+            oParametros.Add("Num_Lote", txt_NumLote.Text)
+            oParametros.Add("salida", "2")
 
-        oParametros.Add("Num_Lote", txt_NumLote.Text)
-        oParametros.Add("salida", "2")
+            oDatos = Funciones.ObtenerDatos("sp_recupera_lote_OP_Masivo", oParametros)
+            oTabla = oDatos.Tables(0)
 
-        oDatos = Funciones.ObtenerDatos("sp_recupera_lote_OP_Masivo", oParametros)
-        oTabla = oDatos.Tables(0)
+            If chkFondosSinIVA.Checked = True Then
+                snFondosSinIva = "Y"
+            Else
+                snFondosSinIva = "N"
+            End If
 
-        If chkFondosSinIVA.Checked = True Then
-            snFondosSinIva = "Y"
-        Else
-            snFondosSinIva = "N"
-        End If
+            If chkVariasFacturas.Checked = True Then
+                VariasFacturas = "Y"
+            Else
+                VariasFacturas = "N"
+            End If
 
-        If chkVariasFacturas.Checked = True Then
-            VariasFacturas = "Y"
-        Else
-            VariasFacturas = "N"
-        End If
+            'Valida que los folios no esten asociados a una OP
+            Dim ErrorCode As Integer 'FCRUZ_GMX-10290_INCIDENCIAS
+            Dim ErrorMsg As String
+            ErrorMsg = ""
 
-        For Each row As DataRow In oTabla.Rows
+            For Each row As DataRow In oTabla.Rows
+                oDatosErr = New DataSet
 
-            oDatos = New DataSet
+                oParametros = New Dictionary(Of String, Object)
+                oParametros.Add("Folio_Onbase", row("Folio_Onbase").ToString())
+                oParametros.Add("Num_Pago", row("Num_Pago").ToString())
+                oParametros.Add("PagarA", row("PagarA").ToString())
 
-            oParametros = New Dictionary(Of String, Object)
-            oParametros.Add("NumLote", txt_NumLote.Text)
-            oParametros.Add("UsuarioSII", Master.cod_usuario.ToString())
-            oParametros.Add("Folio_Onbase", row("Folio_Onbase").ToString())
+                oDatosErr = Funciones.ObtenerDatos("usp_valida_folio_con_OP", oParametros)
 
-            oParametros.Add("Analista_Fondos", cmbAnalistaSolicitante.SelectedValue)
-            oParametros.Add("snFondosSinIva", snFondosSinIva)
-            oParametros.Add("VariasFacturas", VariasFacturas)
+                ErrorCode = oDatosErr.Tables(0).Rows(0).Item("ID_ERROR")
 
+                If ErrorCode <> 0 Then
+                    ErrorMsg = ErrorMsg + oDatosErr.Tables(0).Rows(0).Item("MSG_ERROR") + "<br>"
+                End If
 
-            oDatos = Funciones.ObtenerDatos("MIS_sp_solicitud_stro_grabar_op_Fondos_Masivo", oParametros)
+            Next
 
-        Next
+            If ErrorMsg <> "" Then
+                Throw New Exception(ErrorMsg)
+            End If
 
-        Response.Redirect("ResumenOPMasivo.aspx?Fondos=1&Num_Lote=" & txt_NumLote.Text)
+            For Each row As DataRow In oTabla.Rows
+
+                oDatos = New DataSet
+                oParametros = New Dictionary(Of String, Object)
+                oParametros.Add("NumLote", txt_NumLote.Text)
+                oParametros.Add("UsuarioSII", Master.cod_usuario.ToString())
+                oParametros.Add("Folio_Onbase", row("Folio_Onbase").ToString())
+
+                oParametros.Add("Analista_Fondos", cmbAnalistaSolicitante.SelectedValue)
+                oParametros.Add("snFondosSinIva", snFondosSinIva)
+                oParametros.Add("VariasFacturas", VariasFacturas)
+
+                oDatos = Funciones.ObtenerDatos("MIS_sp_solicitud_stro_grabar_op_Fondos_Masivo", oParametros)
+
+            Next
+
+            Response.Redirect("ResumenOPMasivo.aspx?Fondos=1&Num_Lote=" & txt_NumLote.Text)
+
+        Catch ex As Exception
+            Funciones.CerrarModal("#Modal")
+            MuestraMensaje("Generación de OP", ex.Message, TipoMsg.Falla)
+        End Try
 
     End Sub
 
