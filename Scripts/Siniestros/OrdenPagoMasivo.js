@@ -296,6 +296,16 @@
 
 
                 var mydata = $.parseJSON(result.d);
+
+                if (mydata.length == 0) {
+                    $("#loading").addClass("hidden");
+                    $("#list47").jqGrid("clearGridData");
+                    $("#list47").jqGrid("GridUnload");
+                    fn_MuestraMensaje("Atencion", "Este Lote no existe.", 0);
+                    return;
+                }//jjaramillo_GMX-10290_INCIDENCIAS Se agrega condicion para evitar desborde
+
+
                 $("[id*=txtFechaEstimadaPago]").val(mydata[0].Fec_pago);
                 if (mydata[0].PagarA == "Tercero") {
                     PagarA = 8;

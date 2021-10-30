@@ -2993,6 +2993,35 @@ Partial Class Siniestros_OrdenPago
         Dim oParametros As New Dictionary(Of String, Object)
 
         Try
+
+            'Valida que los folios no estén asociados a una OP
+            Dim ErrorMsg As String 'FCRUZ_GMX-10290_INCIDENCIAS  
+            Dim ErrorCode As Integer
+            ErrorMsg = ""
+            Dim oDatosErr As DataSet
+
+            For Each row As DataRow In oGrdOrden.Rows
+                oDatosErr = New DataSet
+
+                oParametros = New Dictionary(Of String, Object)
+                oParametros.Add("Folio_Onbase", row("FolioOnbase").ToString())
+                oParametros.Add("Num_Pago", row("NumeroPago").ToString())
+                oParametros.Add("PagarA", Me.cmbTipoUsuario.SelectedValue)
+
+                oDatosErr = Funciones.ObtenerDatos("usp_valida_folio_con_OP", oParametros)
+
+                ErrorCode = oDatosErr.Tables(0).Rows(0).Item("ID_ERROR")
+
+                If ErrorCode <> 0 Then
+                    ErrorMsg = ErrorMsg + oDatosErr.Tables(0).Rows(0).Item("MSG_ERROR") + "<br>"
+                End If
+            Next
+
+            If ErrorMsg <> "" Then
+                Mensaje.MuestraMensaje("OrdenPagoSiniestros", ErrorMsg, TipoMsg.Falla)
+                Return
+            End If
+
             If drDependencias.Visible = True And drDependencias.SelectedValue.ToString() = "-1" Then
                 Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Debe seleccionar una dependencia", TipoMsg.Advertencia)
                 Return
@@ -3057,8 +3086,8 @@ Partial Class Siniestros_OrdenPago
                                                                                             oDatos.Tables(oDatos.Tables.Count - 1).Rows(0).Item("MensajeError") +
                                                                                             errorcuentacontable), TipoMsg.Falla)
 
-                                Else
-                                    InicializarValores()
+                            Else
+                                InicializarValores()
                                 'Impresión reporte
                                 Dim ws As New ws_Generales.GeneralesClient
                                 Dim server As String = ws.ObtieneParametro(Cons.TargetReport)

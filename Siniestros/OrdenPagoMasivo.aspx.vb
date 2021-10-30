@@ -14,10 +14,10 @@ Partial Class Siniestros_OrdenPagoMasivo
 
         If Not IsPostBack Then
             Me.txtFechaEstimadaPago.Text = FechaEstimPago()
-            'txt_fecha_ini.Text = "01/01/2020"
-            'txt_fecha_fin.Text = "15/11/2020"
-            'txt_folio_onbase_Desde.Text = "19733"
-            'txt_folio_onbase_Hasta.Text = "19733"
+            'txt_fecha_ini.Text = "27/10/2020"
+            'txt_fecha_fin.Text = "27/10/2021"
+            'txt_folio_onbase_Desde.Text = "3271"
+            'txt_folio_onbase_Hasta.Text = "3290"
             'cmbPagarA.SelectedValue = 10
             'cmbSubsiniestro.SelectedValue = -1
         End If
@@ -51,44 +51,73 @@ Partial Class Siniestros_OrdenPagoMasivo
 
     Protected Sub btn_Aceptar_Click(sender As Object, e As EventArgs) Handles btn_Aceptar.Click
 
-
-
         Dim cadena As String
         Dim datos() As String
         cadena = HttpContext.Current.User.Identity.Name.ToString()
         datos = cadena.Split("|")
 
-
-
         Dim oDatos As DataSet
+        Dim oDatosErr As DataSet
         Dim oTabla As DataTable
         Dim oParametros As New Dictionary(Of String, Object)
 
 
-        oParametros.Add("Num_Lote", txt_NumLote.Text)
-        oParametros.Add("salida", "2")
+        Try
+
+            oParametros.Add("Num_Lote", txt_NumLote.Text)
+            oParametros.Add("salida", "2")
+
+            oDatos = Funciones.ObtenerDatos("sp_recupera_lote_OP_Masivo", oParametros)
+            oTabla = oDatos.Tables(0)
 
 
-        oDatos = Funciones.ObtenerDatos("sp_recupera_lote_OP_Masivo", oParametros)
-        oTabla = oDatos.Tables(0)
+            'Valida que los folios no estén asociados a una OP
+            Dim ErrorMsg As String 'FCRUZ_GMX-10290_INCIDENCIAS  
+            Dim ErrorCode As Integer
+            ErrorMsg = ""
+
+            For Each row As DataRow In oTabla.Rows
+                oDatosErr = New DataSet
+
+                oParametros = New Dictionary(Of String, Object)
+                oParametros.Add("Folio_Onbase", row("Folio_Onbase").ToString())
+                oParametros.Add("Num_Pago", row("Num_Pago").ToString())
+                oParametros.Add("PagarA", row("PagarA").ToString())
+
+                oDatosErr = Funciones.ObtenerDatos("usp_valida_folio_con_OP", oParametros)
+
+                ErrorCode = oDatosErr.Tables(0).Rows(0).Item("ID_ERROR")
+
+                If ErrorCode <> 0 Then
+                    ErrorMsg = ErrorMsg + oDatosErr.Tables(0).Rows(0).Item("MSG_ERROR") + "<br>"
+                End If
+
+            Next
+
+            If ErrorMsg <> "" Then
+                Throw New Exception(ErrorMsg)
+            End If
 
 
 
-        For Each row As DataRow In oTabla.Rows
+            For Each row As DataRow In oTabla.Rows
 
-            oDatos = New DataSet
+                oDatos = New DataSet
 
-            oParametros = New Dictionary(Of String, Object)
-            oParametros.Add("NumLote", txt_NumLote.Text)
-            oParametros.Add("UsuarioSII", Master.cod_usuario.ToString())
-            oParametros.Add("Folio_Onbase", row("Folio_Onbase").ToString())
+                oParametros = New Dictionary(Of String, Object)
+                oParametros.Add("NumLote", txt_NumLote.Text)
+                oParametros.Add("UsuarioSII", Master.cod_usuario.ToString())
+                oParametros.Add("Folio_Onbase", row("Folio_Onbase").ToString())
 
+                oDatos = Funciones.ObtenerDatos("usp_CrearSolicitudPago_stro_Masivo", oParametros)
+            Next
 
-            oDatos = Funciones.ObtenerDatos("usp_CrearSolicitudPago_stro_Masivo", oParametros)
+            Response.Redirect("ResumenOPMasivo.aspx?Num_Lote=" & txt_NumLote.Text)
 
-        Next
-
-        Response.Redirect("ResumenOPMasivo.aspx?Num_Lote=" & txt_NumLote.Text)
+        Catch ex As Exception
+            Funciones.CerrarModal("#Modal")
+            MuestraMensaje("Generación de OP", ex.Message, TipoMsg.Falla)
+        End Try
 
     End Sub
 

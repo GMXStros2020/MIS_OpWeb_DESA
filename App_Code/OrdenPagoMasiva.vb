@@ -34,7 +34,9 @@ Public Class OrdenPagoMasiva
             Dim ErrorCode As Integer 'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS 
             Dim ErrorMsg As String 'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS 
             Dim ErrorMsgCta As String 'FCRUZ_GMX-10290_INCIDENCIAS VALIDA LONGITUD DE CTAS
+            Dim ErrorMsgVacio As String 'JJARAMILLO_GMX-10290_INCIDENCIAS VALIDA CAMPOS OBLIGATORIOS
 
+            ErrorMsgVacio = ""
             ErrorMsgCta = ""
             ErrorMsg = ""
 
@@ -65,6 +67,17 @@ Public Class OrdenPagoMasiva
                 End If
 
 
+                'JJARAMILLO_GMX-10290_INCIDENCIAS VALIDA CAMPOS OBLIGATORIOS
+                If OP.PagarA = "Proveedor" Then
+                    If OP.Concepto_Pago = "" Then
+                        ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
+                    End If
+                Else
+                    If OP.Concepto2 = "" Or OP.Importe = 0 Or OP.Nombre_Razon_Social = "" Then
+                        ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
+                    End If
+                End If
+
                 'Valida Cuentas 
                 If OP.Tipo_Pago2 = "TRANSFERENCIA" Then
                     If OP.PagarA = "Proveedor" Then
@@ -88,6 +101,10 @@ Public Class OrdenPagoMasiva
                 Throw New Exception("El número de dígitos es menor a 18 para las cuentas de los siguientes Folios: <br>" + ErrorMsgCta)
             End If
             'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOsLIOS fin
+
+            If ErrorMsgVacio <> "" Then
+                Throw New Exception("Favor de ingresar todos los campos de los folios:" + ErrorMsgVacio)
+            End If
 
             If Lote = "0" Then
                 Num_Lote = Funciones.fn_EjecutaStr("Declare @ult_lote int  EXEC sp_ult_nro_lote @ult_lote=@ult_lote out Select @ult_lote ")
