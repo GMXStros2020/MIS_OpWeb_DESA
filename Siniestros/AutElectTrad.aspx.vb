@@ -1276,14 +1276,15 @@ Partial Class Siniestros_AutElectTrad
     End Sub
     Private Sub MuestraChecksAccion()
         If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then  'si Administracion de siniestros
-            grdOrdenPago.Columns(18).Visible = True 'no procede
+            grdOrdenPago.Columns(19).Visible = True 'no procede
             grdOrdenPago.Columns(21).Visible = True 'motivo
 
-            grdOrdenPago.Columns(15).Visible = False
+            ' grdOrdenPago.Columns(15).Visible = False
             grdOrdenPago.Columns(16).Visible = False
             grdOrdenPago.Columns(17).Visible = False
-            grdOrdenPago.Columns(19).Visible = False
-
+            grdOrdenPago.Columns(18).Visible = False
+            'grdOrdenPago.Columns(19).Visible = False
+            grdOrdenPago.Columns(23).Visible = True
 
         ElseIf chk_MisPend.Checked = False Then
 
@@ -1294,6 +1295,7 @@ Partial Class Siniestros_AutElectTrad
             grdOrdenPago.Columns(19).Visible = False
             grdOrdenPago.Columns(20).Visible = False
             grdOrdenPago.Columns(21).Visible = False
+            grdOrdenPago.Columns(23).Visible = True
 
         Else
             grdOrdenPago.Columns(16).Visible = True  'Firmar 
@@ -1308,6 +1310,7 @@ Partial Class Siniestros_AutElectTrad
             End If
 
             grdOrdenPago.Columns(21).Visible = False 'motivo 21
+            grdOrdenPago.Columns(23).Visible = False
         End If
 
     End Sub
