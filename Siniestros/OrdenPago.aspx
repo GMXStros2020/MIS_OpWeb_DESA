@@ -226,12 +226,12 @@
                             </div>
                             <div class="form-group col-md-2">
                                 <asp:Label runat="server" class="etiqueta-control">Núm comprobante</asp:Label>
-                                <asp:TextBox ID="txtNumeroComprobante" runat="server" Text='<%# Eval("NumeroComprobante") %>' CssClass="estandar-control Tablero Centro"></asp:TextBox>
+                                <asp:TextBox ID="txtNumeroComprobante" runat="server" Text='<%# Eval("NumeroComprobante") %>' CssClass="estandar-control Tablero Centro" readonly="true"></asp:TextBox>
                             </div>
                             <div class="form-group col-md-2">
                                 <asp:Label runat="server" class="etiqueta-control">Fecha comprobante</asp:Label>
-                                <asp:TextBox ID="txtFechaComprobante" runat="server" Text='<%# Eval("FechaComprobante") %>' CssClass="estandar-control Tablero Fecha Centro" autocomplete="off"></asp:TextBox>
-
+                               <%-- <asp:TextBox ID="txtFechaComprobante" runat="server" Text='<%# Eval("FechaComprobante") %>' CssClass="estandar-control Tablero Fecha Centro" autocomplete="off"></asp:TextBox>  --%> 
+                                <asp:TextBox ID="txtFechaComprobante" runat="server" Text='<%# Eval("FechaComprobante") %>' CssClass="estandar-control Tablero Centro" autocomplete="off" Enabled="false" readonly="true"></asp:TextBox>
                                 <%--<asp:TextBox ID="txt_clase" runat="server" hidden="true"></asp:TextBox>--%>
                                 <asp:TextBox ID="txt_clase" runat="server" hidden="true"></asp:TextBox>
                             </div>

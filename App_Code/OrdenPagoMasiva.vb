@@ -73,7 +73,7 @@ Public Class OrdenPagoMasiva
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
                 Else
-                    If OP.Concepto2 = "" Or OP.Importe = 0 Or OP.Nombre_Razon_Social = "" Then
+                    If OP.Importe = 0 Or OP.Nombre_Razon_Social = "" Then
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
                 End If
