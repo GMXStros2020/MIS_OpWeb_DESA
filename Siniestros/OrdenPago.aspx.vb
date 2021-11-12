@@ -130,7 +130,7 @@ Partial Class Siniestros_OrdenPago
             Facturas1.Style("display") = "none"
             cmbOrigenOP.Enabled = False
             cmbTipoPagoOP.Enabled = True
-            cmbTipoComprobante.Enabled = True
+            cmbTipoComprobante.Enabled = False
             txtNumeroComprobante.Enabled = True
             txtFechaComprobante.Enabled = True
             txtRFC.Enabled = True
@@ -833,7 +833,7 @@ Partial Class Siniestros_OrdenPago
                     Funciones.EjecutaFuncion("FormatCurrency(" + iIndiceFila.ToString() + ")", "Formato")
             'JLC Mejoras -fin
 
-                        Case "Descuentos"
+                Case "Descuentos"
                     If cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor Then
                         If txtDescuentos.Text = "" Then
                             txtDescuentos.Text = oTxt.Text
@@ -4205,7 +4205,7 @@ Partial Class Siniestros_OrdenPago
                                     txtRFC.Enabled = True
                                     txtBeneficiario_stro.Enabled = True
                                     txtNumeroComprobante.Enabled = True
-                                    txtFechaComprobante.Enabled = True
+                                    txtFechaComprobante.Enabled = False
 
                                     If Me.cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor Then 'FJCP MEJORAS FASE II NUMERO DE PAGO
                                         cmbNumPago.Enabled = False
@@ -4217,18 +4217,23 @@ Partial Class Siniestros_OrdenPago
 
 
                                 'se agrego por el tema de los 4 campos mas 
-                                If .Item("Moneda_poliza") = 0 Then
-                                    'If .Item("cod_moneda") = 1 Then se agrega por el tema de los 4 campos mas
-                                    If .Item("Moneda_Hara_Pago") = 1 Then
-                                        Mensaje.MuestraMensaje("Moneda", "No puedes pagar en dolares por que la moneda de la Poliza esta en pesos: ", TipoMsg.Falla)
-                                        ' Limpiartodo()'se comenta por que solo se requiere una alerta
-                                    Else
-                                        cmbMonedaPago.SelectedValue = 0
-                                    End If
-                                Else
+                                'If .Item("Moneda_poliza") = 0 Then
+                                '    'If .Item("cod_moneda") = 1 Then se agrega por el tema de los 4 campos mas
+                                '    If .Item("Moneda_Hara_Pago") = 1 Then
+                                '        Mensaje.MuestraMensaje("Moneda", "No puedes pagar en dolares por que la moneda de la Poliza esta en pesos: ", TipoMsg.Falla)
+                                '        ' Limpiartodo()'se comenta por que solo se requiere una alerta
+                                '    Else
+                                '        cmbMonedaPago.SelectedValue = 0
+                                '    End If
+                                'Else
+                                '    cmbMonedaPago.SelectedValue = 1
+                                'End If
+                                'JJARAMILLO 10290 Se comento la parte superior por choque en moneda_poliza y se agrego la condicion inferior
+                                If .Item("Moneda_Hara_Pago") = 1 Then
                                     cmbMonedaPago.SelectedValue = 1
+                                Else
+                                    cmbMonedaPago.SelectedValue = 0
                                 End If
-
 
                                 If .Item("Forma_Hara_Pago") = -1 Then
                                     Me.cmbTipoPagoOP.SelectedValue = "T"
