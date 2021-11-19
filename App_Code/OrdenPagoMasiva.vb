@@ -58,6 +58,16 @@ Public Class OrdenPagoMasiva
                     Case "Proveedor"
                         oParametros.Add("PagarA", "10")
                 End Select
+                'VZAVALETA_GMX-10290_INCIDENCIAS Validar la reserva y los asegurados
+                oParametros.Add("Poliza", ValidarParametros(OP.Poliza))
+
+                oParametros.Add("CodigoCliente", ValidarParametros(OP.CodigoCliente))
+                oParametros.Add("RFC", ValidarParametros(OP.RFC))
+                oParametros.Add("Nombre_Razon_Social", ValidarParametros(OP.Nombre_Razon_Social))
+
+                oParametros.Add("Tipo_Cambio", ValidarParametros(OP.Tipo_Cambio))
+                oParametros.Add("Reserva", ValidarParametros(OP.Reserva))
+                oParametros.Add("Importe", ValidarParametros(OP.Importe))
 
                 oDatos = Funciones.ObtenerDatos("usp_valida_folio_bloqueado", oParametros)
                 ErrorCode = oDatos.Tables(0).Rows(0).Item("ID_ERROR")
@@ -73,7 +83,7 @@ Public Class OrdenPagoMasiva
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
                 Else
-                    If OP.Importe = 0 Or OP.Nombre_Razon_Social = "" Then
+                    If OP.Importe = 0 Or OP.RFC = "" Or OP.CodigoCliente = "" Or OP.Nombre_Razon_Social = "" Then
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
                 End If

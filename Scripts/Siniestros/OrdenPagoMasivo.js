@@ -1146,6 +1146,8 @@
         var TipoPago = jQuery("#list47").jqGrid('getRowData', id).Tipo_Pago2
         var cta_clabe = jQuery("#list47").jqGrid('getRowData', id).Cuenta_Bancaria
         var SubStro = jQuery("#list47").jqGrid('getRowData', id).Subsiniestro
+        var RFC = jQuery("#list47").jqGrid('getRowData', id).RFC;
+        
 
         //>VZAVALETA_10290_CC7      
         if (TipoUsuario == "Asegurado") {
@@ -1155,10 +1157,16 @@
                         {
                             type: 'change',
                             fn: function (e) {
-                                var v = parseInt($(e.target).val(), 10);
+                                var arrRFC = $(e.target).val().split('|');
+                                var rfc = arrRFC[1];
+                                //$(e.target).val() = arrRFC[0].toString();
+                                //$(e.target).value = arrRFC[0].toString();
+                                var v = parseInt($(e.target).val(), 10);                                
                                 var row = $(e.target).closest('tr.jqgrow');
                                 var rowId = row.attr('id');
+
                                 jQuery("#list47").jqGrid('setCell', rowId, 'CodigoCliente', v);
+                                jQuery("#list47").jqGrid('setCell', rowId, 'RFC', rfc);
 
                                 ObtenerCuentasDependencias(rowId, v)
 
@@ -1177,11 +1185,11 @@
                     //var s = '<option value="0">Seleccione valor</option>';
                     var s = '';
                     for (var i = 0; i < result.length; i++) {
-                        if (Nombre_Razon_Social == result[i].nombre) {
-                            s += '<option value="' + result[i].cod_aseg + '"  selected = "selected">' + result[i].nombre + '</option>';
+                        if (Nombre_Razon_Social === result[i].nombre) {
+                            s += '<option value="' + result[i].cod_aseg +'|' + result[i].RFC + '"  selected = "selected">' + result[i].nombre + '</option>';
                         }
                         else {
-                            s += '<option value="' + result[i].cod_aseg + '">' + result[i].nombre + '</option>';
+                            s += '<option value="' + result[i].cod_aseg + '|' + result[i].RFC +  '">' + result[i].nombre + '</option>';
                         }
                     }
                     res = s;
