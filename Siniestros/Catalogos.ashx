@@ -135,7 +135,7 @@ Public Class Prueba : Implements IHttpHandler
                 poliza = context.Request.QueryString("Poliza")
                 param = Replace(poliza, "-", ",")
 
-                Funciones.fn_Consulta("SELECT DISTINCT cod_aseg, nombre FROM f_aseg_poliza(" & param & ") ", oTabla)
+                Funciones.fn_Consulta("SELECT DISTINCT cod_aseg, RFC, nombre FROM f_aseg_poliza(" & param & ") ", oTabla)
         End Select
 
 
