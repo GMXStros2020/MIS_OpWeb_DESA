@@ -171,7 +171,7 @@
                                                FirmaDirectorGeneral, FirmaSubgerente, FirmadoSolicitante, FirmadoJefe, FirmadoTesoreria, FirmadoSubdirector, FirmadoDirector, FirmadoDirectorGeneral,FirmadoSubgerente,	FechaFirmaSolicitante,
                                                FechaFirmaJefe, FechaFirmaTesoreria ,FechaFirmaSubdirector ,FechaFirmaDirector ,FechaFirmaDirectorGeneral,FechaFirmaSubgerente, NivelAutorizacion, Preautorizada,Rechazada,
                                                Gerente, DirectorEjecutivo, NombreGerente, NombreDirectorEjecutivo, FirmaGerente, FirmaDirectorEjecutivo, FirmadoGerente, FirmadoDirectorEjecutivo,
-                                               FechaFirmaGerente, FechaFirmaDirectorEjecutivo, motivo_rechazo">
+                                               FechaFirmaGerente, FechaFirmaDirectorEjecutivo, motivo_rechazo, Folio_Onbase_est_cuenta">
                                  <Columns>
                                       <asp:TemplateField>
                                             <HeaderTemplate><center>OP</center></HeaderTemplate>
@@ -363,6 +363,12 @@
                                         </ItemTemplate>
                                           <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     </asp:TemplateField>  
+                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Folio" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" runat="server" ID="folioonbasecta" Text='<%# Eval("Folio_Onbase_est_cuenta") %>'  Width="40px" Visible="false" ></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>  
+
                                  </Columns>
                             </asp:GridView>
                         </asp:Panel>
