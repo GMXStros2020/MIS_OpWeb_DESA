@@ -60,6 +60,7 @@ Public Class OrdenPagoMasiva
                 End Select
                 'VZAVALETA_GMX-10290_INCIDENCIAS Validar la reserva y los asegurados
                 oParametros.Add("Poliza", ValidarParametros(OP.Poliza))
+                oParametros.Add("Clase_pago", ValidarParametros(OP.Cod_clas_pago))
 
                 oParametros.Add("CodigoCliente", ValidarParametros(OP.CodigoCliente))
                 oParametros.Add("RFC", ValidarParametros(OP.RFC))
