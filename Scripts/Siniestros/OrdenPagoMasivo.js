@@ -2,6 +2,9 @@
     var outerwidth = $("#list47").width(); //Asignación de valor de pixelaje de la pantalla
     $("#txt_width").val(outerwidth);
     var res = { '0': 'Sin Informacion' };
+    //VZAVALETA_GMX-10290_INCIDENCIAS Funciòn para no copiar
+    var dataEvents = {        noCopyPaste: {            type: 'copy paste cut',            fn: function (e) { e.preventDefault(); }        }    };
+    //VZAVALETA_GMX-10290_INCIDENCIAS
     //var Tipo_Pago = { '0': 'Seleccione Opcion', '1': 'CHEQUE', '2': 'TRANSFERENCIA' };
 
     $("#btn_Reporte").click(function () { //Inicia funcion del boton buscar (btn_Reporte) para cargar el gridview
@@ -454,8 +457,8 @@
                     { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "254" } },
                     { name: 'Tipo_Pago2', index: 'Tipo_Pago2', width: 90, hidden: false },
                     { name: 'Folio_Onbase_cuenta', index: 'Folio_Onbase_cuenta', width: 90, hidden: true },
-                    { name: 'Cuenta_Bancaria', index: 'Cuenta_Bancaria', width: 180, editable: false, editoptions: { size: "30", maxlength: "18" }, editrules: { custom: true, custom_func: Validar, required: true } },
-                    { name: 'Confirmar_Cuenta', index: 'Confirmar_Cuenta', width: 180, editable: false, editoptions: { size: "30", maxlength: "18" }, editrules: { custom: true, custom_func: Validar, required: true } },
+                    { name: 'Cuenta_Bancaria', index: 'Cuenta_Bancaria', width: 180, editable: false, editoptions: { size: "30", maxlength: "18", dataEvents: [dataEvents.noCopyPaste] }, editrules: { custom: true, custom_func: Validar, required: true } },
+                    { name: 'Confirmar_Cuenta', index: 'Confirmar_Cuenta', width: 180, editable: false, editoptions: { size: "30", maxlength: "18", dataEvents: [dataEvents.noCopyPaste] }, editrules: { custom: true, custom_func: Validar, required: true } },
                     { name: 'Solicitante', index: 'Solicitante', width: 90 },
                     { name: 'Notas', index: 'Notas', width: 180, editable: true, editoptions: { size: "30", maxlength: "100" } },
                     { name: 'Observaciones', index: 'Observaciones', width: 260, editable: true, editoptions: { size: "50", maxlength: "100" } },
@@ -705,10 +708,11 @@
                     { name: 'Concepto2', index: 'Concepto2', width: 180, editable: true, hidden: false, editoptions: { size: "30", maxlength: "254" } },
                     { name: 'Tipo_Pago2', index: 'Tipo_Pago2', width: 90, hidden: false },
                     { name: 'Folio_Onbase_cuenta', index: 'Folio_Onbase_cuenta', width: 90 },
+        
 
-                    { name: 'Cuenta_Bancaria', index: 'Cuenta_Bancaria', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18" }, editrules: { custom: true, custom_func: Validar, required: true } },                    
+                    { name: 'Cuenta_Bancaria', index: 'Cuenta_Bancaria', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18", dataEvents: [dataEvents.noCopyPaste]}, editrules: { custom: true, custom_func: Validar, required: true } },                    
                     { name: 'Cuenta_Bancaria_ok', index: 'Cuenta_Bancaria_ok', width: 180, hidden: true }, //FJCP_10290_CC                
-                    { name: 'Confirmar_Cuenta', index: 'Confirmar_Cuenta', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18" }, editrules: { custom: true, custom_func: Validar, required: true } },                    
+                    { name: 'Confirmar_Cuenta', index: 'Confirmar_Cuenta', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18", dataEvents: [dataEvents.noCopyPaste] }, editrules: { custom: true, custom_func: Validar, required: true } },                    
                     { name: 'Confirmar_Cuenta_ok', index: 'Confirmar_Cuenta_ok', width: 180, hidden: true }, //FJCP_10290_CC
 
                     { name: 'Solicitante', index: 'Solicitante', width: 90 },
@@ -971,9 +975,9 @@
                     { name: 'Tipo_Pago2', index: 'Tipo_Pago2', width: 90, hidden: false },
                     { name: 'Folio_Onbase_cuenta', index: 'Folio_Onbase_cuenta', width: 90 },
 
-                    { name: 'Cuenta_Bancaria', index: 'Cuenta_Bancaria', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18" }, editrules: { custom: true, custom_func: Validar, required: true } },
+                    { name: 'Cuenta_Bancaria', index: 'Cuenta_Bancaria', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18", dataEvents: [dataEvents.noCopyPaste] }, editrules: { custom: true, custom_func: Validar, required: true } },
                     { name: 'Cuenta_Bancaria_ok', index: 'Cuenta_Bancaria_ok', width: 180, hidden: true }, //FJCP_10290_CC
-                    { name: 'Confirmar_Cuenta', index: 'Confirmar_Cuenta', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18" }, editrules: { custom: true, custom_func: Validar, required: true } },
+                    { name: 'Confirmar_Cuenta', index: 'Confirmar_Cuenta', width: 180, formatter: MascaraPwdCta, editable: false, editoptions: { size: "30", maxlength: "18", dataEvents: [dataEvents.noCopyPaste] }, editrules: { custom: true, custom_func: Validar, required: true } },
                     { name: 'Confirmar_Cuenta_ok', index: 'Confirmar_Cuenta_ok', width: 180, hidden: true }, //FJCP_10290_CC
 
                     { name: 'Solicitante', index: 'Solicitante', width: 90 },

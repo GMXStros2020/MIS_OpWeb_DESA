@@ -805,7 +805,7 @@ Partial Class Siniestros_OrdenPago
                             End If
                         End If
                         'If Not cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor AndAlso CDbl(oGrdOrden.Rows(iIndiceFila)("ImportePagos")) + CDbl(oTxt.Text.Trim) > CDbl(oGrdOrden.Rows(iIndiceFila)("Reserva")) Then
-                        If Not cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor AndAlso CDbl(oTxt.Text.Trim) > CDbl(oGrdOrden.Rows(iIndiceFila)("Reserva")) Then
+                        If Not cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor AndAlso CDbl(oTxt.Text.Trim) > CDbl(oGrdOrden.Rows(iIndiceFila)("Reserva")) AndAlso oGrdOrden.Rows(iIndiceFila)("ClasePago") <> 75 Then
                             Mensaje.MuestraMensaje("OrdenPagoSiniestros", String.Format("Límite de Reserva superado. {0} Reserva: {1} {2} Total de pagos: {3}",
                                                                                                 Environment.NewLine,
                                                                                                 CDbl(oGrdOrden.Rows(iIndiceFila)("Reserva")),
@@ -884,7 +884,7 @@ Partial Class Siniestros_OrdenPago
         Dim oFilaSeleccion3() As DataRow
 
         Dim substroDetalle As Integer = 0
-
+        Me.txtcpto2.Text = String.Empty
         Try
 
             If cmbNumPago.SelectedValue = -1 Then
@@ -4054,6 +4054,7 @@ Partial Class Siniestros_OrdenPago
                                     'Se agrega por el tema de 4 campos mas
                                     If .Item("sn_transferencia") <> .Item("Forma_Hara_Pago") Then
                                         Mensaje.MuestraMensaje("Moneda", "No coincide la forma del pago MIS vs SIIGMX (OP WEB) ", TipoMsg.Falla)
+                                        Limpiartodo() 'VZAVALETA_GMX-10290_INCIDENCIAS
                                     End If
                                     If .Item("sn_transferencia") = -1 Then
                                         Me.cmbTipoPagoOP.SelectedValue = "T"
