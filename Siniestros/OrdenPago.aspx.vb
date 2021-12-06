@@ -2917,7 +2917,7 @@ Partial Class Siniestros_OrdenPago
                         Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de iTotalImpuestosn: " + iTotalImpuestosn.ToString(), TipoMsg.Falla)
                     Else
                         '--retenciones
-                        If Math.Abs(iTotalRetenciones) > 0.5 Then
+                        If Math.Abs(iTotalRetenciones) > 0.9 Then
                             ValidarImpuestosOPFac = False
                             Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de iTotalRetenciones: " + iTotalRetenciones.ToString(), TipoMsg.Falla)
                         Else
