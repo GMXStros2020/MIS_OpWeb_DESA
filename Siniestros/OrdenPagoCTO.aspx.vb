@@ -1948,22 +1948,22 @@ Partial Class Siniestros_OrdenPago
                 End If
 
                 '--Autorizacion
-                If Math.Abs(iTotalAutorizacion) > 0.5 Then
+                If Math.Abs(iTotalAutorizacion) > 0.9 Then
                     ValidarImpuestosOPFac = False
                     Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de Autorizacion: " + iTotalAutorizacion.ToString(), TipoMsg.Falla)
                 Else
                     '--impuestos
-                    If Math.Abs(iTotalImpuestosn) > 0.5 Then
+                    If Math.Abs(iTotalImpuestosn) > 0.9 Then
                         ValidarImpuestosOPFac = False
                         Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de iTotalImpuestosn: " + iTotalImpuestosn.ToString(), TipoMsg.Falla)
                     Else
                         '--retenciones
-                        If Math.Abs(iTotalRetenciones) > 0.5 Then
+                        If Math.Abs(iTotalRetenciones) > 0.9 Then
                             ValidarImpuestosOPFac = False
                             Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de iTotalRetenciones: " + iTotalRetenciones.ToString(), TipoMsg.Falla)
                         Else
                             '--subtotal
-                            If Math.Abs(iSubTotal) > 0.5 Then
+                            If Math.Abs(iSubTotal) > 0.9 Then
                                 ValidarImpuestosOPFac = False
                                 Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de iSubTotal: " + iSubTotal.ToString(), TipoMsg.Falla)
                             Else
