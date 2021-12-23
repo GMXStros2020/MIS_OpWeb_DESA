@@ -430,6 +430,8 @@ Partial Class Siniestros_CartasChequeAutorizacion
         Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
 
         Dim RptFilters As String
+        Cache.Remove(Request.UrlReferrer.AbsolutePath)
+
         RptFilters = "&folio=" & nrofolio.ToString()
         server = Replace(Replace(server, "@Reporte", "RepCartasCheque"), "@Formato", "PDF")
         server = Replace(server, Cons.ReposSource, Cons.ReposReport)
