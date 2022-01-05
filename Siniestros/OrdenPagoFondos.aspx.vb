@@ -3607,17 +3607,19 @@ Partial Class Siniestros_OrdenPago
                         oSeleccionActual = oDatos.Tables(0)
 
                         With oDatos.Tables(0).Rows(0)
-                            ' If (oDatos.Tables(0).Rows(0).Item("sn_relacionado") = "-1") Then
-                            '    Mensaje.MuestraMensaje("Folio OnBase Relacionado", "Fecha Relacionado: " + oDatos.Tables(0).Rows(0).Item("fecha_relacion").ToString() + " Usuario relacion: " + oDatos.Tables(0).Rows(0).Item("cod_usuario_relacion").ToString() + " Fecha de Comprobante: " + oDatos.Tables(0).Rows(0).Item("fecha_emision_gmx").ToString(), TipoMsg.Falla)
-                            '    Limpiartodo()
-                            ' Else
-                            'If (oDatos.Tables(0).Rows(0).Item("fec_fact") = "1") Then
-                            Me.txtSiniestro.Text = .Item("nro_stro")
-                            '     Else
-                            ' Mensaje.MuestraMensaje("Fecha Comprobante menor al año fiscal: ", "Fecha del comprobante Fiscal: " + oDatos.Tables(0).Rows(0).Item("fecha_emision_gmx").ToString(), TipoMsg.Falla)
-                            ' Limpiartodo()
-                            'End If
-                            ' End If
+                            If (oDatos.Tables(0).Rows(0).Item("sn_relacionado") = "-1") Then
+                                'Mensaje.MuestraMensaje("Folio OnBase Relacionado", "Fecha Relacionado: " + oDatos.Tables(0).Rows(0).Item("fecha_relacion").ToString() + " Usuario relacion: " + oDatos.Tables(0).Rows(0).Item("cod_usuario_relacion").ToString() + " Fecha de Comprobante: " + oDatos.Tables(0).Rows(0).Item("fecha_emision_gmx").ToString(), TipoMsg.Falla)
+
+                                Mensaje.MuestraMensaje("Folio OnBase Relacionado", "Fecha Relacionado: " + oDatos.Tables(0).Rows(0).Item("fecha_relacion").ToString() + "<br>" + "Usuario relacion: " + oDatos.Tables(0).Rows(0).Item("cod_usuario_relacion").ToString() + "<br>" + "Fecha de Comprobante: " + oDatos.Tables(0).Rows(0).Item("fecha_emision_gmx").ToString() + "<br>" + "OP Relacionada: " + oDatos.Tables(0).Rows(0).Item("Nro_OP").ToString(), TipoMsg.Falla) 'FJCP 10290 MEJORAS Folio 
+                                Limpiartodo()
+                            Else
+                                'If (oDatos.Tables(0).Rows(0).Item("fec_fact") = "1") Then
+                                Me.txtSiniestro.Text = .Item("nro_stro")
+                                '     Else
+                                ' Mensaje.MuestraMensaje("Fecha Comprobante menor al año fiscal: ", "Fecha del comprobante Fiscal: " + oDatos.Tables(0).Rows(0).Item("fecha_emision_gmx").ToString(), TipoMsg.Falla)
+                                ' Limpiartodo()
+                                'End If
+                            End If
                         End With
 
                         'valida los datos de numero de siniestro
