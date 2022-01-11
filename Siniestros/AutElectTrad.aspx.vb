@@ -1716,7 +1716,7 @@ Partial Class Siniestros_AutElectTrad
     End Sub
 
     Private Sub grdOrdenPago_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles grdOrdenPago.RowCommand
-        Try
+         Try
             Dim Index As Integer = e.CommandSource.NamingContainer.RowIndex
             Dim OrdenPago = grdOrdenPago.DataKeys(Index)("nro_op")
             Dim FolioOnBase_ = grdOrdenPago.DataKeys(Index)("FolioOnbase")
@@ -1743,7 +1743,7 @@ Partial Class Siniestros_AutElectTrad
                 If FolioOnBaseEdoCta_.ToString() = vbNullString Then
                     Mensaje.MuestraMensaje("Estado de Cuenta", "La OP no tiene Folio OnBase Estado de Cuenta", TipoMsg.Advertencia)
                 Else
-                    hrefOnBase = fn_EjecutaStr("mis_WSOnBasePath " & CodAbona_)
+                    hrefOnBase = fn_EjecutaStr("mis_WSOnBasePath " & -1)
                     hrefOnBase = Replace(hrefOnBase, "@Folio", FolioOnBaseEdoCta_)
                     Funciones.EjecutaFuncion("window.open('" & hrefOnBase & "','_blank');")
                 End If
