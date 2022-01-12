@@ -155,6 +155,7 @@
                       <asp:Label Text="Sin Firmar" class="etiqueta-control" Font-Bold="true"  BackColor="#ffcc00" runat="server" ></asp:Label>
                       <asp:Label Text="Sol.Rechazo" class="etiqueta-control" Font-Bold="true" BackColor="Red" runat="server" ForeColor="White" ></asp:Label>
                       <asp:Label Text="Cancelada" class="etiqueta-control" Font-Bold="true"  BackColor="#6699ff" runat="server" ></asp:Label>
+                      <asp:Label Text="Firma PA" class="etiqueta-control" Font-Bold="true" BackColor="LightGray" runat="server" ></asp:Label>
                       <%--<asp:Label id="lblFechaTope" Text="Fecha Tope:" class="etiqueta-control" Font-Bold="true"  BackColor="LightGray" runat="server" ></asp:Label>--%>
 
                       <asp:HiddenField runat="server" ID="hid_rechazo" Value="0" />
@@ -184,7 +185,7 @@
                                       <asp:TemplateField>
                                            <HeaderTemplate><center>EdoCta</center></HeaderTemplate>
                                             <ItemTemplate>
-                                                    <asp:imagebutton ID="btn_VerEdoCta" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerEdoCta" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
+                                                    <asp:imagebutton ID="btn_VerEdoCta" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerEdoCta" CommandArgument="<%# Container.DataItemIndex %>" runat="server" visible='<%# If(CBool(IsDBNull(Eval("Folio_Onbase_est_cuenta"))), False, True)  %>'/>
                                             </ItemTemplate>
                                           <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
                                     </asp:TemplateField>
@@ -242,28 +243,30 @@
                                      <asp:TemplateField>
                                          <HeaderTemplate><center>Supervisor</center></HeaderTemplate>
                                         <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# If(CBool(Eval("Jefe") = "RRAMOS") Or CBool(Eval("Solicitante") = "RRAMOS"), "", Eval("NombreJefe")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
+                                            <asp:Label ReadOnly="true" ID="Jefe_" runat="server" Text='<%# If(CBool(Eval("Jefe") = "RRAMOS") Or CBool(Eval("Solicitante") = "RRAMOS"), "", Eval("NombreJefe")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Jefe")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoJefe")) And CBool(IsDBNull(Eval("FechaFirmaJefe"))), System.Drawing.Color.LightGray, If(CBool(Eval("FirmadoJefe")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange)))) %>'  Width="100px"  Visible='<%# Eval("NivelAutorizacion") >= 1  %>'></asp:Label>
                                         </ItemTemplate>
                                          <ItemStyle HorizontalAlign="Center" Width="50"></ItemStyle>
                                     </asp:TemplateField>  
                                     <asp:TemplateField>
                                         <HeaderTemplate><center>SubGerente</center></HeaderTemplate>
                                         <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="Subgerente_" runat="server" Text='<%# If(CBool(Eval("Subgerente") = "RRAMOS") Or CBool(Eval("Solicitante") = "RRAMOS"), "", Eval("NombreSubgerente")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubgerente")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 2  %>'></asp:Label>
+                                            <asp:Label ReadOnly="true" ID="Subgerente_" runat="server" Text='<%# If(CBool(Eval("Subgerente") = "RRAMOS") Or CBool(Eval("Solicitante") = "RRAMOS"), "", Eval("NombreSubgerente")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subgerente")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubgerente")) And CBool(IsDBNull(Eval("FechaFirmaSubgerente"))), System.Drawing.Color.LightGray, If(CBool(Eval("FirmadoSubgerente")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange)))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 2  %>'></asp:Label>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
                                     </asp:TemplateField>   
-                                    <asp:TemplateField>
+
+                                     <asp:TemplateField>
                                         <HeaderTemplate><center>Gerente</center></HeaderTemplate>
                                         <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="Gerente_" runat="server" Text='<%# If(CBool(Eval("Gerente") = "RRAMOS") Or CBool(Eval("Solicitante") = "RRAMOS"), "", Eval("NombreGerente")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Gerente")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Gerente")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoGerente")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 3  %>'></asp:Label>
+                                            <asp:Label ReadOnly="true" ID="Gerente_" runat="server" Text='<%# If(CBool(Eval("Gerente") = "RRAMOS") Or CBool(Eval("Solicitante") = "RRAMOS"), "", Eval("NombreGerente")) %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Gerente")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Gerente")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoGerente")) And CBool(IsDBNull(Eval("FechaFirmaGerente"))), System.Drawing.Color.LightGray, If(CBool(Eval("FirmadoGerente")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange)))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 3  %>'></asp:Label>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
                                     </asp:TemplateField>   
+
                                      <asp:TemplateField>
                                          <HeaderTemplate><center>SubDirector</center></HeaderTemplate>
                                         <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="Subdirector_" runat="server" Text='<%# Eval("NombreSubdirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubdirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 4  %>'></asp:Label>
+                                            <asp:Label ReadOnly="true" ID="Subdirector_" runat="server" Text='<%# Eval("NombreSubdirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Subdirector")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoSubdirector")) And CBool(IsDBNull(Eval("FechaFirmaSubdirector"))), System.Drawing.Color.LightGray, If(CBool(Eval("FirmadoSubdirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange)))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 4  %>'></asp:Label>
                                         </ItemTemplate>
                                          <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
                                     </asp:TemplateField> 
@@ -271,17 +274,19 @@
                                      <asp:TemplateField>
                                          <HeaderTemplate><center>Director</center></HeaderTemplate>
                                         <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="Director_" runat="server" Text='<%# Eval("NombreDirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 5  %>'></asp:Label>
-                                        </ItemTemplate>
-                                         <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
-                                    </asp:TemplateField>     
-                                      <asp:TemplateField>
-                                         <HeaderTemplate><center>DirectorEjecutivo</center></HeaderTemplate>
-                                        <ItemTemplate>
-                                            <asp:Label ReadOnly="true" ID="DirectorEjecutivo_" runat="server" Text='<%# Eval("NombreDirectorEjecutivo") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("DirectorEjecutivo")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("DirectorEjecutivo")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirectorEjecutivo")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 6  %>'></asp:Label>
+                                            <asp:Label ReadOnly="true" ID="Director_" runat="server" Text='<%# Eval("NombreDirector") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("Director")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirector")) And CBool(IsDBNull(Eval("FechaFirmaDirector"))), System.Drawing.Color.LightGray, If(CBool(Eval("FirmadoDirector")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange)))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 5  %>'></asp:Label>
                                         </ItemTemplate>
                                          <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
                                     </asp:TemplateField>
+                                     
+                                      <asp:TemplateField>
+                                         <HeaderTemplate><center>DirectorEjecutivo</center></HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:Label ReadOnly="true" ID="DirectorEjecutivo_" runat="server" Text='<%# Eval("NombreDirectorEjecutivo") %>' ForeColor='<%# If(CBool(Eval("usu_solrechazo") = Eval("DirectorEjecutivo")), System.Drawing.Color.White, System.Drawing.Color.Black) %>' BackColor='<%# If(CBool(Eval("Rechazada")), System.Drawing.Color.LightBlue, If(CBool(Eval("usu_solrechazo") = Eval("DirectorEjecutivo")), System.Drawing.Color.Red, If(CBool(Eval("FirmadoDirectorEjecutivo")) And CBool(IsDBNull(Eval("FechaFirmaDirectorEjecutivo"))), System.Drawing.Color.LightGray, If(CBool(Eval("FirmadoDirectorEjecutivo")), System.Drawing.Color.LimeGreen, System.Drawing.Color.Orange)))) %>'  Width="100px" visible='<%# Eval("NivelAutorizacion") >= 6  %>'></asp:Label>
+                                        </ItemTemplate>
+                                         <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
+                                    </asp:TemplateField>
+                                          
                                      <asp:TemplateField>
                                          <HeaderTemplate><center>DirectorGeneral</center></HeaderTemplate>
                                         <ItemTemplate>
@@ -289,7 +294,13 @@
                                         </ItemTemplate>
                                          <ItemStyle HorizontalAlign="Center" Width="50px"></ItemStyle>
                                     </asp:TemplateField>  
-
+                                      <asp:TemplateField>
+                                        <HeaderTemplate><center>Revision</center></HeaderTemplate>
+                                     <ItemTemplate>
+                                            <asp:RadioButton runat="server" TextAlign="Right"  ID="chkRevision" GroupName="chkAcciones" Checked='True'/>
+                                     </ItemTemplate> 
+                                         <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
+                                    </asp:TemplateField>
                                     <asp:TemplateField>
                                         <HeaderTemplate><center>Firmar</center></HeaderTemplate>
                                      <ItemTemplate>
