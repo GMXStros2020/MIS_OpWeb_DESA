@@ -757,6 +757,7 @@ Partial Class Siniestros_AutElectFondos
             Dim chk_SegRev_ As Boolean = DirectCast(grdOrdenPago.Rows(contador).FindControl("chkSegRev"), CheckBox).Checked
             Dim chk_NoProc_ As Boolean = DirectCast(grdOrdenPago.Rows(contador).FindControl("chkNoProc"), CheckBox).Checked
             Dim chk_Rechazo As Boolean = DirectCast(grdOrdenPago.Rows(contador).FindControl("chkSolRechazo"), CheckBox).Checked
+            Dim chk_Revision As Boolean = DirectCast(grdOrdenPago.Rows(contador).FindControl("chkRevision"), CheckBox).Checked
             Dim ddlMotivo = DirectCast(grdOrdenPago.Rows(contador).FindControl("cmbConcepto"), DropDownList)
             Dim txtMotivoNoProc_ = DirectCast(grdOrdenPago.Rows(contador).FindControl("txtMotivoNoProc"), TextBox).Text
 
@@ -883,7 +884,7 @@ Partial Class Siniestros_AutElectFondos
                 If OPCompletada = False Then
 
                     If sn_proceso = True Then
-                        If fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",-1,'" & codRol & "'") = 1 Then
+                        If fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",-1,'" & codRol & "'," & 1) = 1 Then
                             'fn_Ejecuta("mis_InsertaOPsEnviadas " & strOP & ",'" & UsuarioFirma & "'," & Cons.StrosTradicional & ",0")
                             If row("NivelAutorizacion") >= 6 Then
                                 fn_Ejecuta("mis_EmailsOPStros '" & strOP & "','" & Cons.StrosFondos & "','" & UsuarioFirma & "','" & Master.usuario & "','" & codRol & "'")
@@ -894,7 +895,7 @@ Partial Class Siniestros_AutElectFondos
                     End If
                 Else
                     If sn_proceso = True Then
-                        If fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",-1,'" & codRol & "'") = 1 Then
+                        If fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",-1,'" & codRol & "'," & 1) = 1 Then
                             fn_Ejecuta("mis_AutorizaOPSTros " & strOP & ",'" & Master.cod_usuario & "'")
                             Mensaje.MuestraMensaje("Autorizaciones", "Se Autorizo la Orden de Pago", Mensaje.TipoMsg.Confirma)
                         End If
@@ -1167,7 +1168,12 @@ Partial Class Siniestros_AutElectFondos
                     dtNoProc.Rows.Add(strOP, txtMotivoNoProc_)
                 End If
 
+            ElseIf chk_Revision = True Then
+
+
             End If
+
+
 
             'End If
             contador = contador + 1
@@ -1304,44 +1310,54 @@ Partial Class Siniestros_AutElectFondos
 
 
     Private Sub MuestraChecksAccion()
+        grdOrdenPago.Columns(20).Visible = False 'oculta el txtMotivoOtro
         If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then  'si Administracion de siniestros
-            grdOrdenPago.Columns(19).Visible = True 'no procede
-            grdOrdenPago.Columns(21).Visible = True 'motivo
+            grdOrdenPago.Columns(21).Visible = True 'no procede
+            grdOrdenPago.Columns(23).Visible = True 'motivo
 
             ' grdOrdenPago.Columns(15).Visible = False
             grdOrdenPago.Columns(16).Visible = False
             grdOrdenPago.Columns(17).Visible = False
             grdOrdenPago.Columns(18).Visible = False
+            grdOrdenPago.Columns(19).Visible = False
             'grdOrdenPago.Columns(19).Visible = False
-            grdOrdenPago.Columns(23).Visible = True
+            grdOrdenPago.Columns(25).Visible = True
 
         ElseIf chk_MisPend.Checked = False Then
 
-            'grdOrdenPago.Columns(15).Visible = False
-            grdOrdenPago.Columns(16).Visible = False
-            grdOrdenPago.Columns(17).Visible = False
-            grdOrdenPago.Columns(18).Visible = False
-            grdOrdenPago.Columns(19).Visible = False
-            grdOrdenPago.Columns(20).Visible = False
+            If chk_Todas.Checked = True Then
+                grdOrdenPago.Columns(16).Visible = False
+                grdOrdenPago.Columns(17).Visible = False
+                grdOrdenPago.Columns(18).Visible = False
+                grdOrdenPago.Columns(19).Visible = False
+            Else
+                'se muestra por Firma en Ausencia
+                grdOrdenPago.Columns(16).Visible = True
+                grdOrdenPago.Columns(17).Visible = True
+                grdOrdenPago.Columns(18).Visible = True
+                grdOrdenPago.Columns(19).Visible = True
+            End If
             grdOrdenPago.Columns(21).Visible = False
-            grdOrdenPago.Columns(23).Visible = True
+            grdOrdenPago.Columns(22).Visible = False
+            grdOrdenPago.Columns(23).Visible = False
+            grdOrdenPago.Columns(25).Visible = True
 
         Else
-            grdOrdenPago.Columns(16).Visible = True  'Firmar 
-            grdOrdenPago.Columns(17).Visible = True  'Rechazar 
-            grdOrdenPago.Columns(18).Visible = True  'Motivo Rechazo   
-            grdOrdenPago.Columns(19).Visible = False 'solo oculta no proc 
+            grdOrdenPago.Columns(16).Visible = True  'En Revision 
+            grdOrdenPago.Columns(17).Visible = True  'Firmar 
+            grdOrdenPago.Columns(18).Visible = True  'Rechazar 
+            grdOrdenPago.Columns(19).Visible = True  'Motivo Rechazo
+            grdOrdenPago.Columns(21).Visible = False 'solo oculta no proc 
 
             If chk_SinFirma.Visible = True Then  'si no es solicitante 19
-                grdOrdenPago.Columns(20).Visible = True
+                grdOrdenPago.Columns(22).Visible = True
             Else
-                grdOrdenPago.Columns(20).Visible = False  '2da rev oculta
+                grdOrdenPago.Columns(22).Visible = False  '2da rev oculta
             End If
 
-            grdOrdenPago.Columns(21).Visible = False 'motivo 21
-            grdOrdenPago.Columns(23).Visible = False
+            grdOrdenPago.Columns(23).Visible = False 'motivo 21
+            grdOrdenPago.Columns(25).Visible = False
         End If
-
 
     End Sub
     Private Sub DesHabilitaChecksFirma()
@@ -1746,7 +1762,7 @@ Partial Class Siniestros_AutElectFondos
     End Sub
 
     Private Sub grdOrdenPago_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles grdOrdenPago.RowCommand
-         Try
+        Try
             Dim Index As Integer = e.CommandSource.NamingContainer.RowIndex
             Dim OrdenPago = grdOrdenPago.DataKeys(Index)("nro_op")
             Dim FolioOnBase_ = grdOrdenPago.DataKeys(Index)("FolioOnbase")
@@ -1765,7 +1781,6 @@ Partial Class Siniestros_AutElectFondos
                 server = Replace(server, "OrdenPago", "OrdenPago_stro")
                 server = server & RptFilters
                 Funciones.EjecutaFuncion("window.open('" & server & "','_blank');")
-
 
             ElseIf e.CommandName = "VerEdoCta"
                 Dim hrefOnBase As String
