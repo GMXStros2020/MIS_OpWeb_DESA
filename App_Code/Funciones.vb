@@ -866,6 +866,13 @@ Public Class Funciones
         End Try
     End Function
 
+    Public Shared Function fn_Parametro_Directo(ByVal Parametro As Integer) As String
+
+        fn_Parametro_Directo = fn_EjecutaStr("spS_cPAR_Parametros " & Parametro & " ")
+
+        Return fn_Parametro_Directo
+    End Function
+
 End Class
 
 
