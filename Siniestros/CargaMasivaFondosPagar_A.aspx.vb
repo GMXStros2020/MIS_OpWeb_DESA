@@ -1,4 +1,4 @@
-﻿
+
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Globalization
@@ -125,7 +125,7 @@ Partial Class Siniestros_OrdenPago
                 For Each registros In dtImportaReasPrim.Rows
                     'Folio = registros("Folio_Onbase") 'Aqui Provamos si mando un folio correcto 
 
-                    Folio_Onbase = Funciones.fn_EjecutaStr("select Folio_Onbase_Siniestro from Mis_expediente_op where Id_Etiqueta_Pago = 1 and id_Pagar_A is null and Id_Tipo_Doc <> 28 and Nro_Poliza is null and Folio_Onbase_Siniestro = '" & registros("Folio_Onbase") & "'")
+                    Folio_Onbase = Funciones.fn_EjecutaStr("select Folio_Onbase_Siniestro from Mis_expediente_op where Id_Etiqueta_Pago = 1 and id_Pagar_A is null and Id_Tipo_Doc <> 28 and Folio_Onbase_Siniestro = '" & registros("Folio_Onbase") & "'")
                     Pagar_A = registros("Pagar_A").ToString()
                     If Folio_Onbase = "" Then
                         Mensaje.MuestraMensaje(Master.Titulo, ".:Informacion inclompeta:. el siguiente Folio onbase no cumple con los filtros requeridos: " + registros("Folio_Onbase").ToString() + " Pagar A: " + registros("Pagar_A").ToString(), TipoMsg.Falla)
@@ -146,9 +146,11 @@ Partial Class Siniestros_OrdenPago
                 ' Se actualizan los datos 
                 If Validacio = True Then
                     For Each registros In dtImportaReasPrim.Rows
-                        Respuesta = Funciones.fn_EjecutaStr("update Mis_expediente_op set id_Pagar_A = '" & registros("Pagar_A") & "'" & " where Id_Etiqueta_Pago = 1 and id_Pagar_A is null and Id_Tipo_Doc <> 28 and Nro_Poliza is null and Folio_Onbase_Siniestro = " & registros("Folio_Onbase"))
+                        Respuesta = Funciones.fn_EjecutaStr("update Mis_expediente_op set id_Pagar_A = '" & registros("Pagar_A") & "'" & " where Id_Etiqueta_Pago = 1 and id_Pagar_A is null and Id_Tipo_Doc <> 28 and Folio_Onbase_Siniestro = " & registros("Folio_Onbase"))
                         Mensaje.MuestraMensaje(Master.Titulo, ".:Folios Onbase Actualizados:. ", TipoMsg.Falla)
                     Next
+                    fn_LimpiarCargaPagar_A()
+
                 End If
             Else
                 Mensaje.MuestraMensaje(Master.Titulo, "Debe importar el Layout para validar los registros", TipoMsg.Advertencia)
