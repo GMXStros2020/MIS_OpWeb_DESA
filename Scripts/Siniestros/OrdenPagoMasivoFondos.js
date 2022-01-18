@@ -257,13 +257,14 @@
                     $("#loading2").addClass("hidden");
                     $("[id*=btn_Enviar]").removeClass("hidden");
                     $("[id*=btn_Revisar]").removeClass("hidden");
+                    $("[id*=cmbAnalistaSolicitante]").prop("disabled", true); //VZAVALETA_GMX-10290_INCIDENCIAS
                 }
 
             },
             error: function (response) {
 
                 $("#loading").addClass("hidden");
-
+                
                 fn_MuestraMensaje('Error', response.responseText, 0, "");
             }  //FJCP ANTES },
         });//Termina Ajax SetOP
@@ -408,7 +409,7 @@
                 $("[id*=btn_Enviar]").removeClass("hidden");
                 $("[id*=btn_Revisar]").removeClass("hidden");
 
-
+                $("[id*=cmbAnalistaSolicitante]").prop("disabled", true); //VZAVALETA_GMX-10290_INCIDENCIAS
             },
             error: function (err) {
                 debugger

@@ -118,8 +118,8 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
 
             Next
 
-            Response.Redirect("ResumenOPMasivo.aspx?Fondos=1&Num_Lote=" & txt_NumLote.Text)
-
+            'Response.Redirect("ResumenOPMasivo.aspx?Fondos=1&Num_Lote=" & txt_NumLote.Text)
+            Response.Redirect("ResumenOPMasivo.aspx?Fondos=1&Num_Lote=" & txt_NumLote.Text & "&PagarA=" & cmbPagarA.SelectedValue)
         Catch ex As Exception
             Funciones.CerrarModal("#Modal")
             MuestraMensaje("Generación de OP", ex.Message, TipoMsg.Falla)
