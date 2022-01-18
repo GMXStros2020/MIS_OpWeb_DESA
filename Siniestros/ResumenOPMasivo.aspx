@@ -13,31 +13,21 @@
                 <asp:HiddenField runat="server" ID="hid_Operacion" Value="0" />
              <div class="panel-contenido ventana1">
 
-                   
-
-
-
-
-      
-
-
-                   
-
-
-               
-
-
                  <center>
                      <div class="row">
                            <asp:Panel runat="server" ID="pnlUsuario" Width="99%" Height="300" ScrollBars="Auto" >
-                             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#003A5D" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical" Width="80%">
+                             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="grd_RowDataBound" BackColor="White" BorderColor="#003A5D" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical" Width="80%">
                                  <AlternatingRowStyle BackColor="#DCDCDC" />
                                  <Columns>
                                      <asp:BoundField DataField="Folio_Onbase" HeaderText="Folio Onbase" />
                                      <asp:BoundField DataField="Notas" HeaderText="Notas" />
                                      <asp:BoundField DataField="Nro_OP" HeaderText="Nro OP" />
-                                     <asp:BoundField DataField="Estado" HeaderText="Estado" />
-                                     <asp:ButtonField Text="" HeaderText="PDF" CommandName="RepCarta" ButtonType="Image" ImageUrl="../Images/buscar_mini_inv.png" ItemStyle-HorizontalAlign="Center">
+                                     <asp:BoundField DataField="nro_aut_tec" HeaderText="Solicitud"/>
+                                     <asp:BoundField DataField="Estado" HeaderText="Estado" /> 
+                                     <asp:ButtonField Text="" HeaderText="PDF OP" CommandName="RepCarta" ButtonType="Image" ImageUrl="../Images/buscar_mini_inv.png" ItemStyle-HorizontalAlign="Center">
+                                            <ItemStyle HorizontalAlign="Center" />
+                                     </asp:ButtonField>
+                                     <asp:ButtonField Text="" HeaderText="PDF Solicitud" CommandName="RepCartaSolicitud" ButtonType="Image" ImageUrl="../Images/buscar_mini_inv.png" ItemStyle-HorizontalAlign="Center">
                                             <ItemStyle HorizontalAlign="Center" />
                                      </asp:ButtonField>
                                  </Columns>
@@ -85,15 +75,7 @@
                      
                  </div>
                      </center>
-
-                   
-
-
-               
-
-
-
-
+                 
              </div>
 
     </div>
