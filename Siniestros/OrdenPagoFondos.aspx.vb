@@ -1269,9 +1269,12 @@ Partial Class Siniestros_OrdenPago
 
                 oParametros.Add("Fasttrack", "NO")
 
+                'Master.MuestraTransferenciasBancariasSiniestros(IO.Path.GetFileName(Request.Url.AbsolutePath),
+                '                                                oCatalogoBancosT, oCatalogoTiposCuentaT, oCatalogoMonedasT,
+                '                                                oParametros, bTieneDatosBancarios, cmbNumPago.SelectedValue)
                 Master.MuestraTransferenciasBancariasSiniestros(IO.Path.GetFileName(Request.Url.AbsolutePath),
-                                                                oCatalogoBancosT, oCatalogoTiposCuentaT, oCatalogoMonedasT,
-                                                                oParametros, bTieneDatosBancarios, cmbNumPago.SelectedValue)
+                                                oCatalogoBancosT, oCatalogoTiposCuentaT, oCatalogoMonedasT,
+                                                oParametros, bTieneDatosBancarios, IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue))
 
             End If
 
@@ -3615,6 +3618,17 @@ Partial Class Siniestros_OrdenPago
                             Else
                                 'If (oDatos.Tables(0).Rows(0).Item("fec_fact") = "1") Then
                                 Me.txtSiniestro.Text = .Item("nro_stro")
+                                'VZAVALETA_GMX-10290_INCIDENCIAS
+                                If .Item("Forma_Hara_Pago") = -1 Then
+                                    Me.cmbTipoPagoOP.SelectedValue = "T"
+                                    Me.btnVerCuentas.Visible = True
+                                Else
+                                    If .Item("Forma_Hara_Pago") = 0 Then
+                                        Me.cmbTipoPagoOP.SelectedValue = "C"
+                                        Me.btnVerCuentas.Visible = False
+                                    End If
+                                End If
+                                'VZAVALETA_GMX-10290_INCIDENCIAS
                                 '     Else
                                 ' Mensaje.MuestraMensaje("Fecha Comprobante menor al año fiscal: ", "Fecha del comprobante Fiscal: " + oDatos.Tables(0).Rows(0).Item("fecha_emision_gmx").ToString(), TipoMsg.Falla)
                                 ' Limpiartodo()
@@ -3671,6 +3685,7 @@ Partial Class Siniestros_OrdenPago
                                 Me.cmbOrigenOP.Items.Add(New ListItem(fila.Item("DescripcionOrigenPago").ToString.ToUpper, fila.Item("CodigoOrigenPago")))
                             Next
                             CargarAnalistasFondos(cmbOrigenOP.SelectedValue)
+
                         End If
 
                         '''''    For Each fila In oDatos.Tables(0).Rows
