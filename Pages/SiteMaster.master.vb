@@ -2358,7 +2358,7 @@ Partial Class Pages_SiteMaster
                         hrefOnBase = ""
                         'cambiar a id 2 cuando se habilite el ws del folio onbase edo cta
                         'hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id = 2,  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim)
-                        hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id_pagar_a =" & oValoresActuales("tipoUsuario") & ",  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim & ",  @num_pago = " & NumPago)
+                        hrefOnBase = Funciones.fn_EjecutaStr("usp_consulta_folio_onbase_ws @id_pagar_a =" & oValoresActuales("tipoUsuario") & ",  @folioOnbase = " & oValoresActuales("fOnbase_edoCta").ToString.Trim & ",  @num_pago = " & NumPago & ", @VerCuenta = 1")
                         linkOnBase.HRef = hrefOnBase
                         lblFoliOnbaseEdoCtaDesc.Visible = True
                         lblFoliOnbaseEdoCta.Visible = True

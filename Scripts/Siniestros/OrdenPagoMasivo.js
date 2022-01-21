@@ -953,7 +953,7 @@
                                 {
                                     type: 'change',
                                     fn: function (e) {
-                                        debugger
+                                        //debugger
                                         var v = parseInt($(e.target).val(), 10);
 
                                         var row = $(e.target).closest('tr.jqgrow');
@@ -1272,10 +1272,7 @@
                             s += '<option value="' + result[i].Concepto + '">' + result[i].Descripcion + '</option>';
                         }
                     }
-
-
-
-
+                    RecuperarClasePago(id, result[i].Concepto, 0) //VZAVALETA_GMX-10290_INCIDENCIAS
                 }
 
 

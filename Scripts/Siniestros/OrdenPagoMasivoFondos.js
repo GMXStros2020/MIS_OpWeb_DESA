@@ -1511,10 +1511,11 @@
                             s += '<option value="' + result[i].Concepto + '">' + result[i].Descripcion + '</option>';
                         }
                     }
+                    RecuperarClasePago(id, result[i].Concepto, 0) //VZAVALETA_GMX-10290_INCIDENCIAS
                 }
                 res = s;
                 $("select#" + id + "_Concepto_Pago", row[0]).html(res);
-
+                
                 $("#hid_cpto_pago").val("");
                 $("#hid_cpto_pago_desc").val("");
             },
