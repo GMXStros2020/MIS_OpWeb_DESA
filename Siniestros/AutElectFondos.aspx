@@ -184,7 +184,7 @@
                                     <asp:TemplateField>
                                             <HeaderTemplate><center>SolPag</center></HeaderTemplate>
                                             <ItemTemplate>
-                                                 <asp:imagebutton ID="btn_VerSol" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerSol" CommandArgument="<%# Container.DataItemIndex %>" runat="server"/>
+                                                 <asp:imagebutton ID="btn_VerSol" ImageUrl="~/Images/pdf14.png" Height="26" CommandName="VerSol" CommandArgument="<%# Container.DataItemIndex %>" runat="server" Visible='<%# If(CBool(Eval("CodigoAbona") = 10), True, False) %>'/>
                                             </ItemTemplate>
                                    <ItemStyle HorizontalAlign="Center" Width="20px"></ItemStyle>
                                     </asp:TemplateField>
