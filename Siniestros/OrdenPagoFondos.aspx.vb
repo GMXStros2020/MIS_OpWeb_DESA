@@ -3692,15 +3692,15 @@ Partial Class Siniestros_OrdenPago
                         '''''        Me.cmbSubsiniestro.Items.Add(New ListItem(String.Format("Subsiniestro {0}", fila.Item("id_substro")).ToUpper, fila.Item("id_substro")))
                         '''''    Next
                         '''''    'CARGO LOS TIPOS DE CODUMENTOS PARA ASEGURADOS Y TERCEROS
-                        '''''    cmbTipoComprobante.Items.Clear()
-                        '''''    If cmbTipoComprobante.Items.Count = 0 Then
+                        cmbTipoComprobante.Items.Clear()
+                        If cmbTipoComprobante.Items.Count = 0 Then
 
-                        '''''        cmbTipoComprobante.DataSource = oDatos.Tables(4)
-                        '''''        cmbTipoComprobante.DataTextField = "Descripcion_Doc"
-                        '''''        cmbTipoComprobante.DataValueField = "Id_Tipo_Doc"
-                        '''''        cmbTipoComprobante.DataBind()
+                            cmbTipoComprobante.DataSource = oDatos.Tables(4)
+                            cmbTipoComprobante.DataTextField = "Descripcion"
+                            cmbTipoComprobante.DataValueField = "CodigoComprobante"
+                            cmbTipoComprobante.DataBind()
 
-                        '''''    End If
+                        End If
 
                         '''''    Me.txtTipoCambio.Text = IIf(cmbMonedaPago.SelectedValue = 0, "1.00", ObtenerTipoCambio.ToString())
 
