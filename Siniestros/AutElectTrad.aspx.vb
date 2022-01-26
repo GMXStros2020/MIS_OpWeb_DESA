@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectTrad
                 End If
             End If
             EstadoDetalleOrden()
-            'Master.cod_usuario = "EAMPUDIA"
+            ' Master.cod_usuario = "RRAMOS"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -774,11 +774,11 @@ Partial Class Siniestros_AutElectTrad
             Dim txtMotivoNoProc_ = DirectCast(grdOrdenPago.Rows(contador).FindControl("txtMotivoNoProc"), TextBox).Text
 
             Dim txtJustif As String = DirectCast(grdOrdenPago.Rows(contador).FindControl("cmbConcepto"), DropDownList).SelectedItem.Text
-            ' Dim txtOtros As String = DirectCast(grdOrdenPago.Rows(contador).FindControl("txtOtros"), TextBox).Text
+            Dim txtOtros As String = DirectCast(grdOrdenPago.Rows(contador).FindControl("txtMotivoOtro"), TextBox).Text
 
-            'If ddlMotivo.SelectedValue = 11 Then
-            '    txtJustif = txtOtros
-            'End If
+            If ddlMotivo.SelectedValue = 11 Then
+                txtJustif = txtOtros
+            End If
 
             strOP = row("nro_op")
 
@@ -1720,18 +1720,21 @@ Partial Class Siniestros_AutElectTrad
     End Sub
 
 
-    Protected Sub txt_Motivo_SelectedIndexChanged(sender As Object, e As EventArgs)
+    Protected Sub cmbConcepto_SelectedIndexChanged(sender As Object, e As EventArgs)
+        Dim combo As DropDownList = DirectCast(sender, DropDownList)
+        'MsgBox(combo.SelectedValue)
 
-        Dim gr As GridViewRow = DirectCast(DirectCast(DirectCast(sender, DropDownList).Parent.Parent, DataControlFieldCell).Parent, GridViewRow)
+        Dim gr As GridViewRow = DirectCast(DirectCast(combo.Parent, DataControlFieldCell).Parent, GridViewRow)
+        ' MsgBox(gr.RowIndex)
 
-        Dim ddlRechazo = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txt_Motivo"), DropDownList)
-        Dim txtOtros = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txtOtros"), TextBox)
+        Dim txtOtros = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txtMotivoOtro"), TextBox)
 
-        If ddlRechazo.SelectedValue = 11 Then
-            'Mensaje.MuestraMensaje(Master.Titulo, "hola mundo", TipoMsg.Falla)
+        If combo.SelectedValue = 11 Then
             txtOtros.Visible = True
+            grdOrdenPago.Columns(20).Visible = True
         Else
             txtOtros.Visible = False
+            grdOrdenPago.Columns(20).Visible = False
             txtOtros.Text = ""
         End If
 
@@ -1834,26 +1837,43 @@ Partial Class Siniestros_AutElectTrad
     End Sub
 
 
-    Protected Sub cmbConcepto_TextChanged(sender As Object, e As EventArgs)
 
-        Dim drop As DropDownList = TryCast(grdOrdenPago.FindControl("cmbConcepto"), DropDownList)
+    'Protected Sub cmbConcepto_TextChanged(sender As Object, e As EventArgs)
 
-        MsgBox(drop.SelectedValue)
+    '    Dim drop As DropDownList = TryCast(grdOrdenPago.FindControl("cmbConcepto"), DropDownList)
 
-        'Dim gr As GridViewRow = DirectCast(DirectCast(DirectCast(sender, DropDownList).Parent.Parent, DataControlFieldCell).Parent, GridViewRow)
+    '    MsgBox(drop.SelectedValue)
 
-        'Dim ddlRechazo = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txt_Motivo"), DropDownList)
-        'Dim txtOtros = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txtOtros"), TextBox)
+    '    'Dim gr As GridViewRow = DirectCast(DirectCast(DirectCast(sender, DropDownList).Parent.Parent, DataControlFieldCell).Parent, GridViewRow)
 
-        'If ddlRechazo.SelectedValue = 11 Then
-        '    'Mensaje.MuestraMensaje(Master.Titulo, "hola mundo", TipoMsg.Falla)
-        '    txtOtros.Visible = True
-        'Else
-        '    txtOtros.Visible = False
-        '    txtOtros.Text = ""
-        'End If
+    '    'Dim ddlRechazo = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txt_Motivo"), DropDownList)
+    '    'Dim txtOtros = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txtOtros"), TextBox)
 
-    End Sub
+    '    'If ddlRechazo.SelectedValue = 11 Then
+    '    '    'Mensaje.MuestraMensaje(Master.Titulo, "hola mundo", TipoMsg.Falla)
+    '    '    txtOtros.Visible = True
+    '    'Else
+    '    '    txtOtros.Visible = False
+    '    '    txtOtros.Text = ""
+    '    'End If
+
+    'End Sub
+    'Protected Sub cmbConcepto_SelectedIndexChanged(sender As Object, e As EventArgs)
+
+    '    Dim gr As GridViewRow = DirectCast(DirectCast(DirectCast(sender, DropDownList).Parent.Parent, DataControlFieldCell).Parent, GridViewRow)
+    '    Dim ddlRechazo = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("cmbConcepto"), DropDownList)
+    '    Dim txtOtros = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txtMotivoOtro"), TextBox)
+
+    '    If ddlRechazo.SelectedValue = 11 Then
+    '        'Mensaje.MuestraMensaje(Master.Titulo, "hola mundo", TipoMsg.Falla)
+    '        txtOtros.Visible = True
+    '    Else
+    '        txtOtros.Visible = False
+    '        txtOtros.Text = ""
+    '    End If
+
+    'End Sub
+
 End Class
 
 

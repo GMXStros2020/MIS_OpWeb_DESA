@@ -334,7 +334,7 @@
                                     <asp:TemplateField>
                                         <HeaderTemplate><center>MotivoRechazo</center></HeaderTemplate>
                                         <ItemTemplate>
-                                             <asp:DropDownList ID="cmbConcepto" runat="server" Width="75px" AutoPostBack="true" OnTextChanged ="cmbConcepto_TextChanged">
+                                             <asp:DropDownList ID="cmbConcepto" runat="server" Width="75px" AutoPostBack="true" OnSelectedIndexChanged="cmbConcepto_SelectedIndexChanged" >
                                            
                                         </asp:DropDownList>
                                      <%--    <asp:DropDownList ID="cmbConcepto" runat="server" Width="70px">

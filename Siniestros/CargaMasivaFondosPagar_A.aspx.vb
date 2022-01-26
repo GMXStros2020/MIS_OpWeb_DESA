@@ -70,7 +70,7 @@ Partial Class Siniestros_OrdenPago
             Dim cn As New OleDb.OleDbConnection(strConn) 'cadena de coneccion
 
             oCmd.Connection = cn
-            oCmd.CommandText = "select Folio_Onbase,Pagar_A from [Folios$]"
+            oCmd.CommandText = "select Folio_Onbase,Pagar_A from,Forma_Hara_Pago [Folios$]"
             oCmd.CommandType = CommandType.Text
             oDa.SelectCommand = oCmd
             oDa.Fill(dtImportaReasPrim)
@@ -99,6 +99,7 @@ Partial Class Siniestros_OrdenPago
         dtImportaReasPrim = New DataTable()
         dtImportaReasPrim.Columns.Add("Folio_Onbase", GetType(Integer))
         dtImportaReasPrim.Columns.Add("Pagar_A")
+        dtImportaReasPrim.Columns.Add("Forma_Hara_Pago")
 
     End Sub
     Private Sub btn_ValidarReas_Click(sender As Object, e As EventArgs) Handles btn_ValidarReas.Click
@@ -146,7 +147,9 @@ Partial Class Siniestros_OrdenPago
                 ' Se actualizan los datos 
                 If Validacio = True Then
                     For Each registros In dtImportaReasPrim.Rows
-                        Respuesta = Funciones.fn_EjecutaStr("update Mis_expediente_op set id_Pagar_A = '" & registros("Pagar_A") & "'" & " where Id_Etiqueta_Pago = 1 and id_Pagar_A is null and Id_Tipo_Doc <> 28 and Folio_Onbase_Siniestro = " & registros("Folio_Onbase"))
+                        'Respuesta = Funciones.fn_EjecutaStr("update Mis_expediente_op set id_Pagar_A = '" & registros("Pagar_A") & "'" & " where Id_Etiqueta_Pago = 1 and id_Pagar_A is null and Id_Tipo_Doc <> 28 and Folio_Onbase_Siniestro = " & registros("Folio_Onbase"))
+                        Respuesta = Funciones.fn_EjecutaStr("update Mis_expediente_op set id_Pagar_A = '" & registros("Pagar_A") & "', Forma_Hara_Pago = '" & registros("Forma_Hara_Pago") & "'" & " where Id_Etiqueta_Pago = 1 and id_Pagar_A is null and Id_Tipo_Doc <> 28 and Nro_Poliza is null and Folio_Onbase_Siniestro = " & registros("Folio_Onbase"))
+
                         Mensaje.MuestraMensaje(Master.Titulo, ".:Folios Onbase Actualizados:. ", TipoMsg.Falla)
                     Next
                     fn_LimpiarCargaPagar_A()
