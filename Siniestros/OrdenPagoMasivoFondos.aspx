@@ -215,13 +215,13 @@
                     <div class="row">
                         <div class="form-group col-md-2">
                             <div class="form-check Centrado">
-                                <asp:CheckBox runat="server" ID="chkVariasFacturas" Text="Varias facturas" CssClass="etiqueta-control hidden" />
+                                <asp:CheckBox runat="server" ID="chkVariasFacturas" Text="Varias facturas" CssClass="etiqueta-control hidden" Checked = "false" />
                             </div>
                         </div>
 
                         <div class="form-group col-md-2">
                             <div class="form-check Centrado">
-                                <asp:CheckBox runat="server" ID="chkFondosSinIVA" Text="Fondos Sin IVA" CssClass="etiqueta-control hidden" />
+                                <asp:CheckBox runat="server" ID="chkFondosSinIVA" Text="Fondos Sin IVA" CssClass="etiqueta-control hidden" Checked = "false"/>
                             </div>
                         </div>
                     </div>

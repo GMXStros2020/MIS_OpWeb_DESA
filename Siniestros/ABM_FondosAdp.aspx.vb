@@ -101,27 +101,28 @@ Partial Class Siniestros_ABM_FondosAdp
     End Sub
 
     Protected Sub grd_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles grd.RowDeleting
-
+               
         Dim dt As New DataTable
         Dim oDatos As DataSet
         Dim oTabla As DataTable
         Dim iClave As Integer
         Dim oParametros As New Dictionary(Of String, Object)
-
         Try
             Dim row As GridViewRow = grd.Rows(e.RowIndex)
             Dim Concepto As String
             Dim Clase As String
+            Dim Origen As String
             Concepto = row.Cells(0).Text
             Clase = row.Cells(5).Text
+            Origen = row.Cells(3).Text
 
             oParametros.Add("Accion", "2")
             oParametros.Add("cod_cpto", Concepto)
             oParametros.Add("cod_clase_pago", Clase)
+            oParametros.Add("cod_origen_pago", Origen)
 
             oDatos = Funciones.ObtenerDatos("sp_grabar_conceptos_fondosAdp", oParametros)
             CargarGrid()
-
 
         Catch ex As Exception
             MuestraMensaje("Exception", ex.Message, TipoMsg.Falla)

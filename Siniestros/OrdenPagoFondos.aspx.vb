@@ -3515,6 +3515,11 @@ Partial Class Siniestros_OrdenPago
                                         'Me.txtTipoCambio.Text = "1.00"
                                         Me.cmbMonedaPago.SelectedValue = 0
                                     End If
+                                    'Se agrega por el tema de 4 campos mas
+                                    If .Item("sn_transferencia") <> .Item("Forma_Hara_Pago") Then
+                                        Mensaje.MuestraMensaje("Moneda", "No coincide la forma del pago MIS vs SIIGMX (OP WEB) ", TipoMsg.Falla)
+                                        Limpiartodo() 'VZAVALETA_GMX-10290_INCIDENCIAS
+                                    End If
                                     If .Item("sn_transferencia") = -1 Then
                                         Me.cmbTipoPagoOP.SelectedValue = "T"
                                     Else
