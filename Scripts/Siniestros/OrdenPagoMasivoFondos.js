@@ -2129,7 +2129,6 @@ function RecuperarClasePago(ID, Cpto_pago, Prestador) {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            console.log(result)
             var mydata = $.parseJSON(result.d);
             if (mydata.length != 0) {
                 var vCod_clase_pago = mydata[0].cod_clase_pago
