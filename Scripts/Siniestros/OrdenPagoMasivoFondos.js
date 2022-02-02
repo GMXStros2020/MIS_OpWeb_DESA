@@ -2129,17 +2129,30 @@ function RecuperarClasePago(ID, Cpto_pago, Prestador) {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
+            console.log(result)
             var mydata = $.parseJSON(result.d);
             if (mydata.length != 0) {
                 var vCod_clase_pago = mydata[0].cod_clase_pago
                 var vClase_pago = mydata[0].clase_pago_desc
                 var vcod_cpto_desc = mydata[0].cod_cpto_desc
+                var vConcepto2 = mydata[0].concepto_detalle
+
+
+
                 jQuery("#list47").jqGrid('setCell', ID, 'Cod_clas_pago', vCod_clase_pago);
                 jQuery("#list47").jqGrid('setCell', ID, 'Clase_pago', vClase_pago);
 
 
+
+                jQuery("#list47").jqGrid('setCell', ID, 'Concepto2', vConcepto2);
+                if (vConcepto2 == "") {
+                    jQuery("#list47").jqGrid('setCell', ID, 'Concepto2', " ");
+                    jQuery("#list47").setColProp('Concepto2', {disabled: false});
+                }
                 $("#hid_cpto_pago").val(Cpto_pago);
                 $("#hid_cpto_pago_desc").val(vcod_cpto_desc);
+                //$("#hid_Concepto2").val(vConcepto2);
+
             }
             return;
         },

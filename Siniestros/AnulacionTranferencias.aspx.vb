@@ -237,19 +237,25 @@ Partial Class Siniestros_AnulacionTranferencias
         msg_err = oComando.Parameters("@msg_err").Value.ToString()
         transaccion = oComando.Parameters("@nroTransaccion").Value.ToString()
         asiento = oComando.Parameters("@nro_asiento").Value.ToString()
-
-
-
-        Mensaje.MuestraMensaje("OrdenPagoSiniestros", " Orden de pago: " + txt_orden_pago.Text + "\n Numero Transaccion: " + transaccion + "\n Asiento: " + asiento, TipoMsg.Advertencia)
-
-
-        txt_orden_pago.Text = ""
-        txt_fecha.Text = ""
-        txt_importe.Text = ""
-        txt_tranferencia.Text = ""
-        txt_cuenta.Text = ""
-        txt_transaccion.Text = ""
-        txt_organismo.Text = ""
+        '-----------------
+        Dim Msg, Style, Title, Response, MyString
+        Msg = " Orden de pago: " + txt_orden_pago.Text + vbCrLf + " Numero Transaccion: " + transaccion + vbCrLf + " Asiento: " + asiento    ' Define message.
+        Style = vbOKOnly    ' Define buttons.
+        Title = "OrdenPagoSiniestros"    ' Define title. 
+        ' Display message.
+        Response = MsgBox(Msg, Style, Title)
+        Select Case Response
+            Case vbOK
+                txt_orden_pago.Text = ""
+                txt_fecha.Text = ""
+                txt_importe.Text = ""
+                txt_tranferencia.Text = ""
+                txt_cuenta.Text = ""
+                txt_transaccion.Text = ""
+                txt_organismo.Text = ""
+        End Select
+        'Mensaje.MuestraMensaje("OrdenPagoSiniestros", " Orden de pago: " + txt_orden_pago.Text + "\n Numero Transaccion: " + transaccion + "\n Asiento: " + asiento, TipoMsg.Advertencia)
+        '-----------------
     End Sub
 
 End Class
