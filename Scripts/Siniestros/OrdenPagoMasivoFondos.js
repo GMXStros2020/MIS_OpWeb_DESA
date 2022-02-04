@@ -11,7 +11,12 @@
     var Tipo_Pago = { '0': 'Seleccione Opcion', '1': 'CHEQUE', '2': 'TRANSFERENCIA' };
 
     //VZAVALETA_GMX-10290_INCIDENCIAS Funciòn para no copiar
-    var dataEvents = {        noCopyPaste: {            type: 'copy paste cut',            fn: function (e) { e.preventDefault(); }        }    };
+    var dataEvents = {
+        noCopyPaste: {
+            type: 'copy paste cut',
+            fn: function (e) { e.preventDefault(); }
+        }
+    };
     //VZAVALETA_GMX-10290_INCIDENCIAS
 
 
@@ -1511,13 +1516,14 @@
                             s += '<option value="' + result[i].Concepto + '">' + result[i].Descripcion + '</option>';
                         }
                     }
-                    RecuperarClasePago(id, result[i].Concepto, 0) //VZAVALETA_GMX-10290_INCIDENCIAS
+                    //RecuperarClasePago(id, result[i].Concepto, 0) //VZAVALETA_GMX-10290_INCIDENCIAS
                 }
                 res = s;
                 $("select#" + id + "_Concepto_Pago", row[0]).html(res);
                 
-                $("#hid_cpto_pago").val("");
-                $("#hid_cpto_pago_desc").val("");
+                //$("#hid_cpto_pago").val("");
+                //$("#hid_cpto_pago_desc").val("");
+                RecuperarClasePago(id, result[i].Concepto, 0) //VZAVALETA_GMX-10290_INCIDENCIAS
             },
             error: function (err) {
                 debugger
@@ -2146,11 +2152,10 @@ function RecuperarClasePago(ID, Cpto_pago, Prestador) {
                 jQuery("#list47").jqGrid('setCell', ID, 'Concepto2', vConcepto2);
                 if (vConcepto2 == "") {
                     jQuery("#list47").jqGrid('setCell', ID, 'Concepto2', " ");
-                    jQuery("#list47").setColProp('Concepto2', {disabled: false});
+                    jQuery("#list47").setColProp('Concepto2', { editable: true});
                 }
-                $("#hid_cpto_pago").val(Cpto_pago);
-                $("#hid_cpto_pago_desc").val(vcod_cpto_desc);
-                //$("#hid_Concepto2").val(vConcepto2);
+                //$("#hid_cpto_pago").val(Cpto_pago);
+                //$("#hid_cpto_pago_desc").val(vcod_cpto_desc);
 
             }
             return;
