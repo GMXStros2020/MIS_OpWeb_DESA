@@ -28,7 +28,7 @@ Partial Class ImportSIItoOPWEB
             Dim oDatos As DataSet
             oDatos = New DataSet
             Dim oParametros As New Dictionary(Of String, Object)
-            oParametros.Add("Accion", "3")
+            oParametros.Add("Accion", "4")
             oDatos = Funciones.ObtenerDatos("MIS_Catalago_Fondos", oParametros)
             Me.ddlAnalista.Items.Clear()
             If (oDatos.Tables(0).Rows.Count > 0) Then
