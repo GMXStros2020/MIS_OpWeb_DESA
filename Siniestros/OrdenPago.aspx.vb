@@ -1201,8 +1201,16 @@ Partial Class Siniestros_OrdenPago
 
                         Me.txtBeneficiario_stro.Enabled = False
 
+                        If cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor Then
+                            'FJCP 10290 MEJORAS Pago solicitado excede a la cobertura de la póliza
+                            If validaPagoVSmontoCob(oFila("Siniestro").ToString(), oFila("Subsiniestro").ToString(), oFila("Pago")) Then
+                                MuestraMensaje("Alerta de Pago", "El importe de pago solicitado excede al monto de la cobertura de la póliza", TipoMsg.Advertencia)
+                                limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
+                            End If
+                        End If
+
                     Else
-                        Mensaje.MuestraMensaje("OrdenPagoSiniestros", "No se pudo agregar la fila", TipoMsg.Advertencia)
+                            Mensaje.MuestraMensaje("OrdenPagoSiniestros", "No se pudo agregar la fila", TipoMsg.Advertencia)
                     End If
 
                 Else
