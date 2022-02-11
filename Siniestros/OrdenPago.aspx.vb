@@ -824,8 +824,14 @@ Partial Class Siniestros_OrdenPago
                         'FJCP 10290 MEJORAS Pago solicitado excede a la cobertura de la póliza
                         If validaPagoVSmontoCob(oGrdOrden.Rows(iIndiceFila)("Siniestro").ToString(), oGrdOrden.Rows(iIndiceFila)("Subsiniestro").ToString(), CDbl(oTxt.Text.Trim)) Then
                             MuestraMensaje("Alerta de Pago", "El importe de pago solicitado excede al monto de la cobertura de la póliza", TipoMsg.Advertencia)
-                            limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
+                            If chkVariosConceptos.Checked = False Then
+                                limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
+                            End If
+                            If chkVariasFacturas.Checked = False Then
+                                limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
+                            End If
                         End If
+
                     Else
                         oTxt.Text = IIf(IsDBNull(oGrdOrden.Rows(iIndiceFila)("Pago")), "", oGrdOrden.Rows(iIndiceFila)("Pago"))
                     End If
@@ -1205,7 +1211,6 @@ Partial Class Siniestros_OrdenPago
                             'FJCP 10290 MEJORAS Pago solicitado excede a la cobertura de la póliza
                             If validaPagoVSmontoCob(oFila("Siniestro").ToString(), oFila("Subsiniestro").ToString(), oFila("Pago")) Then
                                 MuestraMensaje("Alerta de Pago", "El importe de pago solicitado excede al monto de la cobertura de la póliza", TipoMsg.Advertencia)
-                                limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
                             End If
                         End If
 
