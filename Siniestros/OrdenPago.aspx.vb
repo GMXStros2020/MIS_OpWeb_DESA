@@ -824,18 +824,14 @@ Partial Class Siniestros_OrdenPago
                         'FJCP 10290 MEJORAS Pago solicitado excede a la cobertura de la póliza
                         If validaPagoVSmontoCob(oGrdOrden.Rows(iIndiceFila)("Siniestro").ToString(), oGrdOrden.Rows(iIndiceFila)("Subsiniestro").ToString(), CDbl(oTxt.Text.Trim)) Then
                             MuestraMensaje("Alerta de Pago", "El importe de pago solicitado excede al monto de la cobertura de la póliza", TipoMsg.Advertencia)
-                            If chkVariosConceptos.Checked = False Then
-                                limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
-                            End If
-                            If chkVariasFacturas.Checked = False Then
-                                limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
-                            End If
+
                         End If
 
                     Else
                         oTxt.Text = IIf(IsDBNull(oGrdOrden.Rows(iIndiceFila)("Pago")), "", oGrdOrden.Rows(iIndiceFila)("Pago"))
                     End If
                     'JLC Mejoras -Inicio
+                    oTxt.Text = Format(CDbl(oTxt.Text), "##,##0.00")
                     Funciones.EjecutaFuncion("FormatCurrency(" + iIndiceFila.ToString() + ")", "Formato")
             'JLC Mejoras -fin
 

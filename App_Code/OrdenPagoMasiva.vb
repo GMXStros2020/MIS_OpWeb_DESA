@@ -35,10 +35,12 @@ Public Class OrdenPagoMasiva
             Dim ErrorMsg As String 'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS 
             Dim ErrorMsgCta As String 'FCRUZ_GMX-10290_INCIDENCIAS VALIDA LONGITUD DE CTAS
             Dim ErrorMsgVacio As String 'JJARAMILLO_GMX-10290_INCIDENCIAS VALIDA CAMPOS OBLIGATORIOS
+            Dim ErrorMsgImporte As String 'JJARAMILLO_GMX-10290_INCIDENCIAS VALIDA CAMPOS OBLIGATORIOS
 
             ErrorMsgVacio = ""
             ErrorMsgCta = ""
             ErrorMsg = ""
+            ErrorMsgImporte = ""
 
             lista = New JavaScriptSerializer().ConvertToType(Of List(Of OrdenPagoMasivoClass))(myArray)
 
@@ -85,9 +87,13 @@ Public Class OrdenPagoMasiva
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
                 Else
-                    If OP.Importe = 0 Or OP.RFC = "" Or OP.CodigoCliente = "" Or OP.Nombre_Razon_Social = "" Then
+                    If OP.RFC = "" Or OP.CodigoCliente = "" Or OP.Nombre_Razon_Social = "" Then
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
+                End If
+
+                If OP.Importe <= 0 Then
+                    ErrorMsgImporte = ErrorMsgImporte + OP.Folio_Onbase.ToString() + "<br>"
                 End If
 
                 'Valida Cuentas 
@@ -116,6 +122,10 @@ Public Class OrdenPagoMasiva
 
             If ErrorMsgVacio <> "" Then
                 Throw New Exception("Favor de ingresar todos los campos de los folios:" + ErrorMsgVacio)
+            End If
+
+            If ErrorMsgImporte <> "" Then
+                Throw New Exception("Favor de ingresar un importe correcto de los folios:" + ErrorMsgImporte)
             End If
 
             If Lote = "0" Then
