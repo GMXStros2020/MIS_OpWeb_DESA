@@ -495,9 +495,9 @@
                 { name: 'Tipo_Cambio', index: 'Tipo_Cambio', width: 90, formatter: "number.toFixed(4)", align: 'right', sorttype: "int" },
                 { name: 'Reserva', index: 'Reserva', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                 { name: 'Moneda_Pago', index: 'Moneda_Pago', width: 180 },
-                { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int" },
+                { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int", editrules: { custom: true, custom_func: ValidarImporte, required: true }},
                 { name: 'Deducible', index: 'Deducible', width: 90, formatter: "number", align: 'right', sorttype: "int" },
-                { name: 'Importe_concepto', index: 'Importe_concepto', width: 90, formatter: "number", align: 'right', align: 'right', sorttype: "int" },
+                { name: 'Importe_concepto', index: 'Importe_concepto', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                 { name: 'Concepto_Factura', index: 'Concepto_Factura', width: 90 },
                 { name: 'Cod_concepto_pago', index: 'Cod_concepto_pago', width: 45, hidden: true },
                 {
@@ -809,7 +809,7 @@
                         value: "0:NACIONAL;1:DOLAR AMERICANO"
                     }
                 },
-                { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int" },
+                { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int", editrules: { custom: true, custom_func: ValidarImporte, required: true } },
                 { name: 'Deducible', index: 'Deducible', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                 { name: 'Importe_concepto', index: 'Importe_concepto', width: 90, formatter: "number", align: 'right', sorttype: "int", hidden: true},
                 { name: 'Concepto_Factura', index: 'Concepto_Factura', width: 90 },
@@ -1213,7 +1213,7 @@
                     { name: 'Moneda_Pago', index: 'Moneda_Pago', width: 180, editable: true, edittype: "select", editoptions: {
                             value: "0:NACIONAL;1:DOLAR AMERICANO"
                         }},
-                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int" },
+                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int", editrules: { custom: true, custom_func: ValidarImporte, required: true } },
                     { name: 'Deducible', index: 'Deducible', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                     { name: 'Importe_concepto', index: 'Importe_concepto', width: 90, formatter: "number", align: 'right', sorttype: "int", hidden: true },
                     { name: 'Concepto_Factura', index: 'Concepto_Factura', width: 90 },
@@ -1439,20 +1439,17 @@
     function Celdas(id) {
         var TipoUsuario = jQuery("#list47").jqGrid('getRowData', id).PagarA;
         var CodigoPres = jQuery("#list47").jqGrid('getRowData', id).CodigoCliente;
-        var id_tipo_pago = jQuery("#list47").jqGrid('getRowData', id).TipoPagoDetalle
+        var id_tipo_pago = jQuery("#list47").jqGrid('getRowData', id).TipoPagoDetalle;
         var poliza = jQuery("#list47").jqGrid('getRowData', id).Poliza;
-        var Concepto_Pago = jQuery("#list47").jqGrid('getRowData', id).Concepto_Pago
-        var Nombre_Razon_Social = jQuery("#list47").jqGrid('getRowData', id).Nombre_Razon_Social
-        var TipoPago = jQuery("#list47").jqGrid('getRowData', id).Tipo_Pago2
-        var cta_clabe = jQuery("#list47").jqGrid('getRowData', id).Cuenta_Bancaria
+        var Concepto_Pago = jQuery("#list47").jqGrid('getRowData', id).Concepto_Pago;
+        var Nombre_Razon_Social = jQuery("#list47").jqGrid('getRowData', id).Nombre_Razon_Social;
+        var TipoPago = jQuery("#list47").jqGrid('getRowData', id).Tipo_Pago2;
+        var cta_clabe = jQuery("#list47").jqGrid('getRowData', id).Cuenta_Bancaria;
         var codAnalista = $("[id*=cmbAnalistaSolicitante]").val();
 
 
-
-
-
         if (CodigoPres == "") {
-            CodigoPres = 0
+            CodigoPres = 0;
         }
         if (TipoUsuario == "Proveedor") {
             jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: false });
@@ -1526,7 +1523,6 @@
                 RecuperarClasePago(id, result[i].Concepto, 0) //VZAVALETA_GMX-10290_INCIDENCIAS
             },
             error: function (err) {
-                debugger
                 alert(err);
             }
         });
@@ -1580,6 +1576,19 @@
 
     };
 
+    function ValidarImporte(valor, columnName, length) {
+
+
+        var id = jQuery("#list47").jqGrid('getGridParam', 'selrow');
+        var Importe = $("#" + id + "_Importe").val();
+        
+        if (Importe <= 0) {
+            return [false, "El importe debe ser mayor a 0"];
+        }
+        
+        return [true, ""];
+    };
+    
     function Validar(valor, columnName, length) {
 
         var savedRow = jQuery("#list47").getGridParam("savedRow");

@@ -735,6 +735,7 @@ Partial Class Siniestros_OrdenPago
                         oTxt.Text = IIf(IsDBNull(oGrdOrden.Rows(iIndiceFila)("Pago")), "", oGrdOrden.Rows(iIndiceFila)("Pago"))
                     End If
                     'JLC Mejoras -Inicio
+                    oTxt.Text = Format(CDbl(oTxt.Text), "##,##0.00")
                     Funciones.EjecutaFuncion("FormatCurrency(" + iIndiceFila.ToString() + ")", "Formato")
             'JLC Mejoras -fin
 

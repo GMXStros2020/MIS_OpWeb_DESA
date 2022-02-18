@@ -49,17 +49,10 @@ Partial Class AnulacionCheques
 
         oDatos = Funciones.ObtenerDatos("sp_catalogos_anulacion", oParametros)
 
-
         oTabla = oDatos.Tables(0)
-
         grd.DataSource = oTabla
-
         grd.DataBind()
-
         Funciones.EjecutaFuncion("$(""#Modal"").modal(""show""); ")
-
-
-
     End Sub
 
     Protected Sub btn_Aceptar_Click(sender As Object, e As EventArgs) Handles btn_Aceptar.Click
@@ -103,15 +96,17 @@ Partial Class AnulacionCheques
 
 
             oDatos = Funciones.ObtenerDatos("sp_catalogos_anulacion", oParametros)
-            oTabla = oDatos.Tables(0)
-            For Each row As DataRow In oTabla.Rows
-                txt_op.Text = row("nro_op").ToString()
-                txt_fecha.Text = row("fec_pago").ToString()
-                txt_importe.Text = row("imp_ch").ToString()
-                txt_cheque_a_nombre.Text = row("txt_cheque_a_nom").ToString()
-
-
-            Next
+            If oDatos.Tables(0).Rows.Count = 0 Then
+                Mensaje.MuestraMensaje("Anulación de Cheques", "Los datos ingresados no corresponden al Nro de cheque.", TipoMsg.Advertencia)
+            Else
+                oTabla = oDatos.Tables(0)
+                For Each row As DataRow In oTabla.Rows
+                    txt_op.Text = row("nro_op").ToString()
+                    txt_fecha.Text = row("fec_pago").ToString()
+                    txt_importe.Text = row("imp_ch").ToString()
+                    txt_cheque_a_nombre.Text = row("txt_cheque_a_nom").ToString()
+                Next
+            End If
         Else
             Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Favor de Indicar el numero de cheque", TipoMsg.Advertencia)
 

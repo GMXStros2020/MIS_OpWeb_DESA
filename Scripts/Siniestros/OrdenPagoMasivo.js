@@ -422,7 +422,7 @@
                     { name: 'Tipo_Cambio', index: 'Tipo_Cambio', width: 90, formatter: "number.toFixed(4)", align: 'right', sorttype: "int" },
                     { name: 'Reserva', index: 'Reserva', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                     { name: 'Moneda_Pago', index: 'Moneda_Pago', width: 180 },
-                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int" },
+                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int", editrules: { custom: true, custom_func: ValidarImporte, required: true }},
                     { name: 'Deducible', index: 'Deducible', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                     { name: 'Importe_concepto', index: 'Importe_concepto', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                     { name: 'Concepto_Factura', index: 'Concepto_Factura', width: 90 },
@@ -674,7 +674,7 @@
                             value: "0:NACIONAL;1:DOLAR AMERICANO"
                         }
                     },
-                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int" },
+                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int", editrules: { custom: true, custom_func: ValidarImporte, required: true }},
                     { name: 'Deducible', index: 'Deducible', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                     { name: 'Importe_concepto', index: 'Importe_concepto', width: 90, formatter: "number", align: 'right', sorttype: "int", hidden: true },
                     { name: 'Concepto_Factura', index: 'Concepto_Factura', width: 90 },
@@ -938,7 +938,7 @@
                             value: "0:NACIONAL;1:DOLAR AMERICANO"
                         }
                     },
-                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int" },
+                    { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int", editrules: { custom: true, custom_func: ValidarImporte, required: true }},
                     { name: 'Deducible', index: 'Deducible', width: 90, formatter: "number", align: 'right', sorttype: "int" },
                     { name: 'Importe_concepto', index: 'Importe_concepto', width: 90, formatter: "number", align: 'right', sorttype: "int", hidden: true },
                     { name: 'Concepto_Factura', index: 'Concepto_Factura', width: 90 },
@@ -1352,6 +1352,18 @@
         }
     };
 
+    function ValidarImporte(valor, columnName, length) {
+
+
+        var id = jQuery("#list47").jqGrid('getGridParam', 'selrow');
+        var Importe = $("#" + id + "_Importe").val();
+
+        if (Importe <= 0) {
+            return [false, "El importe debe ser mayor a 0"];
+        }
+
+        return [true, ""];
+    };
     function Validar(valor, columnName, length) {
 
         var savedRow = jQuery("#list47").getGridParam("savedRow");

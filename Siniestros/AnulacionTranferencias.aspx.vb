@@ -103,15 +103,14 @@ Partial Class Siniestros_AnulacionTranferencias
 
         oDatos = Funciones.ObtenerDatos("sp_catalogos_anulacion", oParametros)
 
-
-        oTabla = oDatos.Tables(0)
-
-        grdOp.DataSource = oTabla
-
-        grdOp.DataBind()
-
-        Funciones.EjecutaFuncion("$(""#ModalOp"").modal(""show""); ")
-
+        If oDatos.Tables(0).Rows.Count = 0 Then
+            Mensaje.MuestraMensaje("Anulación de transferencias", "Los datos ingresados no corresponden a la Orden de Pago.", TipoMsg.Advertencia)
+        Else
+            oTabla = oDatos.Tables(0)
+            grdOp.DataSource = oTabla
+            grdOp.DataBind()
+            Funciones.EjecutaFuncion("$(""#ModalOp"").modal(""show""); ")
+        End If
 
 
     End Sub

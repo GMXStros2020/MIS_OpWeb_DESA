@@ -4005,28 +4005,26 @@ Partial Class Siniestros_OrdenPago
                                         lbldescuento.Text = ""
                                     End If
                                     'JLC Mejoras Moneda Pago-Inicio
-                                    ''If .Item("cod_moneda") = 0 Then
-                                    ''    'If .Item("cod_moneda") = 1 Then se agrega por el tema de los 4 campos mas
-                                    ''    If .Item("Moneda_Hara_Pago") = 1 Then
-                                    ''        Mensaje.MuestraMensaje("Moneda", "No puedes pagar en dolares por que la moneda de la factura esta en pesos: ", TipoMsg.Falla)
-                                    ''        ' Limpiartodo()'se comenta por que solo se requiere una alerta
-                                    ''    Else
-                                    ''        cmbMonedaPago.SelectedValue = 0
-                                    ''    End If
-                                    ''Else
-                                    ''    cmbMonedaPago.SelectedValue = 1
-                                    ''End If
-                                    ''If .Item("Moneda_Hara_Pago") = 0 Then
-                                    ''    'If .Item("cod_moneda") = 1 Then se agrega por el tema de los 4 campos mas
-                                    ''    If .Item("cod_moneda") = 1 Then
-                                    ''        Mensaje.MuestraMensaje("Moneda", "No puedes pagar en pesos por que la moneda de la factura esta en dolares: ", TipoMsg.Falla)
-                                    ''        ' Limpiartodo()'se comenta por que solo se requiere una alerta
-                                    ''    Else
-                                    ''        cmbMonedaPago.SelectedValue = 0
-                                    ''    End If
-                                    ''Else
-                                    ''    cmbMonedaPago.SelectedValue = 1
-                                    ''End If
+                                    If .Item("cod_moneda") = 0 Then
+                                        If .Item("Moneda_Hara_Pago") = 1 Then
+                                            Mensaje.MuestraMensaje("Moneda", "No puedes pagar en dolares por que la moneda de la factura esta en pesos: ", TipoMsg.Falla)
+                                            ' Limpiartodo()'se comenta por que solo se requiere una alerta
+                                        Else
+                                            cmbMonedaPago.SelectedValue = 0
+                                        End If
+                                    Else
+                                        cmbMonedaPago.SelectedValue = 1
+                                    End If
+                                    If .Item("Moneda_Hara_Pago") = 0 Then
+                                        If .Item("cod_moneda") = 1 Then
+                                            Mensaje.MuestraMensaje("Moneda", "No puedes pagar en pesos por que la moneda de la factura esta en dolares: ", TipoMsg.Falla)
+                                            ' Limpiartodo()'se comenta por que solo se requiere una alerta
+                                        Else
+                                            cmbMonedaPago.SelectedValue = 0
+                                        End If
+                                    Else
+                                        cmbMonedaPago.SelectedValue = 1
+                                    End If
                                     'JLC Mejoras Moneda Pago-Fin
                                     'se limpian las cajas de impuestos 
 
