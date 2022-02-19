@@ -1645,27 +1645,27 @@
 
 
 
-function Terceros(ID) {
-
-    $("[id*=ID_row]").val(ID);
+function Terceros(id) {
+    id = jQuery("#list47").jqGrid('getGridParam', 'selrow');
+    $("[id*=id_row]").val(id);
     // var nomTercero = jQuery("#list47").jqGrid('getRowData', ID).Nombre_Razon_Social;
     // var RFC = jQuery("#list47").jqGrid('getRowData', ID).RFC;
     //var CodigoCliente = jQuery("#list47").jqGrid('getRowData', ID).CodigoCliente;
 
-    var CodigoCliente = $("#" + ID + "_CodigoCliente").val();
-    var RFC = $("#" + ID + "_RFC").val();
-    var nomTercero = $("#" + ID + "_Nombre_Razon_Social").val();
+    var CodigoCliente = $("#" + id + "_CodigoCliente").val();
+    var RFC = $("#" + id + "_RFC").val();
+    var nomTercero = $("#" + id + "_Nombre_Razon_Social").val();
 
     if (CodigoCliente === undefined || CodigoCliente === null) {
-        CodigoCliente = jQuery("#list47").jqGrid('getRowData', ID).CodigoCliente;
+        CodigoCliente = jQuery("#list47").jqGrid('getRowData', id).CodigoCliente;
     }
 
     if (RFC === undefined || RFC === null) {
-        RFC = jQuery("#list47").jqGrid('getRowData', ID).RFC;
+        RFC = jQuery("#list47").jqGrid('getRowData', id).RFC;
     }
 
     if (nomTercero === undefined || nomTercero === null) {
-        nomTercero = jQuery("#list47").jqGrid('getRowData', ID).Nombre_Razon_Social;
+        nomTercero = jQuery("#list47").jqGrid('getRowData', id).Nombre_Razon_Social;
     }
 
     $.ajax({
@@ -2061,7 +2061,7 @@ function LoadGridCatTerceros(mydata) {
                 var codTercero = jQuery("#grdTercero").jqGrid('getRowData', id).cod_tercero;
                 var nomTercero = jQuery("#grdTercero").jqGrid('getRowData', id).nombre;
                 var rfcTercero = jQuery("#grdTercero").jqGrid('getRowData', id).nro_nit;
-                var rowId = $("[id*=ID_row]").val()
+                var rowId = $("[id*=id_row]").val()
 
                 jQuery("#list47").jqGrid('setCell', rowId, 'CodigoCliente', codTercero);
                 jQuery("#list47").jqGrid('setCell', rowId, 'Nombre_Razon_Social', nomTercero);
@@ -2103,9 +2103,9 @@ function LoadGridCatTerceros(mydata) {
 
 };
 
-function ObtenerCuentasDependencias(ID, CodCliente) {
+function ObtenerCuentasDependencias(id, CodCliente) {
     //>VZAVALETA_10290_CC7
-    var FolioOnbase = jQuery("#list47").jqGrid('getRowData', ID).FolioOnbaseHidden
+    var FolioOnbase = jQuery("#list47").jqGrid('getRowData', id).FolioOnbaseHidden
 
     $.ajax({
         url: "../LocalServices/OrdenPagoMasiva.asmx/RecuperarCtasDepend",
@@ -2118,16 +2118,16 @@ function ObtenerCuentasDependencias(ID, CodCliente) {
             if (mydata.length != 0) {
                 var vClabe = mydata[0].clabe
                 if (vClabe != "") {
-                    jQuery("#list47").jqGrid('setCell', ID, 'Cuenta_Bancaria_ok', vClabe);
-                    jQuery("#list47").jqGrid('setCell', ID, 'Confirmar_Cuenta_ok', vClabe);
-                    $("#" + ID + "_Cuenta_Bancaria").val(vClabe);
-                    $("#" + ID + "_Confirmar_Cuenta").val(vClabe);
+                    jQuery("#list47").jqGrid('setCell', id, 'Cuenta_Bancaria_ok', vClabe);
+                    jQuery("#list47").jqGrid('setCell', id, 'Confirmar_Cuenta_ok', vClabe);
+                    $("#" + id + "_Cuenta_Bancaria").val(vClabe);
+                    $("#" + id + "_Confirmar_Cuenta").val(vClabe);
                 }
                 else {
-                    jQuery("#list47").jqGrid('setCell', ID, 'Cuenta_Bancaria_ok', null);
-                    jQuery("#list47").jqGrid('setCell', ID, 'Confirmar_Cuenta_ok', null);
-                    $("#" + ID + "_Cuenta_Bancaria").val(null);
-                    $("#" + ID + "_Confirmar_Cuenta").val(null);
+                    jQuery("#list47").jqGrid('setCell', id, 'Cuenta_Bancaria_ok', null);
+                    jQuery("#list47").jqGrid('setCell', id, 'Confirmar_Cuenta_ok', null);
+                    $("#" + id + "_Cuenta_Bancaria").val(null);
+                    $("#" + id + "_Confirmar_Cuenta").val(null);
                 }
             }
             return;
@@ -2136,7 +2136,7 @@ function ObtenerCuentasDependencias(ID, CodCliente) {
         }
     });
 };
-function RecuperarClasePago(ID, Cpto_pago, Prestador) {
+function RecuperarClasePago(id, Cpto_pago, Prestador) {
     $.ajax({
         url: "../LocalServices/OrdenPagoMasiva.asmx/RecuperarClasePago",
         data: "{ 'Cpto_pago': '" + Cpto_pago + "', 'sn_prestador': '" + Prestador + "' }",
@@ -2153,14 +2153,14 @@ function RecuperarClasePago(ID, Cpto_pago, Prestador) {
 
 
 
-                jQuery("#list47").jqGrid('setCell', ID, 'Cod_clas_pago', vCod_clase_pago);
-                jQuery("#list47").jqGrid('setCell', ID, 'Clase_pago', vClase_pago);
+                jQuery("#list47").jqGrid('setCell', id, 'Cod_clas_pago', vCod_clase_pago);
+                jQuery("#list47").jqGrid('setCell', id, 'Clase_pago', vClase_pago);
 
 
 
-                jQuery("#list47").jqGrid('setCell', ID, 'Concepto2', vConcepto2);
+                jQuery("#list47").jqGrid('setCell', id, 'Concepto2', vConcepto2);
                 if (vConcepto2 == "") {
-                    jQuery("#list47").jqGrid('setCell', ID, 'Concepto2', " ");
+                    jQuery("#list47").jqGrid('setCell', id, 'Concepto2', " ");
                     jQuery("#list47").setColProp('Concepto2', { editable: true});
                 }
                 //$("#hid_cpto_pago").val(Cpto_pago);

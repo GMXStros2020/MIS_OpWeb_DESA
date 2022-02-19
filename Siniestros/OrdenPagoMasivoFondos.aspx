@@ -461,7 +461,7 @@
                                         <asp:HiddenField runat="server" ID="hidCodTercero" Value="0" />
                                         <asp:HiddenField runat="server" ID="hidNomTercero" Value="" />
                                         <asp:HiddenField runat="server" ID="hidrfcTercero" Value="" />
-                                        <asp:HiddenField runat="server" ID="ID_row" Value="" />
+                                        <asp:HiddenField runat="server" ID="id_row" Value="" />
                                     </div>
                                 </div>
                             </div>

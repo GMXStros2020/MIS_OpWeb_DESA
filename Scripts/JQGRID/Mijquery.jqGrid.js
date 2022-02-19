@@ -3161,6 +3161,7 @@
                         else { $(this).removeClass(cn); }
                     });
                 }
+                $($t).trigger("reloadGrid");
             });
             return success;
         },
