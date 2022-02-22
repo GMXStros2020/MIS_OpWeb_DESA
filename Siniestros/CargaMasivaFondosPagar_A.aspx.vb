@@ -70,7 +70,7 @@ Partial Class Siniestros_OrdenPago
             Dim cn As New OleDb.OleDbConnection(strConn) 'cadena de coneccion
 
             oCmd.Connection = cn
-            oCmd.CommandText = "select Folio_Onbase,Pagar_A from,Forma_Hara_Pago [Folios$]"
+            oCmd.CommandText = "select Folio_Onbase,Pagar_A,Forma_Hara_Pago from [Folios$]"
             oCmd.CommandType = CommandType.Text
             oDa.SelectCommand = oCmd
             oDa.Fill(dtImportaReasPrim)
