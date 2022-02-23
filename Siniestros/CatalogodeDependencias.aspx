@@ -145,6 +145,7 @@
                                                  <asp:BoundField DataField="PagarA" HeaderText="Asegurado ó Tercero"  />
                                                  <asp:BoundField DataField="codigo" HeaderText="Código" />
                                                  <asp:BoundField DataField="nombre" HeaderText="Nombre" />
+                                                 <asp:BoundField DataField="banco" HeaderText="Banco" />
                                                  <asp:BoundField DataField="sucursal" HeaderText="Sucursal" />
                                                  <asp:BoundField DataField="plaza" HeaderText="Plaza" />
                                                  <asp:BoundField DataField="clabe" HeaderText="Clabe" />
@@ -194,7 +195,16 @@
 
 
     </div>
-
+    <br />
+    <br />
+    <div class="col-md-12" style="text-align: right">
+        <asp:LinkButton ID="btnExportar" runat="server" class="btn botones" Width="150px" Height="30px" >
+            <span>
+                <img class="btn-excel"/>&nbsp&nbsp Exportar Catálogo
+            </span>
+        </asp:LinkButton>
+    </div>
+  
 
     <div id="ModConfirmar" class="modal-catalogo">
         <div class="cuadro-titulo-flotante">

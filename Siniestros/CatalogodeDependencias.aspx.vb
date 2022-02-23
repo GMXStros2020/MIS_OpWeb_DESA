@@ -188,5 +188,16 @@ Partial Class Siniestros_CatalogodeDependencias
             Return False
         End Try
     End Function
+    Protected Sub btnExportar_Click(sender As Object, e As EventArgs) Handles btnExportar.Click
+        Dim ws As New ws_Generales.GeneralesClient
+        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
+        Dim RptFilters As String
+        RptFilters = ""
+
+        server = Replace(Replace(server, "@Reporte", "DependenciasDeGobierno"), "@Formato", "EXCEL")
+        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
+        server = server & RptFilters
+        Funciones.EjecutaFuncion("window.open('" & server & "');")
+    End Sub
 
 End Class

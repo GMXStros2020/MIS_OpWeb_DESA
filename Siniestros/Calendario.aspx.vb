@@ -18,7 +18,8 @@ Partial Class Siniestros_Calendario
 
 
         Dim oParametros As New Dictionary(Of String, Object)
-
+        Dim FecHoy As String
+        FecHoy = DateTime.Now.ToString("dd/MM/yyyy")
         Try
             oParametros = New Dictionary(Of String, Object)
 
@@ -30,6 +31,11 @@ Partial Class Siniestros_Calendario
 
             If txt_fecha_ini.Text = "" Then
                 Mensaje.MuestraMensaje("Calendario", "Favor de seleccionar una fecha", Mensaje.TipoMsg.Advertencia)
+                Exit Sub
+            End If
+
+            If (Convert.ToDateTime(txt_fecha_ini.Text) < FecHoy) Then
+                Mensaje.MuestraMensaje("Calendario", "La fecha ingresada no corresponde, ya que el suceso ya ocurrió.", Mensaje.TipoMsg.Advertencia)
                 Exit Sub
             End If
 
