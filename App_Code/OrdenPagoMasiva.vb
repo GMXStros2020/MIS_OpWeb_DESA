@@ -71,6 +71,8 @@ Public Class OrdenPagoMasiva
                 oParametros.Add("Tipo_Cambio", ValidarParametros(OP.Tipo_Cambio))
                 oParametros.Add("Reserva", ValidarParametros(OP.Reserva))
                 oParametros.Add("Importe", ValidarParametros(OP.Importe))
+                oParametros.Add("Cod_moneda", ValidarParametros(OP.Cod_moneda))
+                oParametros.Add("Cod_moneda_pago", ValidarParametros(OP.Cod_moneda_pago))
                 oParametros.Add("Lote", ValidarParametros(Lote))
 
                 oDatos = Funciones.ObtenerDatos("usp_valida_folio_bloqueado", oParametros)

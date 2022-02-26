@@ -2935,7 +2935,7 @@ Partial Class Siniestros_OrdenPago
                                 ValidarImpuestosOPFac = False
                                 Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de iSubTotal: " + iSubTotal.ToString(), TipoMsg.Falla)
                             Else
-                                If oGrdOrden.Rows(0)("ClasePago") = 26 Then
+                                If oGrdOrden.Rows(0)("ClasePago") = 26 Or oGrdOrden.Rows(0)("ClasePago") = 27 Or oGrdOrden.Rows(0)("ClasePago") = 28 Then
                                     'Validamos el pago deacuerdo a la reserva 
                                     If txtMonedaPoliza.Text = "DOLAR AMERICANO" And cmbMonedaPago.SelectedValue = 0 Then
                                         If CDbl(txtTotalAutorizacion.Text) > Reserva_total Then
@@ -2966,7 +2966,7 @@ Partial Class Siniestros_OrdenPago
                 'ASEGURADOS Y TERCEROS
                 'para el caso de asegurado y terceros que no tienen descuentos
                 'Validamos el pago deacuerdo a la reserva 
-                If oGrdOrden.Rows(0)("ClasePago") = 26 Then
+                If oGrdOrden.Rows(0)("ClasePago") = 26 Or oGrdOrden.Rows(0)("ClasePago") = 27 Or oGrdOrden.Rows(0)("ClasePago") = 28 Then
                     'Validamos el pago deacuerdo a la reserva 
                     If txtMonedaPoliza.Text = "DOLAR AMERICANO" And cmbMonedaPago.SelectedValue = 0 Then
                         If CDbl(txtTotalAutorizacion.Text) > Reserva_total Then
