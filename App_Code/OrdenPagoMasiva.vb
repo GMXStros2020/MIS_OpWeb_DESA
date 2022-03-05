@@ -27,6 +27,7 @@ Public Class OrdenPagoMasiva
             Dim oTabla As DataTable
 
             Dim oParametros As New Dictionary(Of String, Object)
+            Dim oParametrosL As New Dictionary(Of String, Object)
             Dim JS As New System.Web.Script.Serialization.JavaScriptSerializer
             Dim lista As New List(Of OrdenPagoMasivoClass)
             Dim Num_Lote As String
@@ -36,11 +37,13 @@ Public Class OrdenPagoMasiva
             Dim ErrorMsgCta As String 'FCRUZ_GMX-10290_INCIDENCIAS VALIDA LONGITUD DE CTAS
             Dim ErrorMsgVacio As String 'JJARAMILLO_GMX-10290_INCIDENCIAS VALIDA CAMPOS OBLIGATORIOS
             Dim ErrorMsgImporte As String 'JJARAMILLO_GMX-10290_INCIDENCIAS VALIDA CAMPOS OBLIGATORIOS
+            Dim CFolios As String 'JJARAMILLO_GMX-10290_INCIDENCIAS Eliminar registros del lote
 
             ErrorMsgVacio = ""
             ErrorMsgCta = ""
             ErrorMsg = ""
             ErrorMsgImporte = ""
+            CFolios = ""
 
             lista = New JavaScriptSerializer().ConvertToType(Of List(Of OrdenPagoMasivoClass))(myArray)
 
@@ -78,6 +81,8 @@ Public Class OrdenPagoMasiva
                 oDatos = Funciones.ObtenerDatos("usp_valida_folio_bloqueado", oParametros)
                 ErrorCode = oDatos.Tables(0).Rows(0).Item("ID_ERROR")
 
+                CFolios = CFolios + ValidarParametros(OP.Folio_Onbase) + ", "
+
                 If ErrorCode <> 0 Then
                     ErrorMsg = ErrorMsg + oDatos.Tables(0).Rows(0).Item("MSG_ERROR") + "<br>"
                 End If
@@ -112,6 +117,15 @@ Public Class OrdenPagoMasiva
                 End If
 
             Next
+
+            If Lote <> "0" Then
+                CFolios = CFolios + "0"
+                oParametrosL = New Dictionary(Of String, Object)
+                oParametrosL.Add("Folios", CFolios)
+                oParametrosL.Add("Lote", Lote)
+                Funciones.ObtenerDatos("usp_elimina_registros_lote", oParametrosL)
+                ErrorMsg = ""
+            End If
 
             If ErrorMsg <> "" Then
                 Throw New Exception(ErrorMsg)
