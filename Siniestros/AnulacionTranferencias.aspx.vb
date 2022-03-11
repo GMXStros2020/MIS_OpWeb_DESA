@@ -237,12 +237,20 @@ Partial Class Siniestros_AnulacionTranferencias
         transaccion = oComando.Parameters("@nroTransaccion").Value.ToString()
         asiento = oComando.Parameters("@nro_asiento").Value.ToString()
         '-----------------
-        Dim Msg, Style, Title, Response, MyString
-        Msg = " Orden de pago: " + txt_orden_pago.Text + vbCrLf + " Numero Transaccion: " + transaccion + vbCrLf + " Asiento: " + asiento    ' Define message.
-        Style = vbOKOnly    ' Define buttons.
-        Title = "OrdenPagoSiniestros"    ' Define title. 
-        ' Display message.
-        Response = MsgBox(Msg, Style, Title)
+        'Dim Msg As String
+        'Dim Style As String
+        'Dim Title As String
+        Dim Response As String
+        'Dim MyString As String
+
+        Response = MsgBox("Orden de pago: " + txt_orden_pago.Text + vbCrLf + " Numero Transaccion: " + transaccion + vbCrLf + " Asiento: " + asiento, MsgBoxStyle.Information + MsgBoxStyle.OkOnly, "OrdenPagoSiniestros")
+
+        'Msg = " Orden de pago: " + txt_orden_pago.Text + vbCrLf + " Numero Transaccion: " + transaccion + vbCrLf + " Asiento: " + asiento
+        'Style = vbOKOnly
+        'Title = "OrdenPagoSiniestros"
+
+        'Response = MsgBox(Msg, Style, Title)
+
         Select Case Response
             Case vbOK
                 txt_orden_pago.Text = ""
