@@ -748,16 +748,21 @@ Public Class Tercero
             If sTipoPersona = "F" Then
                 oParametros.Add("codTipoPersona", sTipoPersona)
                 oParametros.Add("codOcupacion", -1)
-                If dSueldo <> -1 Then oParametros.Add("impSueldo", dSueldo)
-                oParametros.Add("txtSexo", sSexo)
-                oParametros.Add("fecNac", vFecNacim)
-                If sLugarNacim <> "" Then oParametros.Add("txtLugarNac", sLugarNacim)
+                'If dSueldo <> -1 Then oParametros.Add("impSueldo", dSueldo)
+                'oParametros.Add("txtSexo", sSexo)
+                'oParametros.Add("fecNac", vFecNacim)
+                'If sLugarNacim <> "" Then oParametros.Add("txtLugarNac", sLugarNacim)
                 oParametros.Add("txtNombre", sNombre)
                 oParametros.Add("txtApellido2", sApellido2)
             Else
                 oParametros.Add("codTipoPersona", sTipoPersona)
-                oParametros.Add("txtSexo", "F")
+                'oParametros.Add("txtSexo", "F")
             End If
+
+            If dSueldo <> -1 Then oParametros.Add("impSueldo", dSueldo)
+            oParametros.Add("txtSexo", sSexo)
+            oParametros.Add("fecNac", vFecNacim)
+            If sLugarNacim <> "" Then oParametros.Add("txtLugarNac", sLugarNacim)
 
             oParametros.Add("codUsuario", sCodUsuario)
             If sNombrePariente <> "" Then oParametros.Add("txtNomPariente", sNombrePariente)

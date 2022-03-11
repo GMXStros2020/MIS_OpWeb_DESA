@@ -43,7 +43,7 @@
 
                     <div class="form-group col-md-3">
                         <asp:Label runat="server" class="etiqueta-control">Descripcion del Concepto</asp:Label>
-                        <asp:TextBox AutoPostBack="false" ID="txtNombre" runat="server" CssClass="estandar-control siniestro Tablero" placeholder="Concepto"></asp:TextBox>
+                        <asp:TextBox AutoPostBack="false" ID="txtNombre" runat="server" CssClass="estandar-control siniestro Tablero" placeholder="Concepto" MaxLength="65" ></asp:TextBox>
                     </div>
 
 

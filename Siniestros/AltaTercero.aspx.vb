@@ -190,21 +190,24 @@ Partial Class Siniestros_AltaTercero
 
         If chkFisica.Checked Then
             Tercero.sTipoPersona = "F"
-            Tercero.sSexo = drSexo.SelectedValue
-
-
-            Tercero.sLugarNacim = txt_lugNac.Text.Trim
+            'Tercero.sSexo = drSexo.SelectedValue
+            'Tercero.sLugarNacim = txt_lugNac.Text.Trim
             Tercero.iOcupacion = -1
-            Tercero.dSueldo = IIf(txt_sueldo.Text.Trim = "", -1, txt_sueldo.Text.Trim)
+            'Tercero.dSueldo = IIf(txt_sueldo.Text.Trim = "", -1, txt_sueldo.Text.Trim)
             Tercero.iEdad = txt_edad.Text.Trim
         ElseIf chkMoral.Checked Then
             Tercero.sTipoPersona = "J"
-            Tercero.sSexo = "F"
-            Tercero.sLugarNacim = ""
+            'Tercero.sSexo = "F"
+            'Tercero.sLugarNacim = ""
             Tercero.iOcupacion = 0
-            Tercero.dSueldo = 0
+            'Tercero.dSueldo = 0
             Tercero.iEdad = txt_edad.Text.Trim
         End If
+
+        Tercero.sSexo = drSexo.SelectedValue
+        Tercero.sLugarNacim = txt_lugNac.Text.Trim
+        Tercero.dSueldo = IIf(txt_sueldo.Text.Trim = "", -1, txt_sueldo.Text.Trim)
+
         Tercero.iEstCivil = drEdoCivil.SelectedValue
         Tercero.vFecNacim = Funciones.FormatearFecha(txt_fecNac.Text.Trim, Funciones.enumFormatoFecha.YYYYMMDD)
         Tercero.sOcupacion = txt_ocup.Text.Trim

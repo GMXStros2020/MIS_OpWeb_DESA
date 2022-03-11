@@ -3371,7 +3371,7 @@ Partial Class Siniestros_OrdenPago
 
             If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
                 If oDatos.Tables(0).Rows(0).Item("Folio_Onbase").ToString().Length > 0 Then
-                    Mensaje.MuestraMensaje("Folio OnBase Bloqueado", "El Folio: " + Me.txtOnBase.Text.Trim + " está siendo utilizado en el proceso automático".ToString(), TipoMsg.Falla)
+                    Mensaje.MuestraMensaje("Folio OnBase Bloqueado", "El Folio: " + Me.txtOnBase.Text.Trim + " está siendo utilizado en el proceso automático, se encuentra en el Lote: " + oDatos.Tables(0).Rows(0).Item("Num_lote").ToString(), TipoMsg.Falla)
                     Limpiartodo()
                     Return True
                 End If

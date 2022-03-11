@@ -2375,12 +2375,14 @@ Partial Class Siniestros_OrdenPago
                             'se agrego este filtro para varios conceptos
                             If chkVariosConceptos.Checked = False Then
                                 Mensaje.MuestraMensaje("Calculo de totales", "No se encontro información para el cálculo de impuestos", TipoMsg.Falla)
-                                txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+
+                                txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
+                                txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
+                                txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestosFac.Text), 2))
+                                txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetencionesFac.Text), 2))
+                                txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
+                                txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
+
                                 If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
                                     txtTotalAutorizacion.Text = dPago
                                     txtTotalImpuestos.Text = 0
@@ -2388,12 +2390,12 @@ Partial Class Siniestros_OrdenPago
                                     txtTotal.Text = dPago
                                     txtTotalNacional.Text = dPago
 
-                                    txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
-                                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
-                                    txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
-                                    txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                    txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
+                                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
+                                    txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestosFac.Text), 2))
+                                    txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetencionesFac.Text), 2))
+                                    txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
+                                    txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
 
                                 End If
                                 dImporteImpuesto = 0
@@ -3867,7 +3869,8 @@ Partial Class Siniestros_OrdenPago
 
             If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
                 If oDatos.Tables(0).Rows(0).Item("Folio_Onbase").ToString().Length > 0 Then
-                    Mensaje.MuestraMensaje("Folio OnBase Bloqueado", "El Folio: " + Me.txtOnBase.Text.Trim + " está siendo utilizado en el proceso automático".ToString(), TipoMsg.Falla)
+                    Mensaje.MuestraMensaje("Folio OnBase Bloqueado", "El Folio: " + Me.txtOnBase.Text.Trim + " está siendo utilizado en el proceso automático, se encuentra en el Lote: " + oDatos.Tables(0).Rows(0).Item("Num_lote").ToString(), TipoMsg.Falla)
+
                     Limpiartodo()
                     Return True
                 End If
