@@ -6,20 +6,13 @@ Imports Mensaje
 Partial Class Siniestros_AnulacionTranferencias
     Inherits System.Web.UI.Page
 
-
     Sub Page_Load(ByVal Sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         If Not IsPostBack Then
-
-
             Dim oDatos As DataSet
-
-
-
             Dim oParametros As New Dictionary(Of String, Object)
 
             oParametros.Add("Accion", 2)
-
 
             oDatos = Funciones.ObtenerDatos("sp_catalogos_anulacion", oParametros)
 
@@ -27,20 +20,13 @@ Partial Class Siniestros_AnulacionTranferencias
             ddl_concepto.DataTextField = "desc_concepto_anulacion"
             ddl_concepto.DataValueField = "cod_concepto_anulacion"
             ddl_concepto.DataBind()
-
-
-
-
         End If
-
     End Sub
-
 
     Protected Sub btnConsulta_Click(sender As Object, e As EventArgs) Handles btnConsulta.Click
         Dim oDatos As DataSet
         Dim oTabla As DataTable
         Dim oParametros As New Dictionary(Of String, Object)
-
 
         oParametros.Add("Accion", 1)
 
@@ -50,7 +36,6 @@ Partial Class Siniestros_AnulacionTranferencias
 
         oDatos = Funciones.ObtenerDatos("sp_catalogos_anulacion", oParametros)
 
-
         oTabla = oDatos.Tables(0)
 
         grd.DataSource = oTabla
@@ -58,14 +43,9 @@ Partial Class Siniestros_AnulacionTranferencias
         grd.DataBind()
 
         Funciones.EjecutaFuncion("$(""#Modal"").modal(""show""); ")
-
-
-
     End Sub
 
     Protected Sub btn_Aceptar_Click(sender As Object, e As EventArgs) Handles btn_Aceptar.Click
-
-
         For index = 0 To grd.Rows.Count - 1
             Dim chk As CheckBox
 
@@ -80,8 +60,6 @@ Partial Class Siniestros_AnulacionTranferencias
         Next
 
         Funciones.EjecutaFuncion("$(""#Modal"").modal(""hide""); ")
-
-
 
     End Sub
 
@@ -112,11 +90,9 @@ Partial Class Siniestros_AnulacionTranferencias
             Funciones.EjecutaFuncion("$(""#ModalOp"").modal(""show""); ")
         End If
 
-
     End Sub
 
     Protected Sub btnAceptarOp_Click(sender As Object, e As EventArgs) Handles btnAceptarOp.Click
-
 
         For index = 0 To grdOp.Rows.Count - 1
             Dim chk As CheckBox
@@ -135,8 +111,6 @@ Partial Class Siniestros_AnulacionTranferencias
         Next
 
         Funciones.EjecutaFuncion("$(""#ModalOp"").modal(""hide""); ")
-
-
 
     End Sub
 
@@ -166,26 +140,15 @@ Partial Class Siniestros_AnulacionTranferencias
             Mensaje.MuestraMensaje("OrdenPagoSiniestros", sTexto, TipoMsg.Advertencia)
         End If
 
-
     End Function
 
     Protected Sub btn_AnularOP_Click(sender As Object, e As EventArgs) Handles btn_AnularOP.Click
-
-
         Dim res As Boolean
         Dim sMensajeError As String
 
-
         If ValidaDatos() = True Then
             AnulaTransferencias()
-
         End If
-
-
-
-
-
-
     End Sub
 
     Protected Sub AnulaTransferencias()
@@ -236,33 +199,21 @@ Partial Class Siniestros_AnulacionTranferencias
         msg_err = oComando.Parameters("@msg_err").Value.ToString()
         transaccion = oComando.Parameters("@nroTransaccion").Value.ToString()
         asiento = oComando.Parameters("@nro_asiento").Value.ToString()
-        '-----------------
-        'Dim Msg As String
-        'Dim Style As String
-        'Dim Title As String
-        Dim Response As String
-        'Dim MyString As String
 
-        Response = MsgBox("Orden de pago: " + txt_orden_pago.Text + vbCrLf + " Numero Transaccion: " + transaccion + vbCrLf + " Asiento: " + asiento, MsgBoxStyle.Information + MsgBoxStyle.OkOnly, "OrdenPagoSiniestros")
+        'Mensaje.MuestraMensaje("OrdenPagoSiniestros", " Orden de pago: " + txt_orden_pago.Text + vbCrLf + " Numero Transaccion: " + transaccion + vbCrLf + " Asiento: " + asiento, TipoMsg.Advertencia)
 
-        'Msg = " Orden de pago: " + txt_orden_pago.Text + vbCrLf + " Numero Transaccion: " + transaccion + vbCrLf + " Asiento: " + asiento
-        'Style = vbOKOnly
-        'Title = "OrdenPagoSiniestros"
 
-        'Response = MsgBox(Msg, Style, Title)
-
-        Select Case Response
-            Case vbOK
-                txt_orden_pago.Text = ""
-                txt_fecha.Text = ""
-                txt_importe.Text = ""
-                txt_tranferencia.Text = ""
-                txt_cuenta.Text = ""
-                txt_transaccion.Text = ""
-                txt_organismo.Text = ""
-        End Select
-        'Mensaje.MuestraMensaje("OrdenPagoSiniestros", " Orden de pago: " + txt_orden_pago.Text + "\n Numero Transaccion: " + transaccion + "\n Asiento: " + asiento, TipoMsg.Advertencia)
+        Mensaje.MuestraMensaje("OrdenPagoSiniestros", " Orden de pago: " + txt_orden_pago.Text + "\n Numero Transaccion: " + transaccion + "\n Asiento: " + asiento, TipoMsg.Advertencia)
         '-----------------
     End Sub
 
+    Private Sub btnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click
+        txt_orden_pago.Text = ""
+        txt_fecha.Text = ""
+        txt_importe.Text = ""
+        txt_tranferencia.Text = ""
+        txt_cuenta.Text = ""
+        txt_transaccion.Text = ""
+        txt_organismo.Text = ""
+    End Sub
 End Class

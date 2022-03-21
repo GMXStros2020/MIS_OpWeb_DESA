@@ -520,6 +520,7 @@ function fn_SeleccionarElemento(ControlGrid, rowIndex) {
 //Abrir Modal
 function fn_AbrirModal(modal) {
     $(modal).modal('show');
+    $(modal).draggable({ disabled: false });
 }
 
 //Cerrar Modal

@@ -2375,6 +2375,24 @@ Partial Class Siniestros_OrdenPago
                             'se agrego este filtro para varios conceptos
                             If chkVariosConceptos.Checked = False Then
                                 Mensaje.MuestraMensaje("Calculo de totales", "No se encontro información para el cálculo de impuestos", TipoMsg.Falla)
+                                If txtTotalAutorizacionNacionalFac.Text = "" Then
+                                    txtTotalAutorizacionNacionalFac.Text = 0
+                                End If
+                                If txtTotalAutorizacionFac.Text = "" Then
+                                    txtTotalAutorizacionFac.Text = 0
+                                End If
+                                If txtTotalImpuestosFac.Text = "" Then
+                                    txtTotalImpuestosFac.Text = 0
+                                End If
+                                If txtTotalRetencionesFac.Text = "" Then
+                                    txtTotalRetencionesFac.Text = 0
+                                End If
+                                If txtTotalFac.Text = "" Then
+                                    txtTotalFac.Text = 0
+                                End If
+                                If txtTotalNacionalFac.Text = "" Then
+                                    txtTotalNacionalFac.Text = 0
+                                End If
 
                                 txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
                                 txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
@@ -2383,27 +2401,27 @@ Partial Class Siniestros_OrdenPago
                                 txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
                                 txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
 
-                                If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
-                                    txtTotalAutorizacion.Text = dPago
-                                    txtTotalImpuestos.Text = 0
-                                    txtTotalRetenciones.Text = 0
-                                    txtTotal.Text = dPago
-                                    txtTotalNacional.Text = dPago
+                                    If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
+                                        txtTotalAutorizacion.Text = dPago
+                                        txtTotalImpuestos.Text = 0
+                                        txtTotalRetenciones.Text = 0
+                                        txtTotal.Text = dPago
+                                        txtTotalNacional.Text = dPago
 
-                                    txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
-                                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
-                                    txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestosFac.Text), 2))
-                                    txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetencionesFac.Text), 2))
-                                    txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
-                                    txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
+                                        txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
+                                        txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
+                                        txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestosFac.Text), 2))
+                                        txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetencionesFac.Text), 2))
+                                        txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
+                                        txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
 
-                                End If
-                                dImporteImpuesto = 0
-                                dImporteRetencion = 0
+                                    End If
+                                    dImporteImpuesto = 0
+                                    dImporteRetencion = 0
 
-                            Else
-                                'varios conceptos
-                                txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
+                                Else
+                                    'varios conceptos
+                                    txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
                                 txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
                                 txtTotalRetenciones.Text = dImporteRetencion + txtTotalRetenciones.Text
                                 txtTotal.Text = dPago + txtTotal.Text
