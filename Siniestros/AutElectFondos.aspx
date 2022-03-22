@@ -154,7 +154,7 @@
                       <asp:Label Text="Firmadas" class="etiqueta-control" Font-Bold="true" BackColor="#66ff33" runat="server" ></asp:Label>
                       <asp:Label Text="Sin Firmar" class="etiqueta-control" Font-Bold="true"  BackColor="#ffcc00" runat="server" ></asp:Label>
                       <asp:Label Text="Sol.Rechazo" class="etiqueta-control" Font-Bold="true" BackColor="Red" runat="server" ForeColor="White" ></asp:Label>
-                      <asp:Label Text="Cancelada" class="etiqueta-control" Font-Bold="true"  BackColor="#6699ff" runat="server" ></asp:Label>
+                      <asp:Label Text="Cancelada" class="etiqueta-control" Font-Bold="true"  BackColor="LightBlue" runat="server" ></asp:Label>
                       <asp:Label Text="Firma PA" class="etiqueta-control" Font-Bold="true" BackColor="LightGray" runat="server" ></asp:Label>
                       <asp:Label Text="No Requerido" class="etiqueta-control" Font-Bold="true" BackColor="Bisque" runat="server" ></asp:Label>
                       <%--<asp:Label id="lblFechaTope" Text="Fecha Tope:" class="etiqueta-control" Font-Bold="true"  BackColor="LightGray" runat="server" ></asp:Label>--%>
