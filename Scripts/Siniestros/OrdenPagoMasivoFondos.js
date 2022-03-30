@@ -89,12 +89,21 @@
         }
 
 
-        if (txt_fecha_fin == "") {
+        if (txt_fecha_ini == "") {
             fn_MuestraMensaje("Atencion", "Favor de capturar el rango Fecha de aceptación del documento", 0);
             return;
         }
+    
+        if (txt_fecha_ini > txt_fecha_fin) {
+            fn_MuestraMensaje("Atencion", "La fecha inicial es mayor a la fecha final", 0);
+            return;
+        }
 
-
+        if (txt_fecha_fin == "" && txt_fecha_ini == "") {
+            fn_MuestraMensaje("Atencion", "Favor de capturar el rango Fecha ", 0);
+            return;
+        }
+        
         $("#loading").removeClass("hidden");
         $("#list47").jqGrid("clearGridData");
         $("#list47").jqGrid("GridUnload")

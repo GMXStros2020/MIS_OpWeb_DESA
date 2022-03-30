@@ -3,7 +3,12 @@
     $("#txt_width").val(outerwidth);
     var res = { '0': 'Sin Informacion' };
     //VZAVALETA_GMX-10290_INCIDENCIAS Funciòn para no copiar
-    var dataEvents = {        noCopyPaste: {            type: 'copy paste cut',            fn: function (e) { e.preventDefault(); }        }    };
+    var dataEvents = {
+        noCopyPaste: {
+            type: 'copy paste cut',
+            fn: function (e) { e.preventDefault(); }
+        }
+    };
     //VZAVALETA_GMX-10290_INCIDENCIAS
     //var Tipo_Pago = { '0': 'Seleccione Opcion', '1': 'CHEQUE', '2': 'TRANSFERENCIA' };
 
@@ -46,8 +51,16 @@
             return;
         }
 
-        if (txt_fecha_fin == "") {
+        if (txt_fecha_ini == "") {
             fn_MuestraMensaje("Atencion", "Favor de capturar el rango Fecha de aceptación del documento", 0);
+            return;
+        }
+        if (txt_fecha_ini > txt_fecha_fin) {
+            fn_MuestraMensaje("Atencion", "La fecha inicial es mayor a la fecha final", 0);
+            return;
+        }
+        if (txt_fecha_fin == "" && txt_fecha_ini == "") {
+            fn_MuestraMensaje("Atencion", "Favor de capturar el rango Fecha ", 0);
             return;
         }
 

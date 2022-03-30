@@ -2956,6 +2956,23 @@ Partial Class Siniestros_OrdenPago
                                 Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Diferencia de iSubTotal: " + iSubTotal.ToString(), TipoMsg.Falla)
                             Else
                                 If oGrdOrden.Rows(0)("ClasePago") = 26 Or oGrdOrden.Rows(0)("ClasePago") = 27 Or oGrdOrden.Rows(0)("ClasePago") = 28 Then
+                                    '--------------------------------------------------------------------------------------
+                                    'VZAVALETA_10290_Valida el caso extrhordinario que si es Honorarios-Pago final-Primer pago no deberia validar la reserva
+                                    If oGrdOrden.Rows(0)("ClasePago") = 27 Or oGrdOrden.Rows(0)("ClasePago") = 28 Then
+                                        Dim Pago_anterior As String
+                                        Pago_anterior = ""
+
+                                        Pago_anterior = Funciones.fn_EjecutaStr("sp_mis_valida_pagos_anteriores @Siniestro = " & Me.txtSiniestro.Text.Trim)
+
+                                        If Pago_anterior = "No" Then
+
+                                            If oGrdOrden.Rows(0)("TipoPago") = 2 Then
+                                                ValidarImpuestosOPFac = True
+                                                Exit Function
+                                            End If
+                                        End If
+                                    End If
+                                    '--------------------------------------------------------------------------------------
                                     'Validamos el pago deacuerdo a la reserva 
                                     If txtMonedaPoliza.Text = "DOLAR AMERICANO" And cmbMonedaPago.SelectedValue = 0 Then
                                         If CDbl(txtTotalAutorizacion.Text) > Reserva_total Then
@@ -3974,6 +3991,17 @@ Partial Class Siniestros_OrdenPago
             Select Case Me.cmbTipoUsuario.SelectedValue
 
                 Case eTipoUsuario.Proveedor
+
+                    Dim Usuario_auto As String
+                    Usuario_auto = ""
+
+                    Usuario_auto = Funciones.fn_EjecutaStr("sp_mis_valida_proveedor @folioOnbase = " & txtOnBase.Text.Trim)
+
+                    If Usuario_auto = "No" Then
+                        MuestraMensaje("Proveedor", "Proveedor no autorizado.", TipoMsg.Falla)
+                        Exit Function
+                    End If
+
 
 
                     oParametros.Add("Folio_OnBase", Me.txtOnBase.Text.Trim)
