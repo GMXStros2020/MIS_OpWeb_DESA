@@ -108,6 +108,7 @@ Partial Class Siniestros_OrdenPagoMasivo
                 oParametros.Add("NumLote", txt_NumLote.Text)
                 oParametros.Add("UsuarioSII", Master.cod_usuario.ToString())
                 oParametros.Add("Folio_Onbase", row("Folio_Onbase").ToString())
+                oParametros.Add("Num_Pago", row("Num_Pago").ToString())
 
                 oDatos = Funciones.ObtenerDatos("usp_CrearSolicitudPago_stro_Masivo", oParametros)
             Next

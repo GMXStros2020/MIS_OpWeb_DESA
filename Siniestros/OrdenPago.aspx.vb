@@ -342,6 +342,8 @@ Partial Class Siniestros_OrdenPago
                         Me.btnVerCuentas.Visible = True
                     Else
                         Me.btnVerCuentas.Visible = False
+                        drDependencias.Visible = False
+                        lblDependencias.Visible = False
                     End If
 
                 Case "clase_pago"

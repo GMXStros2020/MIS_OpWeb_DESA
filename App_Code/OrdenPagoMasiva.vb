@@ -121,7 +121,7 @@ Public Class OrdenPagoMasiva
             If Lote <> "0" Then
                 CFolios = CFolios + "0"
                 oParametrosL = New Dictionary(Of String, Object)
-                oParametrosL.Add("Folios", CFolios)
+                oParametrosL.Add("CFolios", CFolios)
                 oParametrosL.Add("Lote", Lote)
                 Funciones.ObtenerDatos("usp_elimina_registros_lote", oParametrosL)
                 ErrorMsg = ""
