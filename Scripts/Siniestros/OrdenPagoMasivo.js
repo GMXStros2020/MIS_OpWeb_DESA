@@ -42,8 +42,10 @@
         else {
             sn_multipago = 0;
         }
-                              
-
+    
+        var fecha_ini = txt_fecha_ini.substring(3, 5) + "/" + txt_fecha_ini.substring(0, 2) + "/" + txt_fecha_ini.substring(6, 10);
+        var fecha_fin = txt_fecha_fin.substring(3, 5) + "/" + txt_fecha_fin.substring(0, 2) + "/" + txt_fecha_fin.substring(6, 10);
+        
         RFC = RFC.replace("&", "!");
 
         if (txt_fecha_fin == "") {
@@ -55,7 +57,7 @@
             fn_MuestraMensaje("Atencion", "Favor de capturar el rango Fecha de aceptación del documento", 0);
             return;
         }
-        if (txt_fecha_ini > txt_fecha_fin) {
+        if (fecha_ini > fecha_fin) {
             fn_MuestraMensaje("Atencion", "La fecha inicial es mayor a la fecha final", 0);
             return;
         }
