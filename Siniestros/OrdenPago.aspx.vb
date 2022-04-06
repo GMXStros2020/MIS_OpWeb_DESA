@@ -1281,6 +1281,7 @@ Partial Class Siniestros_OrdenPago
                 oDatos = New DataSet
                 oParametros = New Dictionary(Of String, Object)
                 oParametros.Add("folioOnBase", CInt(folioOnBase.ToString()))
+                oParametros.Add("NumPago", cmbNumPago.SelectedValue)
                 oDatos = Funciones.ObtenerDatos("usp_obtenerNroCta_FolioOnBase", oParametros)
                 ctaClabe = oDatos.Tables(0).Rows(0).Item("Cuenta_Clabe").ToString
                 folioOnbase_edoCta = oDatos.Tables(0).Rows(0).Item("Folio_Onbase_est_cuenta").ToString()

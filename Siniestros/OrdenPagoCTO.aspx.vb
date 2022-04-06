@@ -980,11 +980,11 @@ Partial Class Siniestros_OrdenPago
                 oParametros.Add("Plaza", oPlazaT_stro.Value)
                 oParametros.Add("ABA", oAbaT_stro.Value)
 
-                Master.MuestraTransferenciasBancariasSiniestros(IO.Path.GetFileName(Request.Url.AbsolutePath),
+            Master.MuestraTransferenciasBancariasSiniestros(IO.Path.GetFileName(Request.Url.AbsolutePath),
                                                                 oCatalogoBancosT, oCatalogoTiposCuentaT, oCatalogoMonedasT,
-                                                                oParametros, bTieneDatosBancarios)
+                                                                oParametros, bTieneDatosBancarios, 1)
 
-           ' End If
+            ' End If
 
 
         Catch ex As Exception

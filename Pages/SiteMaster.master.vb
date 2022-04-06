@@ -2248,8 +2248,9 @@ Partial Class Pages_SiteMaster
     Public Sub MuestraTransferenciasBancariasSiniestros(ByVal Control As String, ByVal oBancos As DataTable, ByVal oTiposCuenta As DataTable,
                                                         ByVal oMonedas As DataTable, ByVal oValoresActuales As Dictionary(Of String, Object),
                                                         ByVal bTieneDatosBancarios As Boolean,
-                                                        Optional ByVal sn_submod_web As Integer = -1,
-                                                        Optional ByVal NumPago As Integer = 1)
+                                                        ByVal NumPago As Integer,
+                                                        Optional ByVal sn_submod_web As Integer = -1
+                                                        )
 
         Try
             'VZAVALETA_10290_CC_INI

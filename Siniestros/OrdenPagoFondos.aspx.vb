@@ -1153,6 +1153,7 @@ Partial Class Siniestros_OrdenPago
                 oDatos = New DataSet
                 oParametros = New Dictionary(Of String, Object)
                 oParametros.Add("folioOnBase", CInt(folioOnBase.ToString()))
+                oParametros.Add("NumPago", IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue))
                 oDatos = Funciones.ObtenerDatos("usp_obtenerNroCta_FolioOnBase", oParametros)
                 If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
                     folioOnbase_edoCta = oDatos.Tables(0).Rows(0).Item("Folio_Onbase_est_cuenta").ToString()
