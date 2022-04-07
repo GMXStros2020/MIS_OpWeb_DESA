@@ -1527,7 +1527,7 @@
                             ts.p._index[rd[locid]] = ts.p.data.length - 1;
                         }
                         if (ts.p.gridview === false) {
-                            $("#" + $.jgrid.jqID(ts.p.id) + " tbody:first").append(rowData.join(''));
+                            $("#" + $.jgrid.jqID(ts.p.id) + " tbody:first").append(rowData.join(''));                            
                             self.triggerHandler("jqGridAfterInsertRow", [idr, rd, cur]);
                             if (afterInsRow) { ts.p.afterInsertRow.call(ts, idr, rd, cur); }
                             rowData = [];//ari=0;
@@ -3161,7 +3161,7 @@
                         else { $(this).removeClass(cn); }
                     });
                 }
-                $($t).trigger("reloadGrid");
+                //$($t).trigger("reloadGrid");
             });
             return success;
         },

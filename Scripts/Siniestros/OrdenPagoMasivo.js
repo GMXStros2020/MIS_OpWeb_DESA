@@ -41,10 +41,7 @@
         }
         else {
             sn_multipago = 0;
-        }
-    
-        var fecha_ini = txt_fecha_ini.substring(3, 5) + "/" + txt_fecha_ini.substring(0, 2) + "/" + txt_fecha_ini.substring(6, 10);
-        var fecha_fin = txt_fecha_fin.substring(3, 5) + "/" + txt_fecha_fin.substring(0, 2) + "/" + txt_fecha_fin.substring(6, 10);
+        }       
         
         RFC = RFC.replace("&", "!");
 
@@ -57,15 +54,33 @@
             fn_MuestraMensaje("Atencion", "Favor de capturar el rango Fecha de aceptación del documento", 0);
             return;
         }
-        if (fecha_ini > fecha_fin) {
-            fn_MuestraMensaje("Atencion", "La fecha inicial es mayor a la fecha final", 0);
-            return;
-        }
         if (txt_fecha_fin == "" && txt_fecha_ini == "") {
             fn_MuestraMensaje("Atencion", "Favor de capturar el rango Fecha ", 0);
             return;
         }
+        //***********
+        var anno_ini = txt_fecha_ini.substring(6, 10);
+        var anno_fin = txt_fecha_fin.substring(6, 10);
 
+        var mess_ini = txt_fecha_ini.substring(3, 5);
+        var mess_fin = txt_fecha_fin.substring(3, 5);
+
+        var dia_ini = txt_fecha_ini.substring(0, 2);
+        var dia_fin = txt_fecha_fin.substring(0, 2);
+
+        if (anno_ini > anno_fin){
+            fn_MuestraMensaje("Atencion", "La fecha inicial es mayor a la fecha final", 0);
+            return;
+        }    
+        if (anno_ini === anno_fin && mess_ini > mess_fin){
+            fn_MuestraMensaje("Atencion", "La fecha inicial es mayor a la fecha final", 0);
+            return;
+        }   
+        if (anno_ini === anno_fin && mess_ini === mess_fin && dia_ini > dia_fin){
+            fn_MuestraMensaje("Atencion", "La fecha inicial es mayor a la fecha final", 0);
+            return;
+        }   
+        //***********
         $("#loading").removeClass("hidden");
         $("#list47").jqGrid("clearGridData");
         $("#list47").jqGrid("GridUnload");
@@ -414,7 +429,7 @@
         try {
             jQuery("#list47").jqGrid({
 
-                data: mydata,
+                //data: mydata,
                 datatype: "local",
 
                 height: 280,
@@ -591,6 +606,7 @@
 
 
             //FJCP_10290_CC INI
+            for (var i = 0; i <= mydata.length; i++) jQuery("#list47").jqGrid('addRowData', i + 1, mydata[i]);
 
             jQuery("#list47").jqGrid('navGrid', '#page_columnas', { add: false, edit: false, del: false, search: false, refresh: false });
             //jQuery("#list47").jqGrid('navGrid', '#page_columnas', { add: false, edit: false, del: false, search: false, refresh: false, position: "left", cloneToTop: true });
@@ -662,9 +678,10 @@
         try {
             jQuery("#list47").jqGrid({
 
-                data: mydata,
-                datatype: "local",
+                //data: mydata,
 
+                datatype: "local",
+                
                 height: 280,
                 width: $("#txt_width").val(),
                 rowNum: 8000,
@@ -786,17 +803,23 @@
 
 
                 ],
+
+
                 onSelectRow: function (id) {
                     if (id && id !== lastsel2) {
+                        
                         jQuery('#list47').jqGrid('restoreRow', lastsel2);
-                        // jQuery('#list47').jqGrid('editRow', id, true);
                         lastsel2 = id;
+                        // jQuery('#list47').jqGrid('editRow', id, true);
+                        
                     }
                 },
                 ondblClickRow: function (id, ri, ci) {
                     if (id && id !== lastSel) {
+                        
                         jQuery("#list47").restoreRow(lastSel);
                         lastSel = id;
+                       
                     }
 
 
@@ -846,6 +869,7 @@
             });
 
             //FJCP_10290_CC INI
+            for (var i = 0; i <= mydata.length; i++) jQuery("#list47").jqGrid('addRowData', i + 1, mydata[i]);
 
             jQuery("#list47").jqGrid('navGrid', '#page_columnas', { add: false, edit: false, del: false, search: false, refresh: false });
             //jQuery("#list47").jqGrid('navGrid', '#page_columnas', { add: false, edit: false, del: false, search: false, refresh: false, position: "left", cloneToTop: true });
@@ -925,7 +949,7 @@
         try {
             jQuery("#list47").jqGrid({
 
-                data: mydata,
+                //data: mydata,
                 datatype: "local",
 
                 height: 280,
@@ -1103,6 +1127,7 @@
             });
 
             //FJCP_10290_CC INI
+            for (var i = 0; i <= mydata.length; i++) jQuery("#list47").jqGrid('addRowData', i + 1, mydata[i]);
 
             jQuery("#list47").jqGrid('navGrid', '#page_columnas', { add: false, edit: false, del: false, search: false, refresh: false });
             //jQuery("#list47").jqGrid('navGrid', '#page_columnas', { add: false, edit: false, del: false, search: false, refresh: false, position: "left", cloneToTop: true });
