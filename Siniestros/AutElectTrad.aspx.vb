@@ -142,7 +142,7 @@ Partial Class Siniestros_AutElectTrad
                 End If
             End If
             EstadoDetalleOrden()
-            'Master.cod_usuario = "CLOPEZ"
+            'Master.cod_usuario = "EAMPUDIA"
             ValidaUsrFiltros()
         Catch ex As Exception
             Funciones.fn_InsertaExcepcion(Master.cod_modulo, Master.cod_submodulo, Master.cod_usuario, "OrdenPago_FirmasElectronicas_Load: " & ex.Message)
@@ -1319,73 +1319,142 @@ Partial Class Siniestros_AutElectTrad
         End Try
 
     End Sub
+
     Private Sub MuestraChecksAccion()
+
         grdOrdenPago.Columns(20).Visible = False 'oculta el txtMotivoOtro
-        If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then  'si Administracion de siniestros
-            grdOrdenPago.Columns(21).Visible = True 'no procede
-            grdOrdenPago.Columns(23).Visible = True 'motivo
 
-            ' grdOrdenPago.Columns(15).Visible = False
-            grdOrdenPago.Columns(16).Visible = False
-            grdOrdenPago.Columns(17).Visible = False
-            grdOrdenPago.Columns(18).Visible = False
-            grdOrdenPago.Columns(19).Visible = False
-            'grdOrdenPago.Columns(19).Visible = False
-            grdOrdenPago.Columns(25).Visible = True
 
-        ElseIf chk_MisPend.Checked = False Then
-
-            If chk_Todas.Checked = True Then
+        If chk_MisPend.Visible = False Then 'valida si es Administracion de usuarios
+            If chk_Todas.Checked Then       ' TODAS ADMIN
                 grdOrdenPago.Columns(16).Visible = False
                 grdOrdenPago.Columns(17).Visible = False
                 grdOrdenPago.Columns(18).Visible = False
                 grdOrdenPago.Columns(19).Visible = False
-            Else
-                If chk_FinalAut.Checked = True Then
+                grdOrdenPago.Columns(20).Visible = False
+                grdOrdenPago.Columns(21).Visible = False
+                grdOrdenPago.Columns(22).Visible = False
+                grdOrdenPago.Columns(23).Visible = False
 
-                    grdOrdenPago.Columns(16).Visible = False
-                    grdOrdenPago.Columns(17).Visible = False
-                    grdOrdenPago.Columns(18).Visible = False
-                    grdOrdenPago.Columns(19).Visible = False
-                ElseIf chk_Rechazadas.Checked = True Then
-
-                    grdOrdenPago.Columns(16).Visible = False
-                    grdOrdenPago.Columns(17).Visible = False
-                    grdOrdenPago.Columns(18).Visible = False
-                    grdOrdenPago.Columns(19).Visible = False
-                Else
-
-                    'se muestra por Firma en Ausencia
-                    grdOrdenPago.Columns(16).Visible = True
-                    grdOrdenPago.Columns(17).Visible = True
-                    grdOrdenPago.Columns(18).Visible = True
-                    grdOrdenPago.Columns(19).Visible = True
-                End If
-
+            ElseIf chk_Rechazadas.Checked Then     'RECHAZADAS
+                grdOrdenPago.Columns(16).Visible = False
+                grdOrdenPago.Columns(17).Visible = False
+                grdOrdenPago.Columns(18).Visible = False
+                grdOrdenPago.Columns(19).Visible = False
+                grdOrdenPago.Columns(20).Visible = False
+                grdOrdenPago.Columns(22).Visible = False
             End If
+
+        ElseIf chk_Todas.Checked Then        'TODAS TECNICO
+            grdOrdenPago.Columns(16).Visible = False
+            grdOrdenPago.Columns(17).Visible = False
+            grdOrdenPago.Columns(18).Visible = False
+            grdOrdenPago.Columns(19).Visible = False
+            grdOrdenPago.Columns(20).Visible = False
             grdOrdenPago.Columns(21).Visible = False
             grdOrdenPago.Columns(22).Visible = False
-                grdOrdenPago.Columns(23).Visible = False
-                grdOrdenPago.Columns(25).Visible = True
+            grdOrdenPago.Columns(23).Visible = False
 
-            Else
-                grdOrdenPago.Columns(16).Visible = True  'En Revision 
-            grdOrdenPago.Columns(17).Visible = True  'Firmar 
-            grdOrdenPago.Columns(18).Visible = True  'Rechazar 
-            grdOrdenPago.Columns(19).Visible = True  'Motivo Rechazo
-            grdOrdenPago.Columns(21).Visible = False 'solo oculta no proc 
-
-            If chk_SinFirma.Visible = True Then  'si no es solicitante 19
-                grdOrdenPago.Columns(22).Visible = True
-            Else
-                grdOrdenPago.Columns(22).Visible = False  '2da rev oculta
-            End If
-
-            grdOrdenPago.Columns(23).Visible = False 'motivo 21
+        ElseIf chk_MisPend.Checked             'MIS PENDIENTES
+            grdOrdenPago.Columns(21).Visible = False
+            grdOrdenPago.Columns(23).Visible = False
             grdOrdenPago.Columns(25).Visible = False
+
+        ElseIf chk_SinFirma.Checked            'SIN FIRMA PREVIA  Y FIRMA EN AUSENCIA
+            grdOrdenPago.Columns(21).Visible = False
+            grdOrdenPago.Columns(23).Visible = False
+            grdOrdenPago.Columns(25).Visible = False
+
+        ElseIf chk_Rechazadas.Checked Then     'RECHAZADAS TECNICO
+            grdOrdenPago.Columns(16).Visible = False
+            grdOrdenPago.Columns(17).Visible = False
+            grdOrdenPago.Columns(18).Visible = False
+            grdOrdenPago.Columns(19).Visible = False
+            grdOrdenPago.Columns(20).Visible = False
+            grdOrdenPago.Columns(22).Visible = False
+            grdOrdenPago.Columns(25).Visible = True
+
+        ElseIf chk_FinalAut.Checked Then      'AUTORIZADAS
+            grdOrdenPago.Columns(16).Visible = False
+            grdOrdenPago.Columns(17).Visible = False
+            grdOrdenPago.Columns(18).Visible = False
+            grdOrdenPago.Columns(19).Visible = False
+            grdOrdenPago.Columns(20).Visible = False
+            grdOrdenPago.Columns(21).Visible = False
+            grdOrdenPago.Columns(22).Visible = False
+            grdOrdenPago.Columns(23).Visible = False
+
+
         End If
 
     End Sub
+    'Private Sub MuestraChecksAccion()
+    '    grdOrdenPago.Columns(20).Visible = False 'oculta el txtMotivoOtro
+    '    If chk_Rechazadas.Checked = True And chk_MisPend.Visible = False Then  'si Administracion de siniestros
+    '        grdOrdenPago.Columns(21).Visible = True 'no procede
+    '        grdOrdenPago.Columns(23).Visible = True 'motivo
+
+    '        ' grdOrdenPago.Columns(15).Visible = False
+    '        grdOrdenPago.Columns(16).Visible = False
+    '        grdOrdenPago.Columns(17).Visible = False
+    '        grdOrdenPago.Columns(18).Visible = False
+    '        grdOrdenPago.Columns(19).Visible = False
+    '        'grdOrdenPago.Columns(19).Visible = False
+    '        grdOrdenPago.Columns(25).Visible = True
+
+    '    ElseIf chk_MisPend.Checked = False Then
+
+    '        If chk_Todas.Checked = True Then
+    '            grdOrdenPago.Columns(16).Visible = False
+    '            grdOrdenPago.Columns(17).Visible = False
+    '            grdOrdenPago.Columns(18).Visible = False
+    '            grdOrdenPago.Columns(19).Visible = False
+    '        Else
+    '            If chk_FinalAut.Checked = True Then
+
+    '                grdOrdenPago.Columns(16).Visible = False
+    '                grdOrdenPago.Columns(17).Visible = False
+    '                grdOrdenPago.Columns(18).Visible = False
+    '                grdOrdenPago.Columns(19).Visible = False
+    '            ElseIf chk_Rechazadas.Checked = True Then
+
+    '                grdOrdenPago.Columns(16).Visible = False
+    '                grdOrdenPago.Columns(17).Visible = False
+    '                grdOrdenPago.Columns(18).Visible = False
+    '                grdOrdenPago.Columns(19).Visible = False
+    '            Else
+
+    '                'se muestra por Firma en Ausencia
+    '                grdOrdenPago.Columns(16).Visible = True
+    '                grdOrdenPago.Columns(17).Visible = True
+    '                grdOrdenPago.Columns(18).Visible = True
+    '                grdOrdenPago.Columns(19).Visible = True
+    '            End If
+
+    '        End If
+    '        grdOrdenPago.Columns(21).Visible = False
+    '        grdOrdenPago.Columns(22).Visible = False
+    '            grdOrdenPago.Columns(23).Visible = False
+    '            grdOrdenPago.Columns(25).Visible = True
+
+    '        Else
+    '            grdOrdenPago.Columns(16).Visible = True  'En Revision 
+    '        grdOrdenPago.Columns(17).Visible = True  'Firmar 
+    '        grdOrdenPago.Columns(18).Visible = True  'Rechazar 
+    '        grdOrdenPago.Columns(19).Visible = True  'Motivo Rechazo
+    '        grdOrdenPago.Columns(21).Visible = False 'solo oculta no proc 
+
+    '        If chk_SinFirma.Visible = True Then  'si no es solicitante 19
+    '            grdOrdenPago.Columns(22).Visible = True
+    '        Else
+    '            grdOrdenPago.Columns(22).Visible = False  '2da rev oculta
+    '        End If
+
+    '        grdOrdenPago.Columns(23).Visible = False 'motivo 21
+    '        grdOrdenPago.Columns(25).Visible = False
+    '    End If
+
+    'End Sub
     Private Sub DesHabilitaChecksFirma()
         Dim ws As New ws_Generales.GeneralesClient
 
@@ -1813,7 +1882,7 @@ Partial Class Siniestros_AutElectTrad
             ElseIf e.CommandName = "VerEdoCta"
                 Dim hrefOnBase As String
                 'hrefOnBase = ws.ObtieneParametro(Cons.RutaWebServOnBase)
-                If FolioOnBaseEdoCta_.ToString() = vbNullString Then
+                If FolioOnBaseEdoCta_.ToString() = vbNullString Or FolioOnBaseEdoCta_ = 0 Then
                     Mensaje.MuestraMensaje("Estado de Cuenta", "La OP no tiene Folio OnBase Estado de Cuenta", TipoMsg.Advertencia)
                 Else
                     hrefOnBase = fn_EjecutaStr("mis_WSOnBasePath " & -1)
