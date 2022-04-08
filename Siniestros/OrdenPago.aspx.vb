@@ -767,7 +767,7 @@ Partial Class Siniestros_OrdenPago
         Dim oTxt As TextBox
         'Dim oTxtDescuento As TextBox
         Dim oFila As GridViewRow
-
+        Dim importe_pago As String
         Dim iIndiceFila As Integer
 
         Dim sElemento As String = String.Empty
@@ -790,6 +790,8 @@ Partial Class Siniestros_OrdenPago
 
                 Case "pago"
                     'JLC Mejoras -Inicio
+
+                    importe_pago = oTxt.Text
                     oTxt.Text.Replace(",", "")
                     'JLC Mejoras -fin
 
@@ -812,7 +814,9 @@ Partial Class Siniestros_OrdenPago
                                                                                                 Environment.NewLine,
                                                                                                 CDbl(oGrdOrden.Rows(iIndiceFila)("Reserva")),
                                                                                                 Environment.NewLine,
-                                                                                                CDbl(oGrdOrden.Rows(iIndiceFila)("ImportePagos"))), TipoMsg.Advertencia)
+                                                                                                Math.Round(CDbl(oTxt.Text.Trim), 2)), TipoMsg.Advertencia)
+                            'Environment.NewLine,
+                            'CDbl(oGrdOrden.Rows(iIndiceFila)("ImportePagos"))), TipoMsg.Advertencia)
                             limpiarCamposImporte() 'VZAVALETA_10290_INCIDENCIAS
                         Else
                             oTxt.Text = pagoenmonedanacional
@@ -833,7 +837,7 @@ Partial Class Siniestros_OrdenPago
                         oTxt.Text = IIf(IsDBNull(oGrdOrden.Rows(iIndiceFila)("Pago")), "", oGrdOrden.Rows(iIndiceFila)("Pago"))
                     End If
                     'JLC Mejoras -Inicio
-                    oTxt.Text = Format(CDbl(oTxt.Text), "##,##0.00")
+                    oTxt.Text = Format(CDbl(importe_pago), "##,##0.00")
                     Funciones.EjecutaFuncion("FormatCurrency(" + iIndiceFila.ToString() + ")", "Formato")
             'JLC Mejoras -fin
 
@@ -2908,6 +2912,59 @@ Partial Class Siniestros_OrdenPago
         'cmbTipoUsuario.Enabled = True
 
     End Sub
+    Public Function ValidarReservaVarios(Accion As Integer) As Boolean
+        Try
+            Dim oParametros As New Dictionary(Of String, Object)
+            Dim num_filas As Int16
+            Dim oDatos As DataSet
+
+            num_filas = oGrdOrden.Rows.Count
+            num_filas = num_filas - 1
+
+            If Accion = 1 Then
+                oParametros = New Dictionary(Of String, Object)
+                oParametros.Add("Action", 3)
+                oParametros.Add("cod_usuario", Master.cod_usuario)
+                Funciones.ObtenerDatos("sp_mis_valida_valida_reserva", oParametros)
+            End If
+
+            For i = 0 To num_filas
+                oParametros = New Dictionary(Of String, Object)
+
+                If Accion = 1 Then
+                    oParametros.Add("Action", Accion)
+                    oParametros.Add("folioOnBase", CLng(oGrdOrden.Rows(i)("FolioOnbase")))
+                    oParametros.Add("siniestros", CLng(oGrdOrden.Rows(i)("Siniestro")))
+                    oParametros.Add("subsiniestro", CInt(oGrdOrden.Rows(i)("Subsiniestro")))
+                    oParametros.Add("moneda_pago", Me.cmbMonedaPago.SelectedValue)
+                    oParametros.Add("moneda_poliza", IIf(txtMonedaPoliza.Text = "NACIONAL", 0, 1))
+                    oParametros.Add("imp_pago", CDbl(oGrdOrden.Rows(i)("Pago")))
+                    oParametros.Add("imp_reserva", CDbl(oGrdOrden.Rows(i)("Reserva")))
+                    oParametros.Add("tcambio_pago", Me.txtTipoCambio.Text)
+                    oParametros.Add("cod_usuario", Master.cod_usuario)
+
+                    Funciones.ObtenerDatos("sp_mis_valida_valida_reserva", oParametros)
+                Else
+                    oParametros.Add("Action", Accion)
+                    oParametros.Add("siniestros", CLng(oGrdOrden.Rows(i)("Siniestro")))
+                    oParametros.Add("subsiniestro", CInt(oGrdOrden.Rows(i)("Subsiniestro")))
+                    oParametros.Add("cod_usuario", Master.cod_usuario)
+                    oDatos = Funciones.ObtenerDatos("sp_mis_valida_valida_reserva", oParametros)
+
+                    If oDatos.Tables(0).Rows(0).Item(0) <> "" Then
+                        ValidarReservaVarios = False
+                        'MuestraMensaje("OrdenPagoSiniestros", oDatos.Tables(0).Rows(0).Item(0).ToString, TipoMsg.Falla)
+                        Mensaje.MuestraMensaje("OrdenPagoSiniestros", oDatos.Tables(0).Rows(0).Item(0).ToString, TipoMsg.Falla)
+                        Exit Function
+                    End If
+                End If
+            Next i
+            ValidarReservaVarios = True
+
+        Catch ex As Exception
+            ValidarReservaVarios = False
+        End Try
+    End Function
     Public Function ValidarImpuestosOPFac() As Boolean
 
         Dim iTotalAutorizacion As Decimal
@@ -2916,12 +2973,22 @@ Partial Class Siniestros_OrdenPago
         Dim iSubTotal As Decimal
         Dim Reserva_total As Decimal
         Dim num_filas As Int16
+        Dim oParametros As New Dictionary(Of String, Object)
         'optenemos el numero de filas del grid y sumamos el total de la reserva
         num_filas = oGrdOrden.Rows.Count
         num_filas = num_filas - 1
-        For i = 0 To num_filas
-            Reserva_total = Reserva_total + CDbl(oGrdOrden.Rows(i)("Reserva"))
-        Next i
+
+        If chkVariosConceptos.Checked = True Or chkVariasFacturas.Checked = True Then
+            If ValidarReservaVarios(1) = True Then
+                ValidarImpuestosOPFac = True
+            Else
+                ValidarImpuestosOPFac = False
+            End If
+        Else
+            For i = 0 To num_filas
+                Reserva_total = Reserva_total + CDbl(oGrdOrden.Rows(i)("Reserva"))
+            Next i
+        End If
 
         Try
             If cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor Then
@@ -2975,28 +3042,36 @@ Partial Class Siniestros_OrdenPago
                                             End If
                                         End If
                                     End If
-                                    '--------------------------------------------------------------------------------------
-                                    'Validamos el pago deacuerdo a la reserva 
-                                    If txtMonedaPoliza.Text = "DOLAR AMERICANO" And cmbMonedaPago.SelectedValue = 0 Then
-                                        If CDbl(txtTotalAutorizacion.Text) > Reserva_total Then
-                                            ValidarImpuestosOPFac = False
-                                            Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + txtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
-                                        Else
-                                            'Debe estar en true, esto significa que no ubo diferencias en los impuestos
+                                    If chkVariosConceptos.Checked = True Or chkVariasFacturas.Checked = True Then
+                                        If ValidarReservaVarios(2) = True Then
                                             ValidarImpuestosOPFac = True
+                                        Else
+                                            ValidarImpuestosOPFac = False
                                         End If
                                     Else
-                                        If CDbl(iptxtTotalAutorizacion.Text) > Reserva_total Then
-                                            ValidarImpuestosOPFac = False
-                                            Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + iptxtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
+                                        '--------------------------------------------------------------------------------------
+                                        'Validamos el pago deacuerdo a la reserva 
+                                        If txtMonedaPoliza.Text = "DOLAR AMERICANO" And cmbMonedaPago.SelectedValue = 0 Then
+                                            If CDbl(txtTotalAutorizacion.Text) > Reserva_total Then
+                                                ValidarImpuestosOPFac = False
+                                                Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + txtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
+                                            Else
+                                                'Debe estar en true, esto significa que no ubo diferencias en los impuestos
+                                                ValidarImpuestosOPFac = True
+                                            End If
                                         Else
-                                            'Debe estar en true, esto significa que no ubo diferencias en los impuestos
-                                            ValidarImpuestosOPFac = True
+                                            If CDbl(iptxtTotalAutorizacion.Text) > Reserva_total Then
+                                                ValidarImpuestosOPFac = False
+                                                Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + iptxtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
+                                            Else
+                                                'Debe estar en true, esto significa que no ubo diferencias en los impuestos
+                                                ValidarImpuestosOPFac = True
+                                            End If
                                         End If
                                     End If
                                 Else
-                                    'Debe estar en true, esto significa que no ubo diferencias en los impuestos
-                                    ValidarImpuestosOPFac = True
+                                        'Debe estar en true, esto significa que no ubo diferencias en los impuestos
+                                        ValidarImpuestosOPFac = True
                                 End If
                             End If
                         End If
@@ -3007,22 +3082,30 @@ Partial Class Siniestros_OrdenPago
                 'para el caso de asegurado y terceros que no tienen descuentos
                 'Validamos el pago deacuerdo a la reserva 
                 If oGrdOrden.Rows(0)("ClasePago") = 26 Or oGrdOrden.Rows(0)("ClasePago") = 27 Or oGrdOrden.Rows(0)("ClasePago") = 28 Then
-                    'Validamos el pago deacuerdo a la reserva 
-                    If txtMonedaPoliza.Text = "DOLAR AMERICANO" And cmbMonedaPago.SelectedValue = 0 Then
-                        If CDbl(txtTotalAutorizacion.Text) > Reserva_total Then
-                            ValidarImpuestosOPFac = False
-                            Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + txtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
-                        Else
-                            'Debe estar en true, esto significa que no ubo diferencias en los impuestos
+                    If chkVariosConceptos.Checked = True Or chkVariasFacturas.Checked = True Then
+                        If ValidarReservaVarios(2) = True Then
                             ValidarImpuestosOPFac = True
+                        Else
+                            ValidarImpuestosOPFac = False
                         End If
                     Else
-                        If CDbl(iptxtTotalAutorizacion.Text) > Reserva_total Then
-                            ValidarImpuestosOPFac = False
-                            Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + iptxtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
+                        'Validamos el pago deacuerdo a la reserva 
+                        If txtMonedaPoliza.Text = "DOLAR AMERICANO" And cmbMonedaPago.SelectedValue = 0 Then
+                            If CDbl(txtTotalAutorizacion.Text) > Reserva_total Then
+                                ValidarImpuestosOPFac = False
+                                Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + txtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
+                            Else
+                                'Debe estar en true, esto significa que no ubo diferencias en los impuestos
+                                ValidarImpuestosOPFac = True
+                            End If
                         Else
-                            'Debe estar en true, esto significa que no ubo diferencias en los impuestos
-                            ValidarImpuestosOPFac = True
+                            If CDbl(iptxtTotalAutorizacion.Text) > Reserva_total Then
+                                ValidarImpuestosOPFac = False
+                                Mensaje.MuestraMensaje("OrdenPagoSiniestros", "El pago: " + iptxtTotalAutorizacion.Text.ToString() + " Mayor a la Reserva: " + Reserva_total.ToString(), TipoMsg.Falla)
+                            Else
+                                'Debe estar en true, esto significa que no ubo diferencias en los impuestos
+                                ValidarImpuestosOPFac = True
+                            End If
                         End If
                     End If
                 Else

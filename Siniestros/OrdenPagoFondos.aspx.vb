@@ -677,7 +677,7 @@ Partial Class Siniestros_OrdenPago
         Dim oTxt As TextBox
         'Dim oTxtDescuento As TextBox
         Dim oFila As GridViewRow
-
+        Dim importe_pago As String
         Dim iIndiceFila As Integer
 
         Dim sElemento As String = String.Empty
@@ -700,6 +700,7 @@ Partial Class Siniestros_OrdenPago
 
                 Case "pago"
                     'JLC Mejoras -Inicio
+                    importe_pago = oTxt.Text
                     oTxt.Text.Replace(",", "")
                     'JLC Mejoras -fin
 
@@ -735,7 +736,7 @@ Partial Class Siniestros_OrdenPago
                         oTxt.Text = IIf(IsDBNull(oGrdOrden.Rows(iIndiceFila)("Pago")), "", oGrdOrden.Rows(iIndiceFila)("Pago"))
                     End If
                     'JLC Mejoras -Inicio
-                    oTxt.Text = Format(CDbl(oTxt.Text), "##,##0.00")
+                    oTxt.Text = Format(CDbl(importe_pago), "##,##0.00")
                     Funciones.EjecutaFuncion("FormatCurrency(" + iIndiceFila.ToString() + ")", "Formato")
             'JLC Mejoras -fin
 
