@@ -507,16 +507,16 @@ Partial Class Siniestros_OrdenPago
                     'carga la clase de pago
                     'FJCP Multipago- Se comenta clase de pago Ini Se comenta cargar clase de pago
                     If chkVariasFacturas.Checked = False Then
-                        CargarClasePago(e.Row, iIndex, txtCodigoBeneficiario_stro.Text, oSelectorcpto.SelectedValue)
-                    End If
-                    'FJCP Multipago - Se comenta clase de pago Ini
-                    'Dim clase_pago_default As Int16 = oSelector.SelectedValue
-                    'Dim cpto_default As Int16 = oSelectorcpto.SelectedValue
+                            CargarClasePago(e.Row, iIndex, txtCodigoBeneficiario_stro.Text, oSelectorcpto.SelectedValue)
+                        End If
+                        'FJCP Multipago - Se comenta clase de pago Ini
+                        'Dim clase_pago_default As Int16 = oSelector.SelectedValue
+                        'Dim cpto_default As Int16 = oSelectorcpto.SelectedValue
 
 
 
-                Else
-                    If cerrado_open_stro = 0 Then
+                    Else
+                        If cerrado_open_stro = 0 Then
                         CargarConceptosPagodefault(e.Row, iIndex, oGrdOrden.Rows(iIndex)("ClasePago"), cerrado_open_stro)
                         oGrdOrden.Rows(iIndex)("ClasePago") = oSelector.SelectedValue
                         oGrdOrden.Rows(iIndex)("ConceptoPago") = oSelectorcpto.SelectedValue
@@ -4092,15 +4092,12 @@ Partial Class Siniestros_OrdenPago
 
                     oParametros.Add("Folio_OnBase", Me.txtOnBase.Text.Trim)
                     oParametros.Add("id_PagarA", Me.cmbTipoUsuario.SelectedValue) 'VZAVALETA_10290_CC
-
+                    oParametros.Add("Multipago", IIf(chkVariasFacturas.Checked, "S", "N")) 'VZAVALETA_10290_CC
                     oDatos = Funciones.ObtenerDatos("sp_op_stro_consulta_folio_OnBase", oParametros)
 
                     If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
 
                         oSeleccionActual = oDatos.Tables(0)
-
-
-
 
                         With oDatos.Tables(0).Rows(0)
 
@@ -4288,10 +4285,11 @@ Partial Class Siniestros_OrdenPago
                     'oParametros.Add("numPago", cmbNumPago.SelectedValue) 'FJCP MEJORAS FASE II NUMERO PAGO
                     oParametros.Add("numPago", IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue))
                     oParametros.Add("id_PagarA", Me.cmbTipoUsuario.SelectedValue) 'VZAVALETA_10290_CC
-
+                    oParametros.Add("Multipago", IIf(chkVariasFacturas.Checked, "S", "N")) 'VZAVALETA_10290_CC
                     oDatos = Funciones.ObtenerDatos("sp_op_stro_consulta_folio_OnBase", oParametros)
                     If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
                         oSeleccionActual = oDatos.Tables(0)
+
                         With oDatos.Tables(0).Rows(0)
                             'VZAVALETA_10290_CC_INICIO
                             If (oDatos.Tables(0).Rows(0).Item("sn_relacionado") = "-1") Then

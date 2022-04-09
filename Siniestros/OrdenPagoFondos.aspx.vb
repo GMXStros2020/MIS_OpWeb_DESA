@@ -3434,6 +3434,17 @@ Partial Class Siniestros_OrdenPago
             Select Case Me.cmbTipoUsuario.SelectedValue
 
                 Case eTipoUsuario.Proveedor
+
+                    Dim Usuario_auto As String
+                    Usuario_auto = ""
+
+                    Usuario_auto = Funciones.fn_EjecutaStr("sp_mis_valida_proveedor @folioOnbase = " & Me.txtOnBase.Text.Trim)
+
+                    If Usuario_auto = "No" Then
+                        MuestraMensaje("Proveedor", "Proveedor no autorizado.", TipoMsg.Falla)
+                        Exit Function
+                    End If
+
                     oParametros.Add("Accion", 2)
                     oParametros.Add("Folio_OnBase", Me.txtOnBase.Text.Trim)
                     oParametros.Add("numPago", IIf(cmbNumPago.SelectedValue.ToString() = "", 1, cmbNumPago.SelectedValue)) 'FJCP MEJORAS FASE II NUMERO PAGO
