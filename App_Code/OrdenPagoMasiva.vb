@@ -47,6 +47,12 @@ Public Class OrdenPagoMasiva
 
             lista = New JavaScriptSerializer().ConvertToType(Of List(Of OrdenPagoMasivoClass))(myArray)
 
+
+            If (lista.Count = 0) Then
+                Throw New Exception("Favor de ingresar información a la tabla.")
+            End If
+
+
             'FCRUZ_GMX-10290_INCIDENCIAS BLOQUEO DE FOLIOS ini
             For Each OP As OrdenPagoMasivoClass In lista
 
@@ -90,11 +96,11 @@ Public Class OrdenPagoMasiva
 
                 'JJARAMILLO_GMX-10290_INCIDENCIAS VALIDA CAMPOS OBLIGATORIOS
                 If OP.PagarA = "Proveedor" Then
-                    If OP.Concepto_Pago = "" Then
+                    If OP.Concepto_Pago = "" Or OP.Concepto_Pago = "<select role=""select"" id=""1_Concepto_Pago"" name=""Concepto_Pago"" rowid=""1"" size=""1"" class=""editable""></select>" Then
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
                 Else
-                    If OP.RFC = "" Or OP.CodigoCliente = "" Or OP.Nombre_Razon_Social = "" Then
+                    If OP.RFC = "" Or OP.CodigoCliente = "" Or OP.Nombre_Razon_Social = "" Or OP.Concepto_Pago = "" Or OP.Concepto_Pago = "<select role=""select"" id=""1_Concepto_Pago"" name=""Concepto_Pago"" rowid=""1"" size=""1"" class=""editable""></select>" Then
                         ErrorMsgVacio = ErrorMsgVacio + OP.Folio_Onbase.ToString() + "<br>"
                     End If
                 End If

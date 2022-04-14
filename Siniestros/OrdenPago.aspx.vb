@@ -86,6 +86,7 @@ Partial Class Siniestros_OrdenPago
     End Enum
 
     Dim Salir As Integer 'VZAVALETA_10290_INICIO
+    Dim agregaregistro As Integer = 0
 
 #End Region
 
@@ -893,6 +894,7 @@ Partial Class Siniestros_OrdenPago
 
         Dim substroDetalle As Integer = 0
         Me.txtcpto2.Text = String.Empty
+        agregaregistro = 1
         Try
 
             If cmbNumPago.SelectedValue = -1 Then
@@ -2358,96 +2360,77 @@ Partial Class Siniestros_OrdenPago
                 If cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor Then
 
                     dPago = dPago - dDescuentos
-                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Decimal.Parse(txtTotalAutorizacionFac.Text) - dDescuentos, 2)
 
+                    If agregaregistro = 1 Then
+                        txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Decimal.Parse(txtTotalAutorizacionFac.Text) - dDescuentos, 2)
+                    End If
                     If dPago > 0 Then
 
-                        'Si es un proveedor cuya factura haya sido registrada en pesos, se tomara la moneda de pago en pesos
-                        'VZAVALETA_10290_INICIO
-                        'If oFila("MonedaFactura") = 0 Then
+                            'Si es un proveedor cuya factura haya sido registrada en pesos, se tomara la moneda de pago en pesos
+                            'VZAVALETA_10290_INICIO
+                            'If oFila("MonedaFactura") = 0 Then
 
-                        '    If Not dTipoCambio = 1 Then
-                        '        Mensaje.MuestraMensaje("Calculo de totales", "Factura capturada en pesos, se utilizará tipo de cambio nacional.", TipoMsg.Advertencia)
-                        '        'dTipoCambio = 1
-                        '        'Me.txtTipoCambio.Text = dTipoCambio
-                        '        cmbMonedaPago.SelectedValue = 0
-                        '    End If
+                            '    If Not dTipoCambio = 1 Then
+                            '        Mensaje.MuestraMensaje("Calculo de totales", "Factura capturada en pesos, se utilizará tipo de cambio nacional.", TipoMsg.Advertencia)
+                            '        'dTipoCambio = 1
+                            '        'Me.txtTipoCambio.Text = dTipoCambio
+                            '        cmbMonedaPago.SelectedValue = 0
+                            '    End If
 
-                        'End If
-                        'VZAVALETA_10290_FIN
-                        'ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), CInt(oFila("ClasePago")), CInt(oFila("ConceptoPago")), CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
-                        ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), dcod_clase_pago, dcod_cpto, CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
+                            'End If
+                            'VZAVALETA_10290_FIN
+                            'ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), CInt(oFila("ClasePago")), CInt(oFila("ConceptoPago")), CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
+                            ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), dcod_clase_pago, dcod_cpto, CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
 
-                        If dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
-                            'se agrego este filtro para varios conceptos
-                            If chkVariosConceptos.Checked = False Then
-                                Mensaje.MuestraMensaje("Calculo de totales", "No se encontro información para el cálculo de impuestos", TipoMsg.Falla)
-                                If txtTotalAutorizacionNacionalFac.Text = "" Then
-                                    txtTotalAutorizacionNacionalFac.Text = 0
+                            If dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
+                                'se agrego este filtro para varios conceptos
+                                If chkVariosConceptos.Checked = False Then
+                                    Mensaje.MuestraMensaje("Calculo de totales", "No se encontro información para el cálculo de impuestos", TipoMsg.Falla)
+                                    If txtTotalAutorizacionNacionalFac.Text = "" Then
+                                        txtTotalAutorizacionNacionalFac.Text = 0
+                                    End If
+                                    If txtTotalAutorizacionFac.Text = "" Then
+                                        txtTotalAutorizacionFac.Text = 0
+                                    End If
+                                    If txtTotalImpuestosFac.Text = "" Then
+                                        txtTotalImpuestosFac.Text = 0
+                                    End If
+                                    If txtTotalRetencionesFac.Text = "" Then
+                                        txtTotalRetencionesFac.Text = 0
+                                    End If
+                                    If txtTotalFac.Text = "" Then
+                                        txtTotalFac.Text = 0
+                                    End If
+                                    If txtTotalNacionalFac.Text = "" Then
+                                        txtTotalNacionalFac.Text = 0
+                                    End If
+                                If agregaregistro = 1 Then
+                                    txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
+                                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
+                                    txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestosFac.Text), 2))
+                                    txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetencionesFac.Text), 2))
+                                    txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
+                                    txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
                                 End If
-                                If txtTotalAutorizacionFac.Text = "" Then
-                                    txtTotalAutorizacionFac.Text = 0
-                                End If
-                                If txtTotalImpuestosFac.Text = "" Then
-                                    txtTotalImpuestosFac.Text = 0
-                                End If
-                                If txtTotalRetencionesFac.Text = "" Then
-                                    txtTotalRetencionesFac.Text = 0
-                                End If
-                                If txtTotalFac.Text = "" Then
-                                    txtTotalFac.Text = 0
-                                End If
-                                If txtTotalNacionalFac.Text = "" Then
-                                    txtTotalNacionalFac.Text = 0
-                                End If
-
-                                txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
-                                txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
-                                txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestosFac.Text), 2))
-                                txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetencionesFac.Text), 2))
-                                txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
-                                txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
-
-                                    If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
+                                If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
                                         txtTotalAutorizacion.Text = dPago
                                         txtTotalImpuestos.Text = 0
                                         txtTotalRetenciones.Text = 0
                                         txtTotal.Text = dPago
                                         txtTotalNacional.Text = dPago
-
+                                    If agregaregistro = 1 Then
                                         txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionNacionalFac.Text), 2))
                                         txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacionFac.Text), 2))
                                         txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestosFac.Text), 2))
                                         txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetencionesFac.Text), 2))
                                         txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalFac.Text), 2))
                                         txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacionalFac.Text), 2))
-
                                     End If
+                                End If
                                     dImporteImpuesto = 0
                                     dImporteRetencion = 0
 
                                 Else
-                                    'varios conceptos
-                                    txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
-                                txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
-                                txtTotalRetenciones.Text = dImporteRetencion + txtTotalRetenciones.Text
-                                txtTotal.Text = dPago + txtTotal.Text
-                                txtTotalNacional.Text = dPago + txtTotalNacional.Text
-
-                                'varios conceptos
-                                iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
-                                iptxtTotalImpuestos.Text = dImporteImpuesto + iptxtTotalImpuestos.Text
-                                iptxtTotalRetenciones.Text = dImporteRetencion + iptxtTotalRetenciones.Text
-                                iptxtTotal.Text = dPago + iptxtTotal.Text
-                                iptxtTotalNacional.Text = dPago + iptxtTotalNacional.Text
-
-                            End If
-
-                        ElseIf (dImporteImpuesto = 0 AndAlso dImporteRetencion = 0) OrElse
-                            (dImporteImpuesto = -1 OrElse dImporteRetencion = -1) Then
-                            If chkVariosConceptos.Checked = True Then
-                                If dImporteImpuesto = 0 AndAlso dImporteRetencion = 0 Then 'esto es cuando calcula los impuesto al cero
-
                                     'varios conceptos
                                     txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
                                     txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
@@ -2462,59 +2445,80 @@ Partial Class Siniestros_OrdenPago
                                     iptxtTotal.Text = dPago + iptxtTotal.Text
                                     iptxtTotalNacional.Text = dPago + iptxtTotalNacional.Text
 
+                                End If
+
+                            ElseIf (dImporteImpuesto = 0 AndAlso dImporteRetencion = 0) OrElse
+                            (dImporteImpuesto = -1 OrElse dImporteRetencion = -1) Then
+                                If chkVariosConceptos.Checked = True Then
+                                    If dImporteImpuesto = 0 AndAlso dImporteRetencion = 0 Then 'esto es cuando calcula los impuesto al cero
+
+                                        'varios conceptos
+                                        txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
+                                        txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
+                                        txtTotalRetenciones.Text = dImporteRetencion + txtTotalRetenciones.Text
+                                        txtTotal.Text = dPago + txtTotal.Text
+                                        txtTotalNacional.Text = dPago + txtTotalNacional.Text
+
+                                        'varios conceptos
+                                        iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
+                                        iptxtTotalImpuestos.Text = dImporteImpuesto + iptxtTotalImpuestos.Text
+                                        iptxtTotalRetenciones.Text = dImporteRetencion + iptxtTotalRetenciones.Text
+                                        iptxtTotal.Text = dPago + iptxtTotal.Text
+                                        iptxtTotalNacional.Text = dPago + iptxtTotalNacional.Text
+
+                                    Else
+                                        Mensaje.MuestraMensaje("Calculo de totales", "Cálculo incompleto de impuestos " + dImporteImpuesto.ToString() + dImporteRetencion.ToString(), TipoMsg.Falla)
+                                    End If
                                 Else
                                     Mensaje.MuestraMensaje("Calculo de totales", "Cálculo incompleto de impuestos " + dImporteImpuesto.ToString() + dImporteRetencion.ToString(), TipoMsg.Falla)
                                 End If
-                            Else
-                                Mensaje.MuestraMensaje("Calculo de totales", "Cálculo incompleto de impuestos " + dImporteImpuesto.ToString() + dImporteRetencion.ToString(), TipoMsg.Falla)
+
+
+
+
+
+                                Return
                             End If
 
+                            'FJCP Mejoras Multipago -ini
+                            If chkVariasFacturas.Checked = True Then
 
 
+                                'varios conceptos
+                                txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
+                                txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
+                                txtTotalRetenciones.Text = dImporteRetencion + txtTotalRetenciones.Text
+                                'txtTotal.Text = txtTotal.Text + dPago + dImporteImpuesto + dImporteRetencion
+                                txtTotal.Text = txtTotal.Text + dPago + dImporteImpuesto - dImporteRetencion 'VZAVALETA_10290_CC8
+                                txtTotalNacional.Text = dPago + txtTotalNacional.Text
 
+                                'varios conceptos
+                                iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
+                                iptxtTotalImpuestos.Text = dImporteImpuesto + iptxtTotalImpuestos.Text
+                                iptxtTotalRetenciones.Text = dImporteRetencion + iptxtTotalRetenciones.Text
+                                iptxtTotal.Text = dPago + iptxtTotal.Text
+                                iptxtTotalNacional.Text = dPago + iptxtTotalNacional.Text
 
-                            Return
+                            If agregaregistro = 1 Then
+                                txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacion.Text), 2))
+                                txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestos.Text), 2))
+                                txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetenciones.Text), 2))
+                                txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotal.Text), 2))
+                                txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacional.Text), 2))
+                                txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacion.Text), 2))
+                            End If
+                        End If
+                            'FJCP Mejoras Multipago -fin
+
+                        Else
+                            dPago = 0
+                            dImporteImpuesto = 0
+                            dImporteRetencion = 0
                         End If
 
-                        'FJCP Mejoras Multipago -ini
-                        If chkVariasFacturas.Checked = True Then
-
-
-                            'varios conceptos
-                            txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
-                            txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
-                            txtTotalRetenciones.Text = dImporteRetencion + txtTotalRetenciones.Text
-                            'txtTotal.Text = txtTotal.Text + dPago + dImporteImpuesto + dImporteRetencion
-                            txtTotal.Text = txtTotal.Text + dPago + dImporteImpuesto - dImporteRetencion 'VZAVALETA_10290_CC8
-                            txtTotalNacional.Text = dPago + txtTotalNacional.Text
-
-                            'varios conceptos
-                            iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
-                            iptxtTotalImpuestos.Text = dImporteImpuesto + iptxtTotalImpuestos.Text
-                            iptxtTotalRetenciones.Text = dImporteRetencion + iptxtTotalRetenciones.Text
-                            iptxtTotal.Text = dPago + iptxtTotal.Text
-                            iptxtTotalNacional.Text = dPago + iptxtTotalNacional.Text
-
-
-                            txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacion.Text), 2))
-                            txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestos.Text), 2))
-                            txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetenciones.Text), 2))
-                            txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotal.Text), 2))
-                            txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacional.Text), 2))
-                            txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacion.Text), 2))
-
-                        End If
-                        'FJCP Mejoras Multipago -fin
-
-                    Else
-                        dPago = 0
-                        dImporteImpuesto = 0
-                        dImporteRetencion = 0
                     End If
 
-                End If
-
-                Select Case cmbMonedaPago.SelectedValue
+                    Select Case cmbMonedaPago.SelectedValue
 
                     Case 0  'NACIONAL
 
@@ -2703,6 +2707,7 @@ Partial Class Siniestros_OrdenPago
                     Me.txtDescuentos.Text = dDescuentos
             End Select
 
+            agregaregistro = 0
         Catch ex As Exception
             Mensaje.MuestraMensaje("OrdenPagoSiniestros", String.Format("CalcularTotales error: {0}", ex.Message), TipoMsg.Falla)
         End Try

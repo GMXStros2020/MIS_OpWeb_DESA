@@ -789,18 +789,18 @@
 
             sRFC = sRFC.replace("&", "!");
                     
-            if (siniestro != "" && sRFC != "") {
-                $("[id*=btn_guardar_xls]").removeClass("hidden");
-            }
-            else {
-                if ($('[id*=chkMultipago]').is(':checked')) {
-                    $("[id*=btn_guardar_xls]").removeClass("hidden");
-                }
-                else {
-                    $("#btn_Guardar").removeClass("hidden");
-                }                   
-            }               
-            
+            //if (siniestro != "" && sRFC != "") {
+            //    $("[id*=btn_guardar_xls]").removeClass("hidden");
+            //}
+            //else {
+            //    if ($('[id*=chkMultipago]').is(':checked')) {
+            //        $("[id*=btn_guardar_xls]").removeClass("hidden");
+            //    }
+            //    else {
+            //        $("#btn_Guardar").removeClass("hidden");
+            //    }                   
+            //}               
+        $("#btn_Guardar").removeClass("hidden");
         
     };
 
@@ -1177,19 +1177,19 @@
 
         sRFC = sRFC.replace("&", "!");
 
-        if (siniestro != "" && sRFC != "") {
-            $("[id*=btn_guardar_xls]").removeClass("hidden");
-        }
-        else {
-            if ($('[id*=chkMultipago]').is(':checked')) {
-                $("[id*=btn_guardar_xls]").removeClass("hidden");
-            }
-            else {
-                $("#btn_Guardar").removeClass("hidden");
-            }
-        }  
+        //if (siniestro != "" && sRFC != "") {
+        //    $("[id*=btn_guardar_xls]").removeClass("hidden");
+        //}
+        //else {
+        //    if ($('[id*=chkMultipago]').is(':checked')) {
+        //        $("[id*=btn_guardar_xls]").removeClass("hidden");
+        //    }
+        //    else {
+        //        $("#btn_Guardar").removeClass("hidden");
+        //    }
+        //}  
 
-
+        $("#btn_Guardar").removeClass("hidden");
 
 
 
@@ -1444,18 +1444,18 @@
 
             sRFC = sRFC.replace("&", "!");
 
-            if (siniestro != "" && sRFC != "") {
-                $("[id*=btn_guardar_xls]").removeClass("hidden");
-            }
-            else {
-                if ($('[id*=chkMultipago]').is(':checked')) {
-                    $("[id*=btn_guardar_xls]").removeClass("hidden");
-                }
-                else {
-                    $("#btn_Guardar").removeClass("hidden");
-                }
-            }  
-
+            //if (siniestro != "" && sRFC != "") {
+            //    $("[id*=btn_guardar_xls]").removeClass("hidden");
+            //}
+            //else {
+            //    if ($('[id*=chkMultipago]').is(':checked')) {
+            //        $("[id*=btn_guardar_xls]").removeClass("hidden");
+            //    }
+            //    else {
+            //        $("#btn_Guardar").removeClass("hidden");
+            //    }
+            //}  
+            $("#btn_Guardar").removeClass("hidden");
 
         } catch (error) {
             console.error(error);
@@ -1580,29 +1580,29 @@
 
             sRFC = sRFC.replace("&", "!");
 
-            if (siniestro != "" && sRFC != "") {
-                jQuery("#list47").setColProp('Concepto_Pago', { editable: false });
-                jQuery("#list47").setColProp('Concepto2', { editable: false });
-                jQuery("#list47").setColProp('Notas', { editable: false });
-                jQuery("#list47").setColProp('Observaciones', { editable: false });
-                jQuery("#list47").setColProp('Nombre_Razon_Social', { editable: false });
-                jQuery("#list47").setColProp('Moneda_Pago', { editable: false });
-                jQuery("#list47").setColProp('Importe', { editable: false });
-                jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: false });
-                jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: false });
-            }
+            //if (siniestro != "" && sRFC != "") {
+            //    jQuery("#list47").setColProp('Concepto_Pago', { editable: false });
+            //    jQuery("#list47").setColProp('Concepto2', { editable: false });
+            //    jQuery("#list47").setColProp('Notas', { editable: false });
+            //    jQuery("#list47").setColProp('Observaciones', { editable: false });
+            //    jQuery("#list47").setColProp('Nombre_Razon_Social', { editable: false });
+            //    jQuery("#list47").setColProp('Moneda_Pago', { editable: false });
+            //    jQuery("#list47").setColProp('Importe', { editable: false });
+            //    jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: false });
+            //    jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: false });
+            //}
 
-            if ($('[id*=chkMultipago]').is(':checked')) {
-                jQuery("#list47").setColProp('Concepto_Pago', { editable: false });
-                jQuery("#list47").setColProp('Concepto2', { editable: false });
-                jQuery("#list47").setColProp('Notas', { editable: false });
-                jQuery("#list47").setColProp('Observaciones', { editable: false });
-                jQuery("#list47").setColProp('Nombre_Razon_Social', { editable: false });
-                jQuery("#list47").setColProp('Moneda_Pago', { editable: false });
-                jQuery("#list47").setColProp('Importe', { editable: false });
-                jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: false });
-                jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: false });
-            }
+            //if ($('[id*=chkMultipago]').is(':checked')) {
+            //    jQuery("#list47").setColProp('Concepto_Pago', { editable: false });
+            //    jQuery("#list47").setColProp('Concepto2', { editable: false });
+            //    jQuery("#list47").setColProp('Notas', { editable: false });
+            //    jQuery("#list47").setColProp('Observaciones', { editable: false });
+            //    jQuery("#list47").setColProp('Nombre_Razon_Social', { editable: false });
+            //    jQuery("#list47").setColProp('Moneda_Pago', { editable: false });
+            //    jQuery("#list47").setColProp('Importe', { editable: false });
+            //    jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: false });
+            //    jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: false });
+            //}
         
 
     };
