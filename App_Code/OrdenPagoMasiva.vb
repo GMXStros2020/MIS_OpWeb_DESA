@@ -48,7 +48,7 @@ Public Class OrdenPagoMasiva
             lista = New JavaScriptSerializer().ConvertToType(Of List(Of OrdenPagoMasivoClass))(myArray)
 
 
-            If (lista.Count = 0) Then
+            If (lista.Count = 0) And Lote = "0" Then
                 Throw New Exception("Favor de ingresar información a la tabla.")
             End If
 
