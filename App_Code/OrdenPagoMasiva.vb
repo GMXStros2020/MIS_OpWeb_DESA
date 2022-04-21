@@ -80,8 +80,10 @@ Public Class OrdenPagoMasiva
                 oParametros.Add("Tipo_Cambio", ValidarParametros(OP.Tipo_Cambio))
                 oParametros.Add("Reserva", ValidarParametros(OP.Reserva))
                 oParametros.Add("Importe", ValidarParametros(OP.Importe))
-                oParametros.Add("Cod_moneda", ValidarParametros(OP.Cod_moneda))
-                oParametros.Add("Cod_moneda_pago", ValidarParametros(OP.Cod_moneda_pago))
+                'oParametros.Add("Cod_moneda", ValidarParametros(OP.Cod_moneda))
+                oParametros.Add("Cod_moneda", ValidarParametros(IIf(OP.Cod_moneda() = "", 0, OP.Cod_moneda)))
+                'oParametros.Add("Cod_moneda_pago", ValidarParametros(OP.Cod_moneda_pago))
+                oParametros.Add("Cod_moneda_pago", ValidarParametros(IIf(OP.Cod_moneda_pago() = "", 0, OP.Cod_moneda_pago)))
                 oParametros.Add("Lote", ValidarParametros(Lote))
 
                 oDatos = Funciones.ObtenerDatos("usp_valida_folio_bloqueado", oParametros)
@@ -186,12 +188,16 @@ Public Class OrdenPagoMasiva
                 oParametros.Add("Nombre_Razon_Social", ValidarParametros(OP.Nombre_Razon_Social))
                 oParametros.Add("Siniestro", ValidarParametros(OP.Siniestro))
                 oParametros.Add("Subsiniestro", ValidarParametros(OP.Subsiniestro))
-                oParametros.Add("Cod_moneda", ValidarParametros(OP.Cod_moneda))
-                oParametros.Add("Moneda", ValidarParametros(OP.Moneda))
+                'oParametros.Add("Cod_moneda", ValidarParametros(OP.Cod_moneda))
+                oParametros.Add("Cod_moneda", ValidarParametros(IIf(OP.Cod_moneda() = "", "", OP.Cod_moneda)))
+                'oParametros.Add("Moneda", ValidarParametros(OP.Moneda))
+                oParametros.Add("Moneda", ValidarParametros(IIf(OP.Moneda() = "", "", OP.Moneda)))
                 oParametros.Add("Tipo_Cambio", ValidarParametros(OP.Tipo_Cambio))
                 oParametros.Add("Reserva", ValidarParametros(OP.Reserva))
-                oParametros.Add("Cod_moneda_pago", ValidarParametros(OP.Cod_moneda_pago))
-                oParametros.Add("Moneda_Pago", ValidarParametros(OP.Moneda_Pago))
+                'oParametros.Add("Cod_moneda_pago", ValidarParametros(OP.Cod_moneda_pago))
+                oParametros.Add("Cod_moneda_pago", ValidarParametros(IIf(OP.Cod_moneda_pago() = "", 0, OP.Cod_moneda_pago)))
+                'oParametros.Add("Moneda_Pago", ValidarParametros(OP.Moneda_Pago))
+                oParametros.Add("Moneda_Pago", ValidarParametros(IIf(OP.Moneda_Pago() = "", "NACIONAL", OP.Moneda_Pago)))
                 oParametros.Add("Importe", ValidarParametros(OP.Importe))
                 oParametros.Add("Deducible", ValidarParametros(OP.Deducible))
                 oParametros.Add("Importe_concepto", ValidarParametros(OP.Importe_concepto))
@@ -202,13 +208,17 @@ Public Class OrdenPagoMasiva
                 oParametros.Add("Concepto2", ValidarParametros(OP.Concepto2))
                 oParametros.Add("Tipo_Pago2", ValidarParametros(OP.Tipo_Pago2))
                 oParametros.Add("Folio_Onbase_cuenta", ValidarParametros(OP.Folio_Onbase_cuenta))
-
-                If OP.PagarA = "Proveedor" Then
-                    oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria))
-                    oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta))
+                If OP.Tipo_Pago2 = "CHEQUE" Then
+                    oParametros.Add("Cuenta_Bancaria", "")
+                    oParametros.Add("Confirmar_Cuenta", "")
                 Else
-                    oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria_ok))
-                    oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta_ok))
+                    If OP.PagarA = "Proveedor" Then
+                        oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria))
+                        oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta))
+                    Else
+                        oParametros.Add("Cuenta_Bancaria", ValidarParametros(OP.Cuenta_Bancaria_ok))
+                        oParametros.Add("Confirmar_Cuenta", ValidarParametros(OP.Confirmar_Cuenta_ok))
+                    End If
                 End If
                 oParametros.Add("Solicitante", ValidarParametros(OP.Solicitante))
                 oParametros.Add("Notas", ValidarParametros(OP.Notas))

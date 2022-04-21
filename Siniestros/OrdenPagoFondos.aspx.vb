@@ -2495,7 +2495,7 @@ Partial Class Siniestros_OrdenPago
         txtBeneficiario_stro.Text = ""
         txtRFC.Text = ""
         txtTipoCambio.Text = ""
-
+        Me.cmbMonedaPago.SelectedValue = 0
         'cmbTipoComprobante.Items.Clear()
         txtNumeroComprobante.Text = ""
         txtFechaComprobante.Text = ""
@@ -3544,6 +3544,11 @@ Partial Class Siniestros_OrdenPago
                                     iptxtTotal.Text = 00.00
                                     iptxtTotalNacional.Text = 00.00
 
+                                    'moneda Dolar Americano.
+                                    If .Item("cod_moneda") = 1 And Not Me.txtMonedaPoliza.Text = "Dolar Americano" Then
+                                        Me.cmbMonedaPago.SelectedValue = 1
+                                        Me.txtTipoCambio.Text = ObtenerTipoCambio.ToString()
+                                    End If
                                     'moneda nacional.
                                     If .Item("cod_moneda") = 0 And Not Me.txtMonedaPoliza.Text = "NACIONAL" Then
                                         'Mensaje.MuestraMensaje("Calculo de totales", "Factura capturada en pesos, se utilizará tipo de cambio nacional.", TipoMsg.Advertencia)
