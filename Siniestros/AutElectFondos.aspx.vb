@@ -1345,12 +1345,11 @@ Partial Class Siniestros_AutElectFondos
 
     Private Sub MuestraChecksAccion()
 
-        grdOrdenPago.Columns(21).Visible = False 'oculta el txtMotivoOtro
+        grdOrdenPago.Columns(22).Visible = False 'oculta el txtMotivoOtro
 
 
         If chk_MisPend.Visible = False Then 'valida si es Administracion de usuarios
             If chk_Todas.Checked Then       ' TODAS ADMIN
-                grdOrdenPago.Columns(17).Visible = False
                 grdOrdenPago.Columns(18).Visible = False
                 grdOrdenPago.Columns(19).Visible = False
                 grdOrdenPago.Columns(20).Visible = False
@@ -1358,18 +1357,21 @@ Partial Class Siniestros_AutElectFondos
                 grdOrdenPago.Columns(22).Visible = False
                 grdOrdenPago.Columns(23).Visible = False
                 grdOrdenPago.Columns(24).Visible = False
+                grdOrdenPago.Columns(25).Visible = False
 
             ElseIf chk_Rechazadas.Checked Then     'RECHAZADAS
-                grdOrdenPago.Columns(17).Visible = False
                 grdOrdenPago.Columns(18).Visible = False
                 grdOrdenPago.Columns(19).Visible = False
                 grdOrdenPago.Columns(20).Visible = False
                 grdOrdenPago.Columns(21).Visible = False
-                grdOrdenPago.Columns(23).Visible = False
+                grdOrdenPago.Columns(22).Visible = False
+                grdOrdenPago.Columns(24).Visible = False
+
+                grdOrdenPago.Columns(23).Visible = True
+                grdOrdenPago.Columns(25).Visible = True
             End If
 
         ElseIf chk_Todas.Checked Then        'TODAS TECNICO
-            grdOrdenPago.Columns(17).Visible = False
             grdOrdenPago.Columns(18).Visible = False
             grdOrdenPago.Columns(19).Visible = False
             grdOrdenPago.Columns(20).Visible = False
@@ -1377,28 +1379,42 @@ Partial Class Siniestros_AutElectFondos
             grdOrdenPago.Columns(22).Visible = False
             grdOrdenPago.Columns(23).Visible = False
             grdOrdenPago.Columns(24).Visible = False
+            grdOrdenPago.Columns(25).Visible = False
 
         ElseIf chk_MisPend.Checked             'MIS PENDIENTES
-            grdOrdenPago.Columns(22).Visible = False
-            grdOrdenPago.Columns(24).Visible = False
-            grdOrdenPago.Columns(26).Visible = False
+            grdOrdenPago.Columns(23).Visible = False
+            grdOrdenPago.Columns(25).Visible = False
+            grdOrdenPago.Columns(27).Visible = False
+
+            grdOrdenPago.Columns(18).Visible = True
+            grdOrdenPago.Columns(19).Visible = True
+            grdOrdenPago.Columns(20).Visible = True
+            grdOrdenPago.Columns(21).Visible = True
+            grdOrdenPago.Columns(22).Visible = True
+            grdOrdenPago.Columns(24).Visible = True
 
         ElseIf chk_SinFirma.Checked            'SIN FIRMA PREVIA  Y FIRMA EN AUSENCIA
-            grdOrdenPago.Columns(22).Visible = False
-            grdOrdenPago.Columns(24).Visible = False
-            grdOrdenPago.Columns(26).Visible = False
+            grdOrdenPago.Columns(23).Visible = False
+            grdOrdenPago.Columns(25).Visible = False
+            grdOrdenPago.Columns(27).Visible = False
+
+            grdOrdenPago.Columns(18).Visible = True
+            grdOrdenPago.Columns(19).Visible = True
+            grdOrdenPago.Columns(20).Visible = True
+            grdOrdenPago.Columns(21).Visible = True
+            grdOrdenPago.Columns(22).Visible = True
+            grdOrdenPago.Columns(24).Visible = True
 
         ElseIf chk_Rechazadas.Checked Then     'RECHAZADAS TECNICO
-            grdOrdenPago.Columns(17).Visible = False
             grdOrdenPago.Columns(18).Visible = False
             grdOrdenPago.Columns(19).Visible = False
             grdOrdenPago.Columns(20).Visible = False
             grdOrdenPago.Columns(21).Visible = False
-            grdOrdenPago.Columns(23).Visible = False
-            grdOrdenPago.Columns(26).Visible = True
+            grdOrdenPago.Columns(22).Visible = False
+            grdOrdenPago.Columns(24).Visible = False
+            grdOrdenPago.Columns(27).Visible = True
 
         ElseIf chk_FinalAut.Checked Then      'AUTORIZADAS
-            grdOrdenPago.Columns(17).Visible = False
             grdOrdenPago.Columns(18).Visible = False
             grdOrdenPago.Columns(19).Visible = False
             grdOrdenPago.Columns(20).Visible = False
@@ -1406,6 +1422,7 @@ Partial Class Siniestros_AutElectFondos
             grdOrdenPago.Columns(22).Visible = False
             grdOrdenPago.Columns(23).Visible = False
             grdOrdenPago.Columns(24).Visible = False
+            grdOrdenPago.Columns(25).Visible = False
 
 
         End If
@@ -1867,25 +1884,25 @@ Partial Class Siniestros_AutElectFondos
         VerificaRadios(Cons.TipoFiltro.Revisadas)
     End Sub
 
-    Protected Sub cmbConcepto_SelectedIndexChanged(sender As Object, e As EventArgs)
-        Dim combo As DropDownList = DirectCast(sender, DropDownList)
-        'MsgBox(combo.SelectedValue)
+    'Protected Sub cmbConcepto_SelectedIndexChanged(sender As Object, e As EventArgs)
+    '    Dim combo As DropDownList = DirectCast(sender, DropDownList)
+    '    'MsgBox(combo.SelectedValue)
 
-        Dim gr As GridViewRow = DirectCast(DirectCast(combo.Parent, DataControlFieldCell).Parent, GridViewRow)
-        ' MsgBox(gr.RowIndex)
+    '    Dim gr As GridViewRow = DirectCast(DirectCast(combo.Parent, DataControlFieldCell).Parent, GridViewRow)
+    '    ' MsgBox(gr.RowIndex)
 
-        Dim txtOtros = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txtMotivoOtro"), TextBox)
+    '    Dim txtOtros = DirectCast(grdOrdenPago.Rows(gr.RowIndex).FindControl("txtMotivoOtro"), TextBox)
 
-        If combo.SelectedValue = 11 Then
-            txtOtros.Visible = True
-            grdOrdenPago.Columns(21).Visible = True
-        Else
-            txtOtros.Visible = False
-            grdOrdenPago.Columns(21).Visible = False
-            txtOtros.Text = ""
-        End If
+    '    If combo.SelectedValue = 11 Then
+    '        txtOtros.Visible = True
+    '        grdOrdenPago.Columns(21).Visible = True
+    '    Else
+    '        txtOtros.Visible = False
+    '        grdOrdenPago.Columns(21).Visible = False
+    '        txtOtros.Text = ""
+    '    End If
 
-    End Sub
+    'End Sub
 
     'Protected Sub txt_Motivo_SelectedIndexChanged(sender As Object, e As EventArgs)
 
