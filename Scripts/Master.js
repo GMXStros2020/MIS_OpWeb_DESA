@@ -904,7 +904,8 @@ function selecTercero() {
 
 function llenarCpto2() {
     var cpto2 = $("[id*=HiddenFieldPI]").val();
-    $("[id*=txtcpto2]").val(cpto2);
+    var cpto2fin = $("[id*=txtcpto2]").val() + " " + cpto2;
+    $("[id*=txtcpto2]").val(cpto2fin);
 }
 
 

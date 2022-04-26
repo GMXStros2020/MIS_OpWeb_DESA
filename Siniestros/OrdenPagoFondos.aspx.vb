@@ -2129,51 +2129,51 @@ Partial Class Siniestros_OrdenPago
                                 'se agrego este filtro para varios conceptos
                                 If chkVariosConceptos.Checked = False Then
                                     Mensaje.MuestraMensaje("Calculo de totales", "No se encontro información para el cálculo de impuestos", TipoMsg.Falla)
-                                    'Se Limpia los importes de la factura en ceros y se habilitan para su ingreso manual
-                                    'txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    'txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                'Se Limpia los importes de la factura en ceros y se habilitan para su ingreso manual
+                                txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
 
-                                    'JLC Fondos Sin Iva-Inicio
-                                    'txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    'txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    'JLC Fondos Sin Iva-Fin
-
-
-                                    'txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    'txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    'se habilitan
-
-                                    'JLC Fondos Sin Iva-Inicio
-                                    FondoSinIva.Value = True
+                                'JLC Fondos Sin Iva-Inicio
+                                txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                'JLC Fondos Sin Iva-Fin
 
 
-                                    Dim txt As TextBox
+                                txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                'se habilitan
+
+                                'JLC Fondos Sin Iva-Inicio
+                                FondoSinIva.Value = True
+
+
+                                Dim txt As TextBox
                                     txt = grd.Rows(0).FindControl("txt_pago")
                                     txt.Text = txtTotalFac.Text
                                     dPago = txtTotalFac.Text
                                     dImporteImpuesto = 0
                                     dImporteRetencion = 0
-                                    'JLC Fondos Sin Iva-Fin
+                                'JLC Fondos Sin Iva-Fin
 
 
 
-                                    'If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
-                                    '    txtTotalAutorizacion.Text = dPago
-                                    '    txtTotalImpuestos.Text = 0
-                                    '    txtTotalRetenciones.Text = 0
-                                    '    txtTotal.Text = dPago
-                                    '    txtTotalNacional.Text = dPago
+                                If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
+                                    txtTotalAutorizacion.Text = dPago
+                                    txtTotalImpuestos.Text = 0
+                                    txtTotalRetenciones.Text = 0
+                                    txtTotal.Text = dPago
+                                    txtTotalNacional.Text = dPago
 
-                                    '    txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
-                                    '    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
-                                    '    txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    '    txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                    '    txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
-                                    '    txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                    txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                    txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                    txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
 
-                                    'End If
-                                    dImporteImpuesto = 0
-                                    dImporteRetencion = 0
+                                End If
+                                dImporteImpuesto = 0
+                                dImporteRetencion = 0
                                 Else
                                     'varios conceptos Se comenta por Fondos 
                                     'txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
@@ -2649,7 +2649,17 @@ Partial Class Siniestros_OrdenPago
                         End If
                     End If
                 End If
+                If Decimal.Parse(txtTotalFac.Text) = 0 And Decimal.Parse(iptxtTotal.Text) = 0 Then
+                    ValidarImpuestosOPFac = False
+                    Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Favor de validar los importes.", TipoMsg.Falla)
+                End If
+
+                If Decimal.Parse(txtTotalFac.Text) < 0 And Decimal.Parse(iptxtTotal.Text) < 0 Then
+                    ValidarImpuestosOPFac = False
+                    Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Favor de ingresar un importe valido.", TipoMsg.Falla)
+                End If
             Else
+
                 'para el caso de asegurado y terceros que no tienen descuentos
                 ValidarImpuestosOPFac = True
             End If
@@ -2698,10 +2708,17 @@ Partial Class Siniestros_OrdenPago
                 oSolicitudPago = New StringBuilder
                 oImpuestos = New StringBuilder
 
+                If iptxtTotal.Text = "" Then
+                    iptxtTotal.Text = 0
+                End If
+
+                If CDbl(iptxtTotal.Text) < 0 Or CDbl(iptxtTotal.Text) = 0 Then
+                    Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Favor de validar los importes.", TipoMsg.Falla)
+                End If
+
                 If Not GenerarXMLSolicitudPago(oSolicitudPago) Then
                     Mensaje.MuestraMensaje("OrdenPagoSiniestros", "Error al preparar la solicitud de pago", TipoMsg.Falla)
                 Else
-
                     If cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor Then
 
                         If Not GenerarXMLImpuestos(oImpuestos) Then
@@ -3367,10 +3384,10 @@ Partial Class Siniestros_OrdenPago
         codDep = drDependencias.SelectedValue.ToString()
         If drDependencias.SelectedValue = "-1" Then
             MuestraMensaje("Dependencias", "Seleccione una dependencia", TipoMsg.Advertencia)
-            txtcpto2.Text = ""
+            txtcpto2.Text = txtcpto2.Text + " " + ""
         Else
             cpto2 = Funciones.fn_EjecutaStr("usp_CargarDatosBancariosDepGob_stro @Accion = 4, @depen = '" + codDep.ToString + "'")
-            txtcpto2.Text = cpto2
+            txtcpto2.Text = txtcpto2.Text + " " + cpto2
         End If
     End Sub
     Private Function validaFolioBloqueado() As Boolean
@@ -3870,9 +3887,9 @@ Partial Class Siniestros_OrdenPago
             oDatos = New DataSet
             oDatos = Funciones.ObtenerDatos("sp_catalogos_FondosADP", oParametros)
             If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
-                txtcpto2.Text = oDatos.Tables(0).Rows(0).Item(0)
+                txtcpto2.Text = txtcpto2.Text + " " + oDatos.Tables(0).Rows(0).Item(0)
             Else
-                txtcpto2.Text = ""
+                txtcpto2.Text = txtcpto2.Text + " "
             End If
         Catch ex As Exception
             Mensaje.MuestraMensaje("OrdenPagoSiniestros", String.Format("CargarConceptoAdp error: {0}", ex.Message), TipoMsg.Falla)

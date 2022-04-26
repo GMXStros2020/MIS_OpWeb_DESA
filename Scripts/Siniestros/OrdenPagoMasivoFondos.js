@@ -2182,21 +2182,35 @@ function RecuperarClasePago(id, Cpto_pago, Prestador) {
                 var vcod_cpto_desc = mydata[0].cod_cpto_desc
                 var vConcepto2 = mydata[0].concepto_detalle
 
-
-
                 jQuery("#list47").jqGrid('setCell', id, 'Cod_clas_pago', vCod_clase_pago);
                 jQuery("#list47").jqGrid('setCell', id, 'Clase_pago', vClase_pago);
 
+                //jQuery("#list47").jqGrid('setCell', id, 'Concepto2', vConcepto2);
+                //jQuery("#list47").jqGrid('setSelection', id, 'Concepto2', vConcepto2);
+                //$("#" + id + 'Concepto2').val(vConcepto2);
+                //jQuery("#list47").jqGrid('getRowData', id,).vConcepto2;
 
+                //jQuery("#list47").setColProp('Concepto2',{editable: true});
 
-                jQuery("#list47").jqGrid('setCell', id, 'Concepto2', vConcepto2);
-                if (vConcepto2 == "") {
+                //jQuery("#list47").jqGrid.(id, 'Concepto2') === vConcepto2;
+
+                //$("select#" + id + "Concepto2", row[id]).html(vConcepto2);
+
+                //$("#list47").jqGrid('setCellValue', id, 'Concepto2', vConcepto2);
+                //$("#list47").jqGrid('setSelection', id, 'Concepto2', vConcepto2);
+                //$($list47).jqGrid("setRowData", id, 'Concepto2', vConcepto2);
+
+                if (vConcepto2 === "") {
                     jQuery("#list47").jqGrid('setCell', id, 'Concepto2', " ");
-                    jQuery("#list47").setColProp('Concepto2', { editable: true});
+                    jQuery("#list47").setColProp('Concepto2', { editable: true });  
+                }
+                else {                    
+                    jQuery("#list47").setColProp('Concepto2', { editable: true });
+                    jQuery("#list47").jqGrid('setCell', id, 'Concepto2', vConcepto2);
                 }
                 //$("#hid_cpto_pago").val(Cpto_pago);
                 //$("#hid_cpto_pago_desc").val(vcod_cpto_desc);
-
+                jQuery("#list47").setColProp('Concepto2', { editable: true });  
             }
             return;
         },

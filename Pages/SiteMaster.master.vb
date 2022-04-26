@@ -2783,60 +2783,60 @@ Partial Class Pages_SiteMaster
                 'If chkTrianguladoPI.Checked Then
                 '    'concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + lblTrianguladoPI.Text.Trim() + ": " + chkTrianguladoPI.Text.Trim()
                 '    concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + "Pago Triangulado, se anexa información de banco: "
-
-                '    If txtTrianNomBancoPI.Text <> "" Then
-                '        concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + lblTrianNomBancoPI.Text.Trim() + ": " + txtTrianNomBancoPI.Text.Trim()
-                '    Else
-                '        Return False
-                '    End If
-
-                '    If txtTrianCuentaPI.Text <> "" Then
-                '        concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + lblTrianCuentaPI.Text.Trim() + ": " + txtTrianCuentaPI.Text.Trim()
-                '    Else
-                '        Return False
-                '    End If
-                '    If txtTrianAbaPI.Text <> "" Then
-                '        concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + lblTrianAbaPI.Text.Trim() + ": " + txtTrianAbaPI.Text.Trim()
-                '    Else
-                '        Return False
-                '    End If
-                'End If
-
-
                 If chkTrianguladoPI.Checked Then
-
-                    If txtTrianNomBancoPI.Text.Trim() = "" Then
+                    If txtTrianNomBancoPI.Text <> "" Then
+                        concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + lblTrianNomBancoPI.Text.Trim() + ": " + txtTrianNomBancoPI.Text.Trim()
+                    Else
                         Return False
                     End If
 
-                    If txtTrianCuentaPI.Text.Trim() = "" Then
+                    If txtTrianCuentaPI.Text <> "" Then
+                        concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + lblTrianCuentaPI.Text.Trim() + ": " + txtTrianCuentaPI.Text.Trim()
+                    Else
                         Return False
                     End If
-
-                    If txtTrianAbaPI.Text.Trim() = "" Then
+                    If txtTrianAbaPI.Text <> "" Then
+                        concepto2 = concepto2 + IIf(concepto2 = "", "", "-") + lblTrianAbaPI.Text.Trim() + ": " + txtTrianAbaPI.Text.Trim()
+                    Else
                         Return False
                     End If
                 End If
 
+
+                'If chkTrianguladoPI.Checked Then
+
+                '        If txtTrianNomBancoPI.Text.Trim() = "" Then
+                '            Return False
+                '        End If
+
+                '        If txtTrianCuentaPI.Text.Trim() = "" Then
+                '            Return False
+                '        End If
+
+                '        If txtTrianAbaPI.Text.Trim() = "" Then
+                '            Return False
+                '        End If
+                '    End If
+
                 Dim row As DataRow = dt.NewRow()
 
-                row("cod_pais") = drPaisPI.SelectedValue
-                row("banco") = txtBancoPI.Text.Trim()
-                row("num_banco") = txtNroBancoPI.Text.Trim()
-                row("domicilio") = txtDomBancoPI.Text.Trim()
-                row("cuenta") = txtCuentaPI.Text.Trim()
-                row("aba_routing") = txtAbaPI.Text.Trim()
-                row("swift") = txtSwiftPI.Text.Trim()
-                row("transit") = txtTransitPI.Text.Trim()
-                row("iban") = txtIbanPI.Text.Trim()
-                row("triangulado") = IIf(chkTrianguladoPI.Checked = True, -1, 0)
-                row("banco_triang") = txtTrianNomBancoPI.Text.Trim()
-                row("cuenta_triang") = txtTrianCuentaPI.Text.Trim()
-                row("aba_routing_triang") = txtTrianAbaPI.Text.Trim()
-                dt.Rows.Add(row)
+                    row("cod_pais") = drPaisPI.SelectedValue
+                    row("banco") = txtBancoPI.Text.Trim()
+                    row("num_banco") = txtNroBancoPI.Text.Trim()
+                    row("domicilio") = txtDomBancoPI.Text.Trim()
+                    row("cuenta") = txtCuentaPI.Text.Trim()
+                    row("aba_routing") = txtAbaPI.Text.Trim()
+                    row("swift") = txtSwiftPI.Text.Trim()
+                    row("transit") = txtTransitPI.Text.Trim()
+                    row("iban") = txtIbanPI.Text.Trim()
+                    row("triangulado") = IIf(chkTrianguladoPI.Checked = True, -1, 0)
+                    row("banco_triang") = txtTrianNomBancoPI.Text.Trim()
+                    row("cuenta_triang") = txtTrianCuentaPI.Text.Trim()
+                    row("aba_routing_triang") = txtTrianAbaPI.Text.Trim()
+                    dt.Rows.Add(row)
 
-            Else
-                Return False
+                Else
+                    Return False
             End If
 
             HiddenFieldPI.Value = concepto2
