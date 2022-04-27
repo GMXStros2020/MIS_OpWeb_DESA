@@ -2130,52 +2130,42 @@ Partial Class Siniestros_OrdenPago
 
                         'ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), CInt(oFila("ClasePago")), CInt(oFila("ConceptoPago")), CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
 
-                        'Dim sn_calcula_impuestos As String
-                        'sn_calcula_impuestos = ""
-
-                        'sn_calcula_impuestos = Funciones.fn_EjecutaStr("sp_mis_valida_impuestos_fondos @cod_cpto = " & dcod_cpto)
-
-                        'If sn_calcula_impuestos = "Si" Then
-                        '    ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), dcod_clase_pago, dcod_cpto, CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
-                        'Else
-                        '    dImporteImpuesto = 0
-                        '    dImporteRetencion = 0
-                        'End If
                         ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), dcod_clase_pago, dcod_cpto, CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
+
                         If dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
-                                'se agrego este filtro para varios conceptos
-                                If chkVariosConceptos.Checked = False Then
+                            'se agrego este filtro para varios conceptos
+                            If chkVariosConceptos.Checked = False Then
+
+                                Dim sn_calcula_impuestos As String
+                                sn_calcula_impuestos = ""
+
+                                sn_calcula_impuestos = Funciones.fn_EjecutaStr("sp_mis_valida_impuestos_fondos @cod_cpto = " & dcod_cpto)
+
+                                If sn_calcula_impuestos = "Si" Then
                                     Mensaje.MuestraMensaje("Calculo de totales", "No se encontro información para el cálculo de impuestos", TipoMsg.Falla)
-                                'Se Limpia los importes de la factura en ceros y se habilitan para su ingreso manual
-                                txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    'Se Limpia los importes de la factura en ceros y se habilitan para su ingreso manual
+                                    txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    'JLC Fondos Sin Iva-Inicio
+                                    txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    'JLC Fondos Sin Iva-Fin
+                                    txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                    'se habilitan
+                                    'JLC Fondos Sin Iva-Inicio
+                                    FondoSinIva.Value = True
 
-                                'JLC Fondos Sin Iva-Inicio
-                                txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                'JLC Fondos Sin Iva-Fin
-
-
-                                txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
-                                'se habilitan
-
-                                'JLC Fondos Sin Iva-Inicio
-                                FondoSinIva.Value = True
-
-
-                                Dim txt As TextBox
-                                ' If agregaregistro = 1 Then
-                                txt = grd.Rows(0).FindControl("txt_pago")
+                                    Dim txt As TextBox
+                                    ' If agregaregistro = 1 Then
+                                    txt = grd.Rows(0).FindControl("txt_pago")
                                     txt.Text = txtTotalFac.Text
-                                'End If
+                                    'End If
 
-                                dPago = txtTotalFac.Text
+                                    dPago = txtTotalFac.Text
                                     dImporteImpuesto = 0
                                     dImporteRetencion = 0
                                     'JLC Fondos Sin Iva-Fin
-
-
 
                                     If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
                                         txtTotalAutorizacion.Text = dPago
@@ -2195,15 +2185,48 @@ Partial Class Siniestros_OrdenPago
                                     dImporteImpuesto = 0
                                     dImporteRetencion = 0
                                 Else
-                                    'varios conceptos Se comenta por Fondos 
-                                    'txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
-                                    'txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
-                                    'txtTotalRetenciones.Text = dImporteRetencion + txtTotalRetenciones.Text
-                                    'txtTotal.Text = dPago + txtTotal.Text
-                                    'txtTotalNacional.Text = dPago + txtTotalNacional.Text
+                                    'JLC Fondos Sin Iva-Inicio
+                                    FondoSinIva.Value = True
 
-                                    'varios conceptos
-                                    iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
+                                    Dim txt As TextBox
+                                    ' If agregaregistro = 1 Then
+                                    txt = grd.Rows(0).FindControl("txt_pago")
+                                    txt.Text = txtTotalFac.Text
+                                    'End If
+
+                                    dPago = txtTotalFac.Text
+                                    dImporteImpuesto = 0
+                                    dImporteRetencion = 0
+                                    'JLC Fondos Sin Iva-Fin
+
+                                    If dcod_clase_pago = 26 AndAlso dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
+                                        txtTotalAutorizacion.Text = dPago
+                                        txtTotalImpuestos.Text = 0
+                                        txtTotalRetenciones.Text = 0
+                                        txtTotal.Text = dPago
+                                        txtTotalNacional.Text = dPago
+
+                                        txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                        txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                        txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                        txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(0, 2))
+                                        txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+                                        txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(dPago, 2))
+
+                                    End If
+                                    dImporteImpuesto = 0
+                                    dImporteRetencion = 0
+                                End If
+                            Else
+                                'varios conceptos Se comenta por Fondos 
+                                'txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
+                                'txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
+                                'txtTotalRetenciones.Text = dImporteRetencion + txtTotalRetenciones.Text
+                                'txtTotal.Text = dPago + txtTotal.Text
+                                'txtTotalNacional.Text = dPago + txtTotalNacional.Text
+
+                                'varios conceptos
+                                iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
                                     iptxtTotalImpuestos.Text = dImporteImpuesto + iptxtTotalImpuestos.Text
                                     If chkFondosSinIVA.Checked = True Then
                                         dImporteImpuesto = iptxtTotalImpuestos.Text + 1
