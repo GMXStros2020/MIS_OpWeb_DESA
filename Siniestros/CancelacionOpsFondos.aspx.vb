@@ -396,7 +396,13 @@ Partial Class Siniestros_CancelacionOpsFondos
                 EdoControl(Operacion.Ninguna)
                 dtOrdenPago = Nothing
 
-                LlenaCatDDL(cmbElaborado, "UsuStro",,,,, -1)
+                'LlenaCatDDL(cmbElaborado, "UsuStro",,,,, -1)
+                Dim DtUsuStro As New DataTable
+                fn_Consulta("mis_UsuStroAdmin", DtUsuStro)
+                If Not DtUsuStro Is Nothing Then
+                    LlenaDDL(cmbElaborado, DtUsuStro,,, -1)
+
+                End If
             End If
             EstadoDetalleOrden()
             'Master.cod_usuario = "CLOPEZ"

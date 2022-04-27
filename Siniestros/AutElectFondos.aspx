@@ -226,7 +226,7 @@
                                          <ItemStyle HorizontalAlign="Left" Width="150px"></ItemStyle>
                                     </asp:TemplateField>
                                       <asp:TemplateField>
-                                          <HeaderTemplate><center>Concepto</center></HeaderTemplate>
+                                          <HeaderTemplate><center>Contratante</center></HeaderTemplate>
                                         <ItemTemplate>
                                             <asp:Label ReadOnly="True" runat="server" Text='<%# Eval("Concepto") %>'></asp:Label>
                                         </ItemTemplate>
