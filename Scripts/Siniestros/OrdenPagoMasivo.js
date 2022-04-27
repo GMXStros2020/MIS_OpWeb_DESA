@@ -1342,7 +1342,7 @@
 
         if (SubStro == "VARIOS") {
             jQuery("#list47").setColProp('Concepto_Pago', { editable: false });
-            jQuery("#list47").setColProp('Concepto2', { editable: false });
+            jQuery("#list47").setColProp('Concepto2', { editable: true });
             jQuery("#list47").setColProp('Notas', { editable: false });
             jQuery("#list47").setColProp('Observaciones', { editable: false });
             jQuery("#list47").setColProp('Nombre_Razon_Social', { editable: false });

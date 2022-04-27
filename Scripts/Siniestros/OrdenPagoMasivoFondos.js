@@ -1625,6 +1625,7 @@
         var savedRow = jQuery("#list47").getGridParam("savedRow");
 
         var id = jQuery("#list47").jqGrid('getGridParam', 'selrow');
+        var Caracteres = "/^-?\d+$/.";
         //        var fol = jQuery("#list47").jqGrid('getRowData', id);
 
 
@@ -1635,8 +1636,16 @@
         if (valor.length != 18) {
             return [false, "El campo debe contener 18 caracteres"];
         }
-
-
+        if (isNaN(valor) == true) {
+            return [false, "El numero de cuenta debe ser numérico."];
+        } else {
+            for (i = 0; i < valor.length; i++) {
+                if (Caracteres.indexOf(valor.charAt(i), 0) != -1) {
+                    return [false, "El numero de cuenta debe ser numérico."];
+                }
+            }
+        }
+   
         if (columnName == "Confirmar Cuenta") {
 
             if (Cuenta_Bancaria != valor) {
@@ -2202,15 +2211,15 @@ function RecuperarClasePago(id, Cpto_pago, Prestador) {
 
                 if (vConcepto2 === "") {
                     jQuery("#list47").jqGrid('setCell', id, 'Concepto2', " ");
-                    jQuery("#list47").setColProp('Concepto2', { editable: true });  
+                    jQuery("#list47").setColProp('Concepto2', { editable: true });
                 }
-                else {                    
+                else {
                     jQuery("#list47").setColProp('Concepto2', { editable: true });
                     jQuery("#list47").jqGrid('setCell', id, 'Concepto2', vConcepto2);
                 }
                 //$("#hid_cpto_pago").val(Cpto_pago);
                 //$("#hid_cpto_pago_desc").val(vcod_cpto_desc);
-                jQuery("#list47").setColProp('Concepto2', { editable: true });  
+                jQuery("#list47").setColProp('Concepto2', { editable: true });
             }
             return;
         },

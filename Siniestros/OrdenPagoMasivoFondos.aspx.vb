@@ -9,8 +9,10 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
 
         If Not IsPostBack Then
             'txt_fecha_ini.Text = "01/11/2020"
-            'txt_fecha_fin.Text = "15/11/2020"
-            'cmbPagarA.SelectedValue = 10
+            'txt_fecha_fin.Text = "15/11/2023"
+            'cmbPagarA.SelectedValue = 7
+            'txt_folio_onbase_Desde.Text = "3922"
+            'txt_folio_onbase_Hasta.Text = "3922"
             'cmbSubsiniestro.SelectedValue = -1
             Me.txtFechaEstimadaPago.Text = FechaEstimPago()
         End If
