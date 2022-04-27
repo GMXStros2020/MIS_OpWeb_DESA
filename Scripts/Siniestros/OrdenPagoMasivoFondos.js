@@ -834,7 +834,7 @@
                 { name: 'Moneda', index: 'Moneda', width: 180 },
                 { name: 'Tipo_Cambio', index: 'Tipo_Cambio', width: 90, formatter: "number.toFixed(4)", align: 'right', sorttype: "int" },
                 { name: 'Reserva', index: 'Reserva', width: 90, formatter: "number", align: 'right', sorttype: "int" },
-                {name: 'Moneda_Pago', index: 'Moneda_Pago', width: 180, editable: true, edittype: "select", editoptions: {
+                {name: 'Moneda_Pago', index: 'Moneda_Pago', width: 180, editable: false, edittype: "select", editoptions: {
                         value: "0:NACIONAL;1:DOLAR AMERICANO"
                     }
                 },
@@ -1240,7 +1240,7 @@
                     { name: 'Moneda', index: 'Moneda', width: 180 },
                     { name: 'Tipo_Cambio', index: 'Tipo_Cambio', width: 90, formatter: "number.toFixed(4)", align: 'right', sorttype: "int" },
                     { name: 'Reserva', index: 'Reserva', width: 90, formatter: "number", align: 'right', sorttype: "int" },
-                    { name: 'Moneda_Pago', index: 'Moneda_Pago', width: 180, editable: true, edittype: "select", editoptions: {
+                    { name: 'Moneda_Pago', index: 'Moneda_Pago', width: 180, editable: false, edittype: "select", editoptions: {
                             value: "0:NACIONAL;1:DOLAR AMERICANO"
                         }},
                     { name: 'Importe', index: 'Importe', width: 90, formatter: "number", align: 'right', sorttype: "int", editrules: { custom: true, custom_func: ValidarImporte, required: true } },

@@ -3938,10 +3938,11 @@ Partial Class Siniestros_OrdenPago
 
             oDatos = New DataSet
             oDatos = Funciones.ObtenerDatos("sp_catalogos_FondosADP", oParametros)
+
             If Not oDatos Is Nothing AndAlso oDatos.Tables(0).Rows.Count > 0 Then
-                txtcpto2.Text = txtcpto2.Text + " " + oDatos.Tables(0).Rows(0).Item(0)
-            Else
-                txtcpto2.Text = txtcpto2.Text + " "
+                txtcpto2.Text = oDatos.Tables(0).Rows(0).Item(0)
+                'Else
+                '    txtcpto2.Text = txtcpto2.Text + " "
             End If
         Catch ex As Exception
             Mensaje.MuestraMensaje("OrdenPagoSiniestros", String.Format("CargarConceptoAdp error: {0}", ex.Message), TipoMsg.Falla)
