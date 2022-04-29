@@ -2077,7 +2077,7 @@ Partial Class Siniestros_OrdenPago
 
         Dim dTotalAutorizacionNacional As Double = 0   'Utilizado solo para impuestos
         Dim dTotalImpuestosNacional As Double = 0
-
+        Dim sn_calculaimpuestos As Boolean
         Dim dcod_clase_pago As Int16 = 0
         Dim dcod_cpto As Int16 = 0
         Try
@@ -2090,6 +2090,8 @@ Partial Class Siniestros_OrdenPago
             End If
 
             Me.txtTipoCambio.Text = dTipoCambio
+
+            Dim txtSumtotalImpuestos = iptxtTotalImpuestos.Text
 
             For Each oFila In oGrdOrden.Rows
                 If cmbMonedaPago.SelectedValue = 0 Then
@@ -2111,9 +2113,9 @@ Partial Class Siniestros_OrdenPago
                     '    txtTotalAutorizacionFac.Text = 0
                     'End If
 
-                    'If agregaregistro = 1 Or CDbl(txtTotalAutorizacionFac.Text) < 0 Or CDbl(txtTotalAutorizacionFac.Text) = 0 Then
-                    txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Decimal.Parse(txtTotalAutorizacionFac.Text) - dDescuentos, 2)
-                    'End If
+                    If agregaregistro = 1 Then
+                        txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Decimal.Parse(txtTotalAutorizacionFac.Text) - dDescuentos, 2)
+                    End If
                     If dPago > 0 Then
 
                             'Si es un proveedor cuya factura haya sido registrada en pesos, se tomara la moneda de pago en pesos
@@ -2128,11 +2130,11 @@ Partial Class Siniestros_OrdenPago
 
                             End If
 
-                        'ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), CInt(oFila("ClasePago")), CInt(oFila("ConceptoPago")), CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
+                            'ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), CInt(oFila("ClasePago")), CInt(oFila("ConceptoPago")), CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
 
-                        ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), dcod_clase_pago, dcod_cpto, CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
+                            ObtenerImpuestos(CInt(Me.txtCodigoBeneficiario_stro.Text), dcod_clase_pago, dcod_cpto, CInt(oFila("IdSiniestro")), dPago, dImporteImpuesto, dImporteRetencion)
 
-                        If dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
+                            If dImporteImpuesto = -1 AndAlso dImporteRetencion = -1 Then
                             'se agrego este filtro para varios conceptos
                             If chkVariosConceptos.Checked = False Then
 
@@ -2157,12 +2159,15 @@ Partial Class Siniestros_OrdenPago
                                     FondoSinIva.Value = True
 
                                     Dim txt As TextBox
-                                    ' If agregaregistro = 1 Then
-                                    txt = grd.Rows(0).FindControl("txt_pago")
-                                    txt.Text = txtTotalFac.Text
-                                    'End If
-
-                                    dPago = txtTotalFac.Text
+                                    If agregaregistro = 1 Then
+                                        txt = grd.Rows(0).FindControl("txt_pago")
+                                        txt.Text = txtTotalFac.Text
+                                    End If
+                                    If oGrdOrden.Rows.Count > 1 Then
+                                        dPago = dPago
+                                    Else
+                                        dPago = txtTotalFac.Text
+                                    End If
                                     dImporteImpuesto = 0
                                     dImporteRetencion = 0
                                     'JLC Fondos Sin Iva-Fin
@@ -2185,16 +2190,23 @@ Partial Class Siniestros_OrdenPago
                                     dImporteImpuesto = 0
                                     dImporteRetencion = 0
                                 Else
+                                    sn_calculaimpuestos = -1
+
                                     'JLC Fondos Sin Iva-Inicio
                                     FondoSinIva.Value = True
 
                                     Dim txt As TextBox
-                                    ' If agregaregistro = 1 Then
-                                    txt = grd.Rows(0).FindControl("txt_pago")
-                                    txt.Text = txtTotalFac.Text
-                                    'End If
+                                    If agregaregistro = 1 Then
+                                        txt = grd.Rows(0).FindControl("txt_pago")
+                                        txt.Text = txtTotalFac.Text
+                                    End If
+                                    If oGrdOrden.Rows.Count > 1 Then
+                                        dPago = dPago
+                                    Else
+                                        dPago = txtTotalFac.Text
+                                    End If
 
-                                    dPago = txtTotalFac.Text
+
                                     dImporteImpuesto = 0
                                     dImporteRetencion = 0
                                     'JLC Fondos Sin Iva-Fin
@@ -2218,6 +2230,14 @@ Partial Class Siniestros_OrdenPago
                                     dImporteRetencion = 0
                                 End If
                             Else
+                                Dim sn_calcula_impuestosconcepto As String
+                                sn_calcula_impuestosconcepto = ""
+
+                                sn_calcula_impuestosconcepto = Funciones.fn_EjecutaStr("sp_mis_valida_impuestos_fondos @cod_cpto = " & dcod_cpto)
+
+                                If sn_calcula_impuestosconcepto = "No" Then
+                                    sn_calculaimpuestos = -1
+                                End If
                                 'varios conceptos Se comenta por Fondos 
                                 'txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
                                 'txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
@@ -2226,8 +2246,9 @@ Partial Class Siniestros_OrdenPago
                                 'txtTotalNacional.Text = dPago + txtTotalNacional.Text
 
                                 'varios conceptos
-                                iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
-                                    iptxtTotalImpuestos.Text = dImporteImpuesto + iptxtTotalImpuestos.Text
+                                'iptxtTotalAutorizacion.Text = dPago + iptxtTotalAutorizacion.Text
+                                iptxtTotalAutorizacion.Text = iptxtTotalAutorizacion.Text
+                                iptxtTotalImpuestos.Text = dImporteImpuesto + iptxtTotalImpuestos.Text
                                     If chkFondosSinIVA.Checked = True Then
                                         dImporteImpuesto = iptxtTotalImpuestos.Text + 1
                                     End If
@@ -2237,7 +2258,7 @@ Partial Class Siniestros_OrdenPago
                                     iptxtTotalNacional.Text = dPago + iptxtTotalNacional.Text
 
                                 End If
-                            ElseIf (dImporteImpuesto = 0 AndAlso dImporteRetencion = 0) OrElse
+                                ElseIf (dImporteImpuesto = 0 AndAlso dImporteRetencion = 0) OrElse
                             (dImporteImpuesto = -1 OrElse dImporteRetencion = -1) Then
                                 If chkVariosConceptos.Checked = True Then
                                     If dImporteImpuesto = 0 AndAlso dImporteRetencion = 0 Then 'esto es cuando calcula los impuesto al cero
@@ -2268,7 +2289,7 @@ Partial Class Siniestros_OrdenPago
                             'FJCP Mejoras Multipago -ini
                             If chkVariasFacturas.Checked = True Then
 
-
+                            If agregaregistro = 1 Then
                                 'varios conceptos
                                 txtTotalAutorizacion.Text = dPago + txtTotalAutorizacion.Text
                                 txtTotalImpuestos.Text = dImporteImpuesto + txtTotalImpuestos.Text
@@ -2283,19 +2304,19 @@ Partial Class Siniestros_OrdenPago
                                 iptxtTotal.Text = dPago + iptxtTotal.Text
                                 iptxtTotalNacional.Text = dPago + iptxtTotalNacional.Text
 
-                            'If agregaregistro = 1 Or CDbl(txtTotalAutorizacionFac.Text) < 0 Or CDbl(txtTotalAutorizacionFac.Text) = 0 Then
-                            txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacion.Text), 2))
+
+                                txtTotalAutorizacionFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacion.Text), 2))
                                 txtTotalImpuestosFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalImpuestos.Text), 2))
                                 txtTotalRetencionesFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalRetenciones.Text), 2))
                                 txtTotalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotal.Text), 2))
                                 txtTotalNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalNacional.Text), 2))
                                 txtTotalAutorizacionNacionalFac.Text = String.Format("{0:0,0.00}", Math.Round(Double.Parse(txtTotalAutorizacion.Text), 2))
-                            'End If
+                            End If
                         End If
-                        'FJCP Mejoras Multipago -fin
+                            'FJCP Mejoras Multipago -fin
 
 
-                    Else
+                        Else
                             dPago = 0
                             dImporteImpuesto = 0
                             dImporteRetencion = 0
@@ -2314,23 +2335,26 @@ Partial Class Siniestros_OrdenPago
                                     dTotalAutorizacion += dPago
                                     dTotalImpuestos += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, dImporteImpuesto, 0)
                                     dTotalRetenciones += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, dImporteRetencion, 0)
-
-                                    dTotalAutorizacionNacional += dPago
-                                    dTotalImpuestosNacional = 0
+                                    If agregaregistro = 1 Then
+                                        dTotalAutorizacionNacional += dPago
+                                        dTotalImpuestosNacional = 0
+                                    End If
                                 Else
-                                    dTotalAutorizacion += dPago
-                                    dTotalImpuestos += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, dImporteImpuesto, 0)
-                                    dTotalRetenciones += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, dImporteRetencion, 0)
-                                    If dTotalImpuestos = -1 Then
-                                        dTotalImpuestos = 0
-                                    End If
-                                    If dTotalRetenciones = -1 Then
-                                        dTotalRetenciones = 0
-                                    End If
-                                    dTotalAutorizacionNacional += dPago
-                                    dTotalImpuestosNacional = 0
+                                        ''If agregaregistro = 1 Then
+                                        dTotalAutorizacion += dPago
+                                        dTotalImpuestos += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, dImporteImpuesto, 0)
+                                        dTotalRetenciones += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, dImporteRetencion, 0)
+                                        If dTotalImpuestos = -1 Then
+                                            dTotalImpuestos = 0
+                                        End If
+                                        If dTotalRetenciones = -1 Then
+                                            dTotalRetenciones = 0
+                                        End If
+                                        dTotalAutorizacionNacional += dPago
+                                        dTotalImpuestosNacional = 0
+                                    'End If
                                 End If
-                            Case 1
+                                    Case 1
                                 'dTotalAutorizacion += (dPago / dTipoCambio)
                                 'dTotalImpuestos += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, (dImporteImpuesto / dTipoCambio), 0)
                                 'dTotalRetenciones += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, (dImporteRetencion / dTipoCambio), 0)
@@ -2367,6 +2391,7 @@ Partial Class Siniestros_OrdenPago
                                 dTotalAutorizacionNacional = 0
                                 'dTotalNacional += IIf(cmbTipoUsuario.SelectedValue = eTipoUsuario.Proveedor, (dPago + dImporteImpuesto - dImporteRetencion), 0)
 
+
                         End Select
 
                 End Select
@@ -2402,7 +2427,11 @@ Partial Class Siniestros_OrdenPago
                         'Me.txtTotalNacional.Text = String.Format("{0:0,0.00}", dTotalAutorizacionNacional)
                     End If
                     'Cambiara segun si la moneda de pago son pesos o dolares
-
+                    If oGrdOrden.Rows.Count > 1 And sn_calculaimpuestos = -1 Then
+                        dTotalAutorizacion = Me.iptxtTotalAutorizacion.Text + (txtSumtotalImpuestos - dTotalImpuestos)
+                    Else
+                        dTotalAutorizacion = dTotalAutorizacion
+                    End If
                     Me.iptxtTotalAutorizacion.Text = String.Format("{0:0,0.00}", Math.Round(dTotalAutorizacion, 2))
                     Me.iptxtTotalImpuestos.Text = String.Format("{0:0,0.00}", Math.Round(dTotalImpuestos, 2))
                     Me.iptxtTotalRetenciones.Text = String.Format("{0:0,0.00}", Math.Round(dTotalRetenciones, 2))
@@ -2447,6 +2476,11 @@ Partial Class Siniestros_OrdenPago
                     Me.txtTotal.Text = String.Format("{0:0,0.00}", 0)
                     Me.txtTotalNacional.Text = String.Format("{0:0,0.00}", 0)
 
+                    If oGrdOrden.Rows.Count > 1 And sn_calculaimpuestos = -1 Then
+                        dTotalAutorizacion = Me.iptxtTotalAutorizacion.Text + (txtSumtotalImpuestos - dTotalImpuestos)
+                    Else
+                        dTotalAutorizacion = dTotalAutorizacion
+                    End If
 
                     Me.iptxtTotalAutorizacion.Text = String.Format("{0:0,0.00}", Math.Round(dTotalAutorizacion, 2))
                     Me.iptxtTotalImpuestos.Text = String.Format("{0:0,0.00}", Math.Round(dTotalImpuestos, 2))
