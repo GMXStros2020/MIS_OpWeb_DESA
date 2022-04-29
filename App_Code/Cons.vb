@@ -3,15 +3,15 @@
 Public Class Cons
 
     'PARAMETROS A DONDE APUNTA LA APLICACION CPAR_PARAMETROS
-    Public Const TargetReport = 9 '9=UAT,8=PRODUCCION,3=DESA
+    Public Const TargetReport = 58 '9=UAT,8=PRODUCCION,3=DESA
     Public Const ReposSource = "ReportesGMX_UAT"
     Public Const ReposReport = "ReportesOPSiniestros"
     Public Const TargetFiltrosAdminStro = 30
     Public Const TargetMenuAdminStro = 31
-    Public Const RutaWebServOnBase = 40
-    Public Const FechaFiltroStrosTec = 41
-    Public Const ConsultaExportExcel = 42
-    Public Const UsuariosNicho1 = 50
+    Public Const RutaWebServOnBase = 50
+    Public Const FechaFiltroStrosTec = 51
+    Public Const ConsultaExportExcel = 52
+    Public Const UsuariosNicho1 = 53
     '---------------------------------------------------------
 
     'Valores Reportes (cREP_Reportes)
