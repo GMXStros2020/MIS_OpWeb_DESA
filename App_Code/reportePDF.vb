@@ -330,6 +330,7 @@ Public Class reportePDF
                     ' Process.Start(rutacompleta) 'VZAVALETA_10290_CC7_PDF
                 End If
             End If
+            Mensaje.MuestraMensaje("Envió para pagos internacionales", "El archivo se guardo correctamente en la siguiente ruta: " + "\n " + rutaserver, Mensaje.TipoMsg.Advertencia)
 
         Catch ex As Exception
             ' Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
