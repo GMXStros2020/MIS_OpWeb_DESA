@@ -103,7 +103,8 @@ Partial Class Siniestros_AnulacionTranferencias
                 txt_orden_pago.Text = grdOp.Rows(index).Cells(1).Text
                 txt_fecha.Text = grdOp.Rows(index).Cells(2).Text
                 txt_importe.Text = grdOp.Rows(index).Cells(3).Text
-                txt_tranferencia.Text = grdOp.Rows(index).Cells(4).Text
+                ' txt_tranferencia.Text = grdOp.Rows(index).Cells(4).Text
+                txt_tranferencia.Text = HttpUtility.HtmlDecode(grdOp.Rows(index).Cells(4).Text)
                 txt_cuenta.Text = grdOp.Rows(index).Cells(6).Text
                 txt_transaccion.Text = grdOp.Rows(index).Cells(5).Text
 
