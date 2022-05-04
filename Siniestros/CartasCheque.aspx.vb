@@ -543,6 +543,7 @@ Partial Class Siniestros_CartasCheque
         chk_Elaboradas.Checked = False
         chk_Todas.Checked = False
         chk_Pendientes.Checked = False
+        Response.Redirect("CartasCheque.aspx")
     End Sub
 
     Protected Sub chk_Todas_CheckedChanged(sender As Object, e As EventArgs) Handles chk_Todas.CheckedChanged
