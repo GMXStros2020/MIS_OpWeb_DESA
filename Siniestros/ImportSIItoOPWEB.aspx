@@ -69,6 +69,10 @@
                             <asp:Label runat="server" id="lblanalista" class="col-md-1 etiqueta-control " Width="25%" Visible ="false" >Analista Fondos</asp:Label>
                             <asp:DropDownList runat="server" ID="ddlAnalista" CssClass="col-md-3 estandar-control" Width="75%" Visible="false"></asp:DropDownList>
 
+                            <div class="clear padding5"></div>
+                            <asp:Label runat="server" ID="lblTraspaso" class="col-md-1 etiqueta-control" Width="25%" Visible="false">Traspaso</asp:Label>
+                            <asp:Checkbox  runat="server" ID="chkTraspaso" Width="75%" Visible="false"></asp:Checkbox>
+                            <div class="clear padding5"></div>
 
                          </div>
                     </div>
