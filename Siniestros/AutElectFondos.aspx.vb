@@ -842,7 +842,7 @@ Partial Class Siniestros_AutElectFondos
                         UsuarioFirma = row("Subgerente")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Gerente_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Gerente")
-                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
+                    ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Subdirector_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Subdirector")
                     ElseIf DirectCast(grdOrdenPago.Rows(contador).FindControl("Director_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Director")

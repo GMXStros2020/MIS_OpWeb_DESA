@@ -52,9 +52,13 @@ Partial Class ImportSIItoOPWEB
         If ddl_Modulo.SelectedItem.Value = 3 Then
             ddlAnalista.Visible = True
             lblanalista.Visible = True
+            lblTraspaso.Visible = False
+            chkTraspaso.Visible = False
         Else
             ddlAnalista.Visible = False
             lblanalista.Visible = False
+            lblTraspaso.Visible = True
+            chkTraspaso.Visible = True
         End If
     End Sub
 
@@ -74,15 +78,24 @@ Partial Class ImportSIItoOPWEB
             Parametros = ddl_Modulo.SelectedValue & "," & txt_nro_op.Text & "," & txt_FolioOnBase.Text & "," & txt_nro_stro.Text &
                    "," & IIf(txt_nro_sol.Text = "", 0, txt_nro_sol.Text) & "," & txt_NoPago.Text
 
+            If chkTraspaso.Checked Then
+                Parametros = Parametros & ",1"
+            Else
+                Parametros = Parametros & ",0"
+            End If
 
             If ddl_Modulo.SelectedItem.Value = 3 Then
                 Parametros = Parametros & ",'" & ddlAnalista.SelectedItem.Value & "'"
             End If
 
+
+
             Parametros2 = ddl_Modulo.SelectedValue & "," & txt_nro_op.Text & "," & txt_FolioOnBase.Text & "," & txt_nro_stro.Text & "," & txt_NoPago.Text
 
             'busqueda para validar
             intPrevio = fn_Ejecuta("mis_BuscaCondiciones " & Parametros2)
+
+
 
             If intPrevio = 1 Then
 
