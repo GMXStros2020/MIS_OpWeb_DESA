@@ -907,6 +907,7 @@ Partial Class Siniestros_AutElectFondos
                     If sn_proceso = True Then
                         If fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",-1,'" & codRol & "'," & 1) = 1 Then
                             fn_Ejecuta("mis_AutorizaOPSTros " & strOP & ",'" & Master.cod_usuario & "'")
+                            OPCompletada = False
                             Mensaje.MuestraMensaje("Autorizaciones", "Se Autorizo la Orden de Pago", Mensaje.TipoMsg.Confirma)
                         End If
                     End If
