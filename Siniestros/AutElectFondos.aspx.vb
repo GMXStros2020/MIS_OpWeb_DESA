@@ -784,7 +784,16 @@ Partial Class Siniestros_AutElectFondos
                     Mensaje.MuestraMensaje("Validación", "la Orden de Pago: " & strOP & " ya se encuentra rechazada, por favor deseleccionarla", TipoMsg.Advertencia)
                     Exit Function
                 End If
-
+                
+                'Evalua si esta firmado por el analista
+                If codRol <> "S" Then
+                    Dim ResultSol As Integer = fn_Ejecuta("mis_VerFirmaSolicitante " & strOP)
+                    If ResultSol = 0 Then
+                        Mensaje.MuestraMensaje("Validación", "la Orden de Pago: " & strOP & " requiere la firma del analista, por favor dejarla En Revision", TipoMsg.Advertencia)
+                        Exit Function
+                    End If
+                End If
+                            
                 If row("NivelAutorizacion") = 1 Then
                     If DirectCast(grdOrdenPago.Rows(contador).FindControl("Solicitante_"), Label).BackColor = System.Drawing.Color.Orange Then
                         UsuarioFirma = row("Solicitante")
