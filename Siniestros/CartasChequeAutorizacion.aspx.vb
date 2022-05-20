@@ -619,6 +619,7 @@ Partial Class Siniestros_CartasChequeAutorizacion
         chk_Rechazadas.Checked = False
         chk_Autorizadas.Checked = False
         chk_Pendientes.Checked = False
+        Response.Redirect("CartasChequeAutorizacion.aspx")
     End Sub
     Protected Sub chk_Todas_CheckedChanged(sender As Object, e As EventArgs) Handles chk_Todas.CheckedChanged
         VerificaRadios(TipoFiltro.Todas)

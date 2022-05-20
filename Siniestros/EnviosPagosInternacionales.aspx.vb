@@ -386,6 +386,8 @@ Partial Class Siniestros_EnviosPagosInternacionales
         txt_beneficiario.Text = ""
         txt_nro_op_ini.Text = ""
         txt_siniestro.Text = ""
+        Response.Redirect("EnviosPagosInternacionales.aspx")
+
     End Sub
 
     Private Function armaHTML(dtPagosInter As DataTable) As String

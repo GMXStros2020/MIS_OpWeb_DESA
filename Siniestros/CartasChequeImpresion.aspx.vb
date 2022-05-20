@@ -626,6 +626,7 @@ Partial Class Siniestros_CartasChequeImpresion
         chk_Ninguno.Checked = False
         chk_Pendientes.Checked = False
         chk_Entregadas.Checked = False
+        Response.Redirect("CartasChequeImpresion.aspx")
     End Sub
 
     Protected Sub dropEstado_SelectedIndexChanged(sender As Object, e As EventArgs)

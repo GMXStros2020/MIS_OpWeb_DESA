@@ -308,10 +308,30 @@ Public Class reportePDF
                 Dim i As Integer = 0
                 Dim sufijo As Integer = 0
 
+                'If Nro_ops.Length > 1 Then
+                '    rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "_" + Cod_usuario + ".pdf"
+                'Else
+                '    rutacompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + ".pdf"
+                'End If
                 If Nro_ops.Length > 1 Then
-                    rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "_" + Cod_usuario + ".pdf"
+                    While System.IO.File.Exists(RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter_tmp" + "_" + Cod_usuario + "-" + i.ToString() + "-.pdf")
+                        i += 1
+                        'rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "-" + i.ToString() + "-.pdf"
+                        'rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "_" + Cod_usuario + i.ToString() + "-.pdf"
+                        rutacompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter_tmp" + "_" + Cod_usuario + "-" + i.ToString() + "-.pdf"
+                    End While
+                    If i = 0 Then
+                        ' rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "-0-.pdf"
+                        rutacompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter_tmp" + "_" + Cod_usuario + "-0-.pdf"
+                    End If
                 Else
-                    rutacompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + ".pdf"
+                    While System.IO.File.Exists(RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + "-" + i.ToString() + "-.pdf")
+                        i += 1
+                        rutacompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + "-" + i.ToString() + "-.pdf"
+                    End While
+                    If i = 0 Then
+                        rutacompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + "-0-.pdf"
+                    End If
                 End If
 
                 Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
@@ -422,8 +442,19 @@ Public Class reportePDF
             Next
         Next
 
-        NuevoArchivo = "Ordenes_de_Pago_Pago_Inter"
-        RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + "_" + Cod_usuario + ".pdf"
+        Dim i As Integer = 0
+
+        While System.IO.File.Exists(RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + "-" + i.ToString() + "-.pdf")
+            i += 1
+            RutaCompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + "-" + i.ToString() + "-.pdf"
+        End While
+        If i = 0 Then
+            RutaCompleta = RutaArchivo + "\\Ordenes_de_Pago_Pago_Inter" + "_" + Cod_usuario + "-0-.pdf"
+        End If
+
+
+        'NuevoArchivo = "Ordenes_de_Pago_Pago_Inter"
+        'RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + "_" + Cod_usuario + ".pdf"
         outputDocument.Save(RutaCompleta)
 
         For Each archivo As String In archivos
