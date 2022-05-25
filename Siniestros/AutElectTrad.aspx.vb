@@ -1,5 +1,4 @@
 Imports System.Data
-Imports System.Data
 Imports System.Data.SqlClient
 Imports Mensaje
 Imports Funciones
