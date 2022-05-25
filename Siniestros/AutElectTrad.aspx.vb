@@ -115,6 +115,10 @@ Partial Class Siniestros_AutElectTrad
 
     Private Sub OrdenPago_FirmasElectronicas_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
+            
+            Dim scriptManager As ScriptManager = ScriptManager.GetCurrent(Me.Page)
+            scriptManager.RegisterPostBackControl(Me.btn_Excel)
+            
             If Not IsPostBack Then
                 Master.Titulo = "Autorizaciones Electrónicas"
                 Master.cod_modulo = Cons.ModuloRea
