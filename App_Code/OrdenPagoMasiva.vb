@@ -537,21 +537,22 @@ Public Class OrdenPagoMasiva
 
     <WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Function RecuperaTercero(ByVal Nombre As String, ByVal RFC As String, ByVal Codigo As String) As String
+    Public Function RecuperaTercero(ByVal Nombre As String, ByVal RFC As String, ByVal Codigo As String, ByVal PagarA As String) As String
 
 
 
         Dim oDatos As DataSet
-            Dim oTabla As DataTable
-            Dim oParametros As New Dictionary(Of String, Object)
-            Dim serializer As New JavaScriptSerializer
+        Dim oTabla As DataTable
+        Dim oParametros As New Dictionary(Of String, Object)
+        Dim serializer As New JavaScriptSerializer
 
 
         Try
 
 
             serializer.MaxJsonLength = 500000000
-            oParametros.Add("strCatalogo", "Tercero")
+            'oParametros.Add("strCatalogo", "Tercero")
+            oParametros.Add("strCatalogo", PagarA)
 
             If Nombre.Length > 0 Then
                 oParametros.Add("Condicion", Nombre)

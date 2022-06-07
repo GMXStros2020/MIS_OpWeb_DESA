@@ -268,7 +268,7 @@ function CargarBeneficiario(e) {
 
             switch ($("[id*=cmbTipoUsuario]").val()) {
                 case "7": //Asegurado
-                    fn_CargaCatalogo("BenTercero_stro", beneficiario.trim(), "", "Unica", "txtCodigoBeneficiario_stro|txtBeneficiario_stro|txtRFC", "Terceros", "block");
+                    fn_CargaCatalogo("BenAsegurado_stro", beneficiario.trim(), "", "Unica", "txtCodigoBeneficiario_stro|txtBeneficiario_stro|txtRFC", "Asegurado", "block");
                     break;
                 case "8": //Tercero
                     fn_CargaCatalogo("BenTercero_stro", beneficiario.trim(), "", "Unica", "txtCodigoBeneficiario_stro|txtBeneficiario_stro|txtRFC", "Terceros", "block");

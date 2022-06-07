@@ -1508,6 +1508,7 @@ function Terceros(id) {
     var CodigoCliente = $("#" + id + "_CodigoCliente").val();
     var RFC = $("#" + id + "_RFC").val();
     var nomTercero = $("#" + id + "_Nombre_Razon_Social").val();
+    var PagarA = jQuery("#list47").jqGrid('getRowData', id).PagarA;
 
     if (CodigoCliente === undefined || CodigoCliente === null) {
         CodigoCliente = jQuery("#list47").jqGrid('getRowData', id).CodigoCliente;
@@ -1523,7 +1524,8 @@ function Terceros(id) {
 
     $.ajax({
         url: "../LocalServices/OrdenPagoMasiva.asmx/RecuperaTercero",
-        data: "{ 'Nombre': '" + nomTercero + "','RFC':'" + RFC + "','Codigo':'" + CodigoCliente + "'}",
+        data: "{ 'Nombre': '" + nomTercero + "','RFC':'" + RFC + "','Codigo':'" + CodigoCliente + "', 'PagarA': '" + PagarA + "'}",
+
         dataType: "json",
         type: "POST",
         contentType: "application/json; charset=utf-8",

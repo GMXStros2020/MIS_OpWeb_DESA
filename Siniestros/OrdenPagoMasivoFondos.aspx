@@ -482,7 +482,7 @@
         <div class="cuadro-titulo-flotante">
             <button type="button" data-dismiss="modal" class="close">&times;</button>
             <div>
-                <label>Terceros</label></div>
+                <label>Catálogo</label></div>
         </div>
 
         <div class="clear padding5"></div>
