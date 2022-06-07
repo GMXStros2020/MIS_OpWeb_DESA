@@ -114,6 +114,10 @@ Partial Class Siniestros_AutElectFondos
 
     Private Sub OrdenPago_FirmasElectronicas_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
+            
+            Dim scriptManager As ScriptManager = ScriptManager.GetCurrent(Me.Page)
+            scriptManager.RegisterPostBackControl(Me.btn_Excel)
+            
             If Not IsPostBack Then
                 Master.Titulo = "Autorizaciones Electrónicas"
                 Master.cod_modulo = Cons.ModuloRea
@@ -300,28 +304,28 @@ Partial Class Siniestros_AutElectFondos
             Dim ValorRol As Integer = 0
             'ValorRol = ddlRolFilter.SelectedValue
 
-            ' exportacion a excel----
-            Dim strExcel As String = String.Format("usp_ObtenerOrdenPago_stro_T_ALT {0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}'",
-                                              Cons.StrosFondos,
-                                              sFiltroOP,
-                                              sFiltroMonto,
-                                              sFiltroFechaGeneracion,
-                                              sFiltroFechaPago,
-                                              sFiltroUsuario,
-                                              Master.cod_usuario,
-                                              iStatusFirma,
-                                              ValorRol,
-                                               valorMoneda,
-                                                sFiltroStro,
-                                                sFiltroBenef,
-                                                sFiltroFecDe,
-                                                sFiltroFecHasta)
+         '' exportacion a excel----
+            'Dim strExcel As String = String.Format("usp_ObtenerOrdenPago_stro_T_ALT {0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}'",
+            '                                  Cons.StrosTradicional,
+            '                                  sFiltroOP,
+            '                                  sFiltroMonto,
+            '                                  sFiltroFechaGeneracion,
+            '                                  sFiltroFechaPago,
+            '                                  sFiltroUsuario,
+            '                                  Master.cod_usuario,
+            '                                  iStatusFirma,
+            '                                  ValorRol,
+            '                                   valorMoneda,
+            '                                    sFiltroStro,
+            '                                    sFiltroBenef,
+            '                                    sFiltroFecDe,
+            '                                    sFiltroFecHasta)
 
-            strExcel = Replace(strExcel, "'", "''")
-            strExcel = strExcel.Substring(1, Len(strExcel) - 1)
-            strExcel = "'u" & strExcel & "'"
+            'strExcel = Replace(strExcel, "'", "''")
+            'strExcel = strExcel.Substring(1, Len(strExcel) - 1)
+            'strExcel = "'u" & strExcel & "'"
 
-            Dim resultadoExcel = fn_Ejecuta("mis_UpdParamStrExcel " & strExcel)
+            'Dim resultadoExcel = fn_Ejecuta("mis_UpdParamStrExcel " & strExcel)
             '---------
 
             'Cambiar SP por original (usp_ObtenerOrdenPago_stro)
@@ -2011,21 +2015,40 @@ Partial Class Siniestros_AutElectFondos
 
     Private Sub btn_Excel_Click(sender As Object, e As EventArgs) Handles btn_Excel.Click
 
-        generaReporte()
+        ExportToExcel()
     End Sub
 
-    Private Sub generaReporte()
-        Dim ws As New ws_Generales.GeneralesClient
-        Dim server As String = ws.ObtieneParametro(Cons.TargetReport)
+  Private Sub ExportToExcel()
 
-        server = Replace(Replace(server, "@Reporte", "Rpt_Excel"), "@Formato", "EXCEL")
-        server = Replace(server, Cons.ReposSource, Cons.ReposReport)
-        Funciones.EjecutaFuncion("window.open('" & server & "');")
+        'Create a dummy GridView
+        Dim GridView1 As New GridView()
+        GridView1.AllowPaging = False
+        GridView1.DataSource = dtOrdenPago
+        GridView1.DataBind()
 
-    End Sub
+        Response.Clear()
+        Response.Buffer = True
+        Response.AddHeader("content-disposition",
+          "attachment;filename=OPsTradicional.xls")
+        Response.Charset = ""
+        Response.ContentType = "application/vnd.ms-excel"
 
-    Private Sub Siniestros_AutElectTrad_Error(sender As Object, e As EventArgs) Handles Me.[Error]
+        Dim sw As New StringWriter()
+        Dim hw As New HtmlTextWriter(sw)
 
+        For i As Integer = 0 To GridView1.Rows.Count - 1
+            'Apply text style to each Row
+            GridView1.Rows(i).Attributes.Add("class", "textmode")
+            GridView1.Rows(i).Cells(5).Text = GridView1.Rows(i).Cells(5).Text.ToString()
+        Next
+        GridView1.RenderControl(hw)
+
+        'style to format numbers to string
+        Dim style As String = "<style> .textmode{mso-number-format:\@;}</style>"
+        Response.Write(style)
+        Response.Output.Write(sw.ToString())
+        Response.Flush()
+        Response.End()
     End Sub
 
     Private Sub grdOrdenPago_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdOrdenPago.RowDataBound
