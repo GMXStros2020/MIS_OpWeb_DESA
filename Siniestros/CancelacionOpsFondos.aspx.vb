@@ -564,13 +564,10 @@ Partial Class Siniestros_CancelacionOpsFondos
                 End If
 
                 If sn_proceso = True Then
+                    ' fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",0,'" & codRol & "',0,'Usuario: " & Master.usuario & " /Motivo: " & strMotivoRechazo & "'")
 
-                    fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",0,'" & codRol & "',0,'Usuario: " & Master.usuario & " /Motivo: " & strMotivoRechazo & "'")
-                    'fn_Ejecuta("mis_CancelaOPStros " & strOP & ",'" & Master.cod_usuario & "'," & codMotivoRechazo)
-                    fn_Ejecuta("mis_CancelaOPStros " & strOP & ",'" & Master.cod_usuario & "'," & codMotivoRechazo & "," & intFolioOnBase)
-                    'fn_Ejecuta("Update MIS_Expediente_OP set Nro_OP = " & strOP & ", id_Estatus_Registro = 3 where Folio_Onbase_Siniestro = " & intFolioOnBase & " And Id_etiqueta_Pago = 0", True)
-                    ' fn_Ejecuta("mis_UpdExpOP " & intFolioOnBase, True)
-                    fn_Ejecuta("mis_MailOpRechazo '" & strOP & "','CLOPEZ','" & Master.usuario & "'")
+                    fn_Ejecuta("mis_CancelaOPStros " & strOP & ",'" & Master.cod_usuario & "'," & codMotivoRechazo & "," & intFolioOnBase & ",'" & codRol & "','" & strMotivoRechazo & "'")
+                    ' fn_Ejecuta("mis_MailOpRechazo '" & strOP & "','CLOPEZ','" & Master.usuario & "'")
 
                     UsrElaboro = ""
                     UsrSolicito = ""
