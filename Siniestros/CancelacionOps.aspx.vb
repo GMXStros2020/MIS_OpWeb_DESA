@@ -551,7 +551,7 @@ Partial Class Siniestros_CancelacionOps
                     'MMQ se comentan la aplicacion y el correo que ahora seran lanzados todos dentro del mis_CancelaOpStros
                     ' fn_Ejecuta("usp_AplicaFirmasOP_stro " & strOP & ",0,'" & codRol & "',0,'Usuario: " & Master.usuario & " /Motivo: " & strMotivoRechazo & "'")
 
-                    fn_Ejecuta("mis_CancelaOPStros " & strOP & ",'" & Master.cod_usuario & "'," & codMotivoRechazo & "," & intFolioOnBase)
+                        fn_Ejecuta("mis_CancelaOPStros " & strOP & ",'" & Master.cod_usuario & "'," & codMotivoRechazo & "," & intFolioOnBase & ",'" & codRol & "','" & strMotivoRechazo & "'")
 
                     '  fn_Ejecuta("mis_MailOpRechazo '" & strOP & "','CLOPEZ','" & Master.usuario & "'")
 
