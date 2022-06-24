@@ -1945,12 +1945,19 @@ Partial Class Siniestros_AutElectTrad
         ExportToExcel()
     End Sub
 
- Private Sub ExportToExcel()
+  Private Sub ExportToExcel()
 
         'Create a dummy GridView
         Dim GridView1 As New GridView()
+        Dim dtReporte As New DataTable
+
+        dtReporte = dtOrdenPago.Copy
+
         GridView1.AllowPaging = False
-        GridView1.DataSource = dtOrdenPago
+
+        EliminaColumnasExcel(dtReporte)
+
+        GridView1.DataSource = dtReporte
         GridView1.DataBind()
 
         Response.Clear()
@@ -1965,17 +1972,130 @@ Partial Class Siniestros_AutElectTrad
 
         For i As Integer = 0 To GridView1.Rows.Count - 1
             'Apply text style to each Row
-            GridView1.Rows(i).Attributes.Add("class", "textmode")
-            GridView1.Rows(i).Cells(5).Text = GridView1.Rows(i).Cells(5).Text.ToString()
+            ' GridView1.Rows(i).Attributes.Add("class", "textmode")
+            'GridView1.Rows(i).Cells(6).Text = GridView1.Rows(i).Cells(6).Text
+
         Next
         GridView1.RenderControl(hw)
 
         'style to format numbers to string
+
         Dim style As String = "<style> .textmode{mso-number-format:\@;}</style>"
         Response.Write(style)
         Response.Output.Write(sw.ToString())
         Response.Flush()
         Response.End()
+    End Sub
+
+    Private Sub EliminaColumnasExcel(dtReporte As DataTable)
+
+        'elimina columnas
+        dtReporte.Columns.Remove("SolicitudPago")
+        dtReporte.Columns.Remove("Folio_Onbase_est_cuenta")
+        dtReporte.Columns.Remove("NumeroRecibo")
+        dtReporte.Columns.Remove("NombreSucursal")
+        dtReporte.Columns.Remove("NombreSucursalPago")
+        dtReporte.Columns.Remove("CodigoAbona")
+        dtReporte.Columns.Remove("NombreModifica")
+        dtReporte.Columns.Remove("NombreUsuario")
+        dtReporte.Columns.Remove("Observaciones")
+        dtReporte.Columns.Remove("NombreAbona")
+        dtReporte.Columns.Remove("Direccion")
+        dtReporte.Columns.Remove("Calle")
+        dtReporte.Columns.Remove("NumeroExterior")
+        dtReporte.Columns.Remove("Colonia")
+        dtReporte.Columns.Remove("CodigoPostal")
+        dtReporte.Columns.Remove("Municipio")
+        dtReporte.Columns.Remove("Ciudad")
+        dtReporte.Columns.Remove("Departamento")
+        dtReporte.Columns.Remove("Sector")
+        dtReporte.Columns.Remove("CodigoBanco")
+        dtReporte.Columns.Remove("NombreBanco")
+        dtReporte.Columns.Remove("Swift")
+        dtReporte.Columns.Remove("Aba")
+        dtReporte.Columns.Remove("Transferencia")
+        dtReporte.Columns.Remove("NumeroCuenta")
+        dtReporte.Columns.Remove("Moneda")
+        dtReporte.Columns.Remove("txt_moneda")
+        dtReporte.Columns.Remove("CodigoAnulacion")
+        dtReporte.Columns.Remove("ClaveProveedor")
+        dtReporte.Columns.Remove("SubRamoContable")
+        dtReporte.Columns.Remove("TipoTransferencia")
+        dtReporte.Columns.Remove("NumeroPoliza")
+        dtReporte.Columns.Remove("Contratante")
+        dtReporte.Columns.Remove("ClasePago")
+        dtReporte.Columns.Remove("Solicitante")
+        dtReporte.Columns.Remove("Jefe")
+        dtReporte.Columns.Remove("Tesoreria")
+        dtReporte.Columns.Remove("Subdirector")
+        dtReporte.Columns.Remove("Director")
+        dtReporte.Columns.Remove("DirectorEjecutivo")
+        dtReporte.Columns.Remove("DirectorGeneral")
+        dtReporte.Columns.Remove("Subgerente")
+        dtReporte.Columns.Remove("Gerente")
+        dtReporte.Columns.Remove("NombreSolicitante")
+        dtReporte.Columns.Remove("NombreJefe")
+        dtReporte.Columns.Remove("NombreTesoreria")
+        dtReporte.Columns.Remove("NombreSubdirector")
+        dtReporte.Columns.Remove("NombreDirector")
+        dtReporte.Columns.Remove("NombreDirectorEjecutivo")
+        dtReporte.Columns.Remove("NombreDirectorGeneral")
+        dtReporte.Columns.Remove("NombreSubgerente")
+        dtReporte.Columns.Remove("NombreGerente")
+        dtReporte.Columns.Remove("FirmadoSolicitante")
+        dtReporte.Columns.Remove("FirmadoJefe")
+        dtReporte.Columns.Remove("FirmadoSubdirector")
+        dtReporte.Columns.Remove("FirmadoTesoreria")
+        dtReporte.Columns.Remove("FirmadoDirector")
+        dtReporte.Columns.Remove("FirmadoDirectorEjecutivo")
+        dtReporte.Columns.Remove("FirmadoDirectorGeneral")
+        dtReporte.Columns.Remove("FirmadoSubgerente")
+        dtReporte.Columns.Remove("FirmadoGerente")
+        dtReporte.Columns.Remove("FechaFirmaSolicitante")
+        dtReporte.Columns.Remove("FechaFirmaJefe")
+        dtReporte.Columns.Remove("FechaFirmaTesoreria")
+        dtReporte.Columns.Remove("FechaFirmaSubdirector")
+        dtReporte.Columns.Remove("FechaFirmaDirector")
+        dtReporte.Columns.Remove("FechaFirmaDirectorEjecutivo")
+        dtReporte.Columns.Remove("FechaFirmaDirectorGeneral")
+        dtReporte.Columns.Remove("FechaFirmaSubgerente")
+        dtReporte.Columns.Remove("FechaFirmaGerente")
+        dtReporte.Columns.Remove("NivelAutorizacion")
+        dtReporte.Columns.Remove("motivo_rechazo")
+        dtReporte.Columns.Remove("usu_solrechazo")
+        dtReporte.Columns.Remove("RoleUsuario")
+        dtReporte.Columns.Remove("NumeroInterior")
+
+        dtReporte.Columns(1).ColumnName = "OrdenPago"
+        dtReporte.Columns(4).ColumnName = "Beneficiario"
+        dtReporte.Columns(6).ColumnName = "Monto_Pago"
+        dtReporte.Columns(7).ColumnName = "Tipo_Pago"
+        dtReporte.Columns.Add("Estatus")
+
+        For Each row In dtReporte.Rows
+            Dim value As Object
+            Dim value2 As Object
+
+            value = row.Item("Preautorizada")
+            value2 = row.Item("Rechazada")
+
+            If Not value Is DBNull.Value Then
+                If CStr(value) = 1 Then  'si esta autorizada
+                    row.Item("Estatus") = "Autorizada"
+                ElseIf CStr(value2) = 1 Then 'si esta rechazada
+                    row.Item("Estatus") = "Rechazada"
+                Else
+                    row.Item("Estatus") = "Abierta"
+                End If
+            End If
+
+        Next
+
+        dtReporte.Columns.Remove("Preautorizada")
+        dtReporte.Columns.Remove("Rechazada")
+
+
+
     End Sub
 
     Private Sub grdOrdenPago_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdOrdenPago.RowDataBound
