@@ -70,6 +70,7 @@ Public Class reportePDF
         Dim rutacompleta As String
         Dim ReportV = New ReportViewer()
         Dim RutaArchivo As String
+        Dim rutasalida As String
 
         Try
             Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
@@ -96,27 +97,80 @@ Public Class reportePDF
 
             ReDim archivos(Nro_ops.Length - 1)
 
-            If Nro_ops.Length > 1 Then
-                RutaArchivo = inicializaArbolfolder(1, rutaserver, Nothing)
-            Else
-                RutaArchivo = inicializaArbolfolder(2, rutaserver, Nro_ops(0))
+            For index = 0 To Nro_ops.Length - 1
+                ReportV.ServerReport.SetParameters(New ReportParameter("nro_op", Nro_ops(index)))
+                bytes = ReportV.ServerReport.Render(format, Nothing, mimeType, encoding, extension, streamids, warnings)
+
+                rutacompleta = rutaserver + "\\" + Nro_ops(index).ToString() + "-0-.pdf"
+
+                Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
+                fs.Write(bytes, 0, bytes.Length)
+                fs.Close()
+                fs.Dispose()
+                bytes = Nothing
+                archivos(index) = rutacompleta
+
+                rutasalida = rutacompleta.Replace("\\", "\")
+                Process.Start(rutasalida)
+            Next
+
+        Catch ex As Exception
+            'Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
+        End Try
+    End Sub
+
+
+    Public Sub Imprimir_todos()
+        Dim archivos() As String = Nothing
+        Dim warnings As Warning() = Nothing
+        Dim streamids As String() = Nothing
+        Dim mimeType As String = Nothing
+        Dim encoding As String = Nothing
+        Dim extension As String = Nothing
+        Dim format As String
+        Dim deviceInfo As String
+        Dim bytes As Byte()
+        Dim dt As New DataTable
+        Dim rutaserver As String
+        Dim UrlReport As String
+        Dim PathReport As String
+        Dim UsuaReport As String
+        Dim PwdReport As String
+        Dim DomReport As String
+        Dim rutacompleta As String
+        Dim ReportV = New ReportViewer()
+        Dim rutasalida As String
+
+        Try
+            Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
+
+            If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
+
+                UrlReport = dt.Rows(0)("url").ToString
+                PathReport = "/" + dt.Rows(0)("NombreCarpeta").ToString + "/OrdenPago_stro"
+                UsuaReport = dt.Rows(0)("UsuaReport").ToString
+                PwdReport = dt.Rows(0)("PwdReport").ToString
+                DomReport = dt.Rows(0)("DomReport").ToString
+                rutaserver = dt.Rows(0)("rutaserver").ToString
             End If
+
+            ReportV.ProcessingMode = ProcessingMode.Remote
+            ReportV.ServerReport.ReportServerUrl = New Uri(UrlReport)
+            ReportV.ServerReport.ReportPath = PathReport
+            Dim crc As New Custom_ReportCredentials(UsuaReport, PwdReport, DomReport)
+            ReportV.ServerReport.ReportServerCredentials = crc
+            ReportV.ServerReport.Refresh()
+
+            format = "PDF"
+            deviceInfo = "True"
+
+            ReDim archivos(Nro_ops.Length - 1)
 
             For index = 0 To Nro_ops.Length - 1
                 ReportV.ServerReport.SetParameters(New ReportParameter("nro_op", Nro_ops(index)))
                 bytes = ReportV.ServerReport.Render(format, Nothing, mimeType, encoding, extension, streamids, warnings)
 
-                Dim i As Integer = 0
-                Dim sufijo As Integer = 0
-
-                While System.IO.File.Exists(RutaArchivo + "\\" + Nro_ops(index).ToString() + "-" + i.ToString() + "-.pdf")
-                    i += 1
-                    rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "-" + i.ToString() + "-.pdf"
-                End While
-
-                If i = 0 Then
-                    rutacompleta = RutaArchivo + "\\" + Nro_ops(index).ToString() + "-0-.pdf"
-                End If
+                rutacompleta = rutaserver + "\\" + Nro_ops(index).ToString() + "-1-.pdf"
 
                 Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
                 fs.Write(bytes, 0, bytes.Length)
@@ -127,9 +181,7 @@ Public Class reportePDF
             Next
 
             If Nro_ops.Length > 1 Then
-                unirPDFS(archivos, RutaArchivo)
-            Else
-                Process.Start(rutacompleta)
+                unirPDFS(archivos, rutaserver)
             End If
 
         Catch ex As Exception
@@ -162,7 +214,7 @@ Public Class reportePDF
             Next
         Next
 
-        NuevoArchivo = "Ordenes de Pago"
+        NuevoArchivo = "Ordenes de pago_stros"
         RutaCompleta = RutaArchivo + "\\" + NuevoArchivo + ".pdf"
         outputDocument.Save(RutaCompleta)
 
@@ -171,8 +223,8 @@ Public Class reportePDF
         Next
 
         '...Abrir el archivo
-        RutaArchivo_correo = RutaCompleta
-        Process.Start(RutaCompleta)
+        RutaArchivo_correo = RutaCompleta.Replace("\\", "\")
+        Process.Start(RutaArchivo_correo)
 
     End Sub
 
