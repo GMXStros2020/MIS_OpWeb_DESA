@@ -104,7 +104,11 @@ Partial Class ImportSIItoOPWEB
                 btnLimpiar_Click(Nothing, Nothing)
             Else
 
-                Mensaje.MuestraMensaje("Importación de OPS a OPWEB", "No existe registro con esas condiciones en la tabla MIS", TipoMsg.Falla)
+                If intPrevio = 2 Then
+                    Mensaje.MuestraMensaje("Importación de OPS a OPWEB", "El tipo Pagar_A no coincide en la tabla MIS", TipoMsg.Falla)
+                Else
+                    Mensaje.MuestraMensaje("Importación de OPS a OPWEB", "No existe registro con esas condiciones en la tabla MIS", TipoMsg.Falla)
+                End If
             End If
 
 
