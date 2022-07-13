@@ -1,8 +1,11 @@
 ﻿Imports System.Data
+Imports System.Web.Script.Services
+Imports System.Web.Services
 Imports System.Data.SqlClient
 Imports Mensaje
 Imports Funciones
 Imports System.IO
+Imports System.Diagnostics
 
 Partial Class Siniestros_ImpresionOrdenesPago
     Inherits System.Web.UI.Page
@@ -235,6 +238,8 @@ Partial Class Siniestros_ImpresionOrdenesPago
                 pdf.Cod_usuario = Master.cod_usuario.ToString()
                 pdf.Nro_ops = archivos
                 pdf.GenerarRenombrar()
+                'Funciones.EjecutaFuncion("fn_abrir_documento('" + pdf.RutaArchivo_correo + "')")
+                'Funciones.EjecutaFuncion("window.open('" & pdf.RutaArchivo_correo & "');")
                 MuestraMensaje("Validación", "Favor de validar la información", TipoMsg.Falla)
             Else
                 Index = 0

@@ -111,7 +111,11 @@ Public Class reportePDF
                 archivos(index) = rutacompleta
 
                 rutasalida = rutacompleta.Replace("\\", "\")
-                Process.Start(rutasalida)
+                RutaArchivo_correo = rutasalida
+                'Funciones.EjecutaFuncion("fn_abrir_documento('" & RutaArchivo_correo & "');")
+                'Process.Start(rutasalida)    
+                'System.Diagnostics.Process.Start(rutasalida)
+                System.Diagnostics.Process.Start("explorer", RutaArchivo_correo)
             Next
 
         Catch ex As Exception
@@ -224,7 +228,9 @@ Public Class reportePDF
 
         '...Abrir el archivo
         RutaArchivo_correo = RutaCompleta.Replace("\\", "\")
-        Process.Start(RutaArchivo_correo)
+        'Process.Start(RutaArchivo_correo)
+        'System.Diagnostics.Process.Start(RutaArchivo_correo)
+        System.Diagnostics.Process.Start("explorer", RutaArchivo_correo)
 
     End Sub
 
