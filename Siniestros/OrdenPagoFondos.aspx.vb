@@ -2771,6 +2771,33 @@ Partial Class Siniestros_OrdenPago
         Dim oParametros As New Dictionary(Of String, Object)
 
         Try
+            '>VZAVALETA_GMX-10290_Valida la cuenta activa del proveedor
+            Dim ErrorMsgprov As String
+            Dim ErrorCodeprov As Integer
+            Dim oDatosErrProv As DataSet
+            ErrorMsgprov = ""
+            If Me.cmbTipoUsuario.SelectedValue = 10 Then
+                For Each row As DataRow In oGrdOrden.Rows
+                    oDatosErrProv = New DataSet
+                    oParametros = New Dictionary(Of String, Object)
+                    oParametros.Add("IdPersona", row("IdPersona").ToString())
+                    oParametros.Add("MonedaPago", CInt(cmbMonedaPago.SelectedValue))
+
+                    oDatosErrProv = Funciones.ObtenerDatos("usp_valida_cuenta_proveedor", oParametros)
+
+                    ErrorCodeprov = oDatosErrProv.Tables(0).Rows(0).Item("ID_ERROR")
+
+                    If ErrorCodeprov <> 0 Then
+                        ErrorMsgprov = ErrorMsgprov + oDatosErrProv.Tables(0).Rows(0).Item("MSG_ERROR") + "<br>"
+                    End If
+                Next
+
+                If ErrorMsgprov <> "" Then
+                    Mensaje.MuestraMensaje("OrdenPagoSiniestros", ErrorMsgprov, TipoMsg.Falla)
+                    Return
+                End If
+            End If
+            '<VZAVALETA_GMX-10290_Valida la cuenta activa del proveedor
             'Valida que los folios no estén asociados a una OP
             Dim ErrorMsg As String 'FCRUZ_GMX-10290_INCIDENCIAS  
             Dim ErrorCode As Integer
@@ -2830,7 +2857,25 @@ Partial Class Siniestros_OrdenPago
                         'FJCP 10290 MEJORAS Validar moneda de la cuenta bancaria que tenga el Proveedor fin
                     End If
 
+                    '>VZAVALETA_GMX-10290_Valida la cuenta 
+                    If cmbTipoPagoOP.SelectedValue = "T" Then
+                        oDatos = New DataSet
+                        oParametros = New Dictionary(Of String, Object)
 
+                        oParametros.Add("CodigoBanco", CInt(IIf(oBancoT_stro.Value = String.Empty, String.Empty, CInt(oBancoT_stro.Value))))
+                        oParametros.Add("CuentaClabe", CStr(oCuentaBancariaT_stro.Value.Trim))
+
+                        oDatos = Funciones.ObtenerDatos("usp_ValidarCuentaClabe", oParametros)
+
+                        If oDatos Is Nothing OrElse oDatos.Tables(0).Rows.Count = 0 Then
+                            Mensaje.MuestraMensaje("Cuentas bancarias", "Error al validar la cuenta bancaria", TipoMsg.Falla)
+                            Return
+                        ElseIf Not IsNumeric(oCuentaBancariaT_stro.Value.Trim) OrElse oDatos.Tables(0).Rows(0).Item("Valido") = "N" Then
+                            Mensaje.MuestraMensaje("Cuentas bancarias", "La cuenta bancaria no es válida para el banco seleccionado, verifique que la cuenta conste de 18 dígitos.", TipoMsg.Advertencia)
+                            Return
+                        End If
+                    End If
+                    '<VZAVALETA_GMX-10290_Valida la cuenta 
 
                     oParametros = New Dictionary(Of String, Object)
 

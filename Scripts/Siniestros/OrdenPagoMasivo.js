@@ -1257,14 +1257,14 @@
         if (TipoUsuario == "Proveedor") {
             jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: false });
             jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: false });
-
         }
         else {
-
             if (TipoPago == "TRANSFERENCIA") {
                 if (cta_clabe != "") {
-                    jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: false });
-                    jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: false });
+                    //jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: fasle });
+                    //jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: fasle });
+                    jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: true, edittype: "password" });
+                    jQuery("#list47").setColProp('Confirmar_Cuenta', { editable: true, edittype: "password" });
                 }
                 else {
                     jQuery("#list47").setColProp('Cuenta_Bancaria', { editable: true, edittype: "password" });
@@ -1438,9 +1438,10 @@
                     return [false, "No se pude usar la cuenta para pagos tesofe"];
                 }
 
-                jQuery("#list47").jqGrid('setCell', id, 'Cuenta_Bancaria_ok', Cuenta_Bancaria);
-                jQuery("#list47").jqGrid('setCell', id, 'Confirmar_Cuenta_ok', valor)
-
+                if (Cuenta_Bancaria != "******************") {
+                    jQuery("#list47").jqGrid('setCell', id, 'Cuenta_Bancaria_ok', Cuenta_Bancaria);
+                    jQuery("#list47").jqGrid('setCell', id, 'Confirmar_Cuenta_ok', valor);
+                }
 
             }
 
@@ -1934,15 +1935,20 @@ function ObtenerCuentasDependencias(id, CodCliente) {
                 if (vClabe != "") {
                     jQuery("#list47").jqGrid('setCell', id, 'Cuenta_Bancaria_ok', vClabe);
                     jQuery("#list47").jqGrid('setCell', id, 'Confirmar_Cuenta_ok', vClabe);                   
-                    $("#" + id + "_Cuenta_Bancaria").val(vClabe);
-                    $("#" + id + "_Confirmar_Cuenta").val(vClabe);
+                    //$("#" + id + "_Cuenta_Bancaria").val(vClabe);
+                    //$("#" + id + "_Confirmar_Cuenta").val(vClabe);
+                   $("#list47").find(`tr[id='${id}'] td[aria-describedby='list47_Cuenta_Bancaria'] input`).val(vClabe);
+                   $("#list47").find(`tr[id='${id}'] td[aria-describedby='list47_Confirmar_Cuenta'] input`).val(vClabe);
                 }
                 else
                 {
-                    jQuery("#list47").jqGrid('setCell', id, 'Cuenta_Bancaria_ok', null);
-                    jQuery("#list47").jqGrid('setCell', id, 'Confirmar_Cuenta_ok', null);
-                    $("#" + id + "_Cuenta_Bancaria").val(null);
-                    $("#" + id + "_Confirmar_Cuenta").val(null);
+                    jQuery("#list47").jqGrid('setCell', id, 'Cuenta_Bancaria_ok', '');
+                    jQuery("#list47").jqGrid('setCell', id, 'Confirmar_Cuenta_ok', '');
+                    //$("#" + id + "_Cuenta_Bancaria").val(null);
+                    //$("#" + id + "_Confirmar_Cuenta").val(null);
+                    $("#list47").find(`tr[id='${id}'] td[aria-describedby='list47_Cuenta_Bancaria'] input`).val('');
+                    $("#list47").find(`tr[id='${id}'] td[aria-describedby='list47_Confirmar_Cuenta'] input`).val('');
+                   
                 }
             }
             return;
