@@ -264,7 +264,7 @@ Partial Class Siniestros_OrdenPagoMasivoFondos
                     msgError = oTabla.Rows(0)("msg_err").ToString()
                     If codError <> -1 Then
                         Funciones.CerrarModal("#RegistroTerceros")
-                        Funciones.fn_Consulta("spS_CatalogosSIR @strCatalogo = 'BenTercero_stro', @Condicion = " + codTerceroNvo.ToString(), dtResult)
+                        Funciones.fn_Consulta("spS_CatalogosSIR_STRO @strCatalogo = 'BenTercero_stro', @Condicion = " + codTerceroNvo.ToString(), dtResult)
                         hidCodTercero.Value = dtResult.Rows(0)("Clave")
                         hidNomTercero.Value = dtResult.Rows(0)("Descripcion").ToString()
                         hidrfcTercero.Value = dtResult.Rows(0)("OcultaCampo1").ToString()

@@ -339,7 +339,7 @@ function fn_CargaCatalogo(Catalogo, Condicion, Seleccion, Tipo, Control, Titulo,
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         url: '../LocalServices/ConsultaBD.asmx/ObtieneDatos',
-        data: "{ 'Consulta': 'spS_CatalogosSIR ==" + Catalogo + "==,==" + Condicion + "==" + Seleccion + "'}",
+        data: "{ 'Consulta': 'spS_CatalogosSIR_STRO ==" + Catalogo + "==,==" + Condicion + "==" + Seleccion + "'}",
         dataType: 'JSON',
         success: function (response) {
             if (response.d.length > 0) {
