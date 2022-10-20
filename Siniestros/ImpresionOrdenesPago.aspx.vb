@@ -6,6 +6,7 @@ Imports Mensaje
 Imports Funciones
 Imports System.IO
 Imports System.Diagnostics
+Imports System.Net
 
 Partial Class Siniestros_ImpresionOrdenesPago
     Inherits System.Web.UI.Page
@@ -28,6 +29,7 @@ Partial Class Siniestros_ImpresionOrdenesPago
                     LlenaDDL(cmbElaborado, DtUsuStro,,, -1)
 
                 End If
+
             End If
             ''EstadoDetalleOrden()
             ''ValidaUsrFiltros()
@@ -104,6 +106,8 @@ Partial Class Siniestros_ImpresionOrdenesPago
             Else
                 MuestraMensaje("Validación", "Debe elegir un filtro de Ordenes de Pago", TipoMsg.Advertencia)
             End If
+
+            BorrarAllArchivoTemporal()
 
         Catch ex As Exception
 
@@ -220,6 +224,12 @@ Partial Class Siniestros_ImpresionOrdenesPago
         Dim Index As Integer = 0
         Dim pdf = New reportePDF
         Dim strFoliosRep As String = ""
+        Dim Arreglorutalocalfinal() As String = Nothing
+        Dim rutacompleta As String
+        Dim dt As New DataTable
+        Dim rutaserver As String
+        Dim Rutafinal As String
+
         dtSelec = obtenerSeleccionadosImp()
         Try
             If dtSelec.Rows.Count > 0 Then
@@ -238,18 +248,36 @@ Partial Class Siniestros_ImpresionOrdenesPago
                 pdf.Cod_usuario = Master.cod_usuario.ToString()
                 pdf.Nro_ops = archivos
                 pdf.GenerarRenombrar()
-                'Funciones.EjecutaFuncion("fn_abrir_documento('" + pdf.RutaArchivo_correo + "')")
-                'Funciones.EjecutaFuncion("window.open('" & pdf.RutaArchivo_correo & "');")
-                MuestraMensaje("Validación", "Favor de validar la información", TipoMsg.Falla)
+                Arreglorutalocalfinal = pdf.GenerarRenombrarlocal()
+
+                Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
+
+            If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
+                rutaserver = dt.Rows(0)("rutaserverlocalhost").ToString
+            End If
+
+                For Each intem As String In Arreglorutalocalfinal
+                    rutacompleta = rutaserver + intem
+                    If Rutafinal <> "" Then
+                        Rutafinal = Rutafinal + ";" + rutacompleta
+                    Else
+                        Rutafinal = rutacompleta
+                    End If
+                Next
+
+                Funciones.EjecutaFuncion("fn_abrir_documento_Local('" & Rutafinal & "')")
+
             Else
                 Index = 0
                 MuestraMensaje("Validación", "Error al imprimir el PDF", TipoMsg.Falla)
             End If
-            Response.Redirect("ImpresionOrdenesPago.aspx")
+            ' Response.Redirect("ImpresionOrdenesPago.aspx")
+
         Catch ex As Exception
             Mensaje.MuestraMensaje("Error en la impresión de la OP", ex.Message, TipoMsg.Falla)
         End Try
     End Sub
+
     Private Sub btn_Limpiar_Click(sender As Object, e As EventArgs) Handles btn_Limpiar.Click
         Response.Redirect("ImpresionOrdenesPago.aspx")
     End Sub
@@ -308,6 +336,13 @@ Partial Class Siniestros_ImpresionOrdenesPago
         Dim pdf = New reportePDF
         Dim strFoliosRep As String = ""
 
+        Dim Arreglorutalocalfinal As String
+        'Dim rutacompleta As String
+        Dim dt As New DataTable
+        Dim rutaserver As String
+        Dim Rutafinal As String
+
+
         dtSelec = obtenerSeleccionadosImp()
         Try
             If dtSelec.Rows.Count > 0 Then
@@ -326,17 +361,37 @@ Partial Class Siniestros_ImpresionOrdenesPago
                 pdf.Cod_usuario = Master.cod_usuario.ToString()
                 pdf.Nro_ops = archivos
                 pdf.Imprimir_todos()
-                MuestraMensaje("Validación", "Favor de validar la información", TipoMsg.Falla)
+
+                Arreglorutalocalfinal = pdf.Imprimir_todos_local()
+
+                Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
+
+                If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
+                    rutaserver = dt.Rows(0)("rutaserverlocalhost").ToString
+                End If
+
+                Rutafinal = rutaserver + Arreglorutalocalfinal
+
+                Funciones.EjecutaFuncion("fn_abrir_documento_Local('" & Rutafinal & "')")
+
             Else
                 Index = 0
                 MuestraMensaje("Validación", "Error al imprimir los PDF", TipoMsg.Falla)
             End If
 
-            Response.Redirect("ImpresionOrdenesPago.aspx")
         Catch ex As Exception
             Mensaje.MuestraMensaje("Error en la impresión de las OP", ex.Message, TipoMsg.Falla)
         End Try
     End Sub
+
+    Public Sub BorrarAllArchivoTemporal()
+        Dim strFiles As List(Of String) = Directory.GetFiles("C:\inetpub\Impresion\", "*").ToList()
+
+        For Each fichero As String In strFiles
+            File.Delete(fichero)
+        Next
+    End Sub
+
     Private Sub Ocultar()
         btnEnviar.Visible = False
         btn_Imprimir.Visible = False
@@ -369,4 +424,5 @@ Partial Class Siniestros_ImpresionOrdenesPago
         End If
 
     End Sub
+
 End Class

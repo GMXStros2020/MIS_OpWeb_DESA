@@ -47,7 +47,7 @@ function espacio(e, control) {
         key = e.which;
     }
 
-    if (key == 32) {
+    if (key === 32) {
         nstr = str + "; ";
         $("[id*=" + control + "]").val(nstr);
         return false
@@ -64,7 +64,7 @@ function convMayusculas(control) {
 
 
 function nroOPdesde(control) {
-    if (control == 'txt_nro_op') {
+    if (control === 'txt_nro_op') {
         var op = $("[id*=" + control + "]").val();
         $("[id*=txt_nro_op_ini]").val(op);
     }
@@ -75,6 +75,14 @@ function nroOPdesde(control) {
 //>VZAVALETA_10290_CC7_PDF
 function fn_abrir_documento(documento) {
     window.open('file:' + documento);
+}
+
+function fn_abrir_documento_Local(documento) {
+    var prueba = JSON.stringify(documento);
+    const array = documento.split(';');     
+    array.forEach(element => window.open(element));  
+
+    
 }
 
 

@@ -6,6 +6,7 @@ Imports System.Data
 Imports System.IO
 Imports System.Diagnostics
 
+
 Public Class reportePDF
     'Dim PathReport As String
     Dim _nro_ops As String()
@@ -72,6 +73,7 @@ Public Class reportePDF
         Dim RutaArchivo As String
         Dim rutasalida As String
 
+
         Try
             Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
 
@@ -107,21 +109,119 @@ Public Class reportePDF
                 fs.Write(bytes, 0, bytes.Length)
                 fs.Close()
                 fs.Dispose()
+
                 bytes = Nothing
                 archivos(index) = rutacompleta
 
                 rutasalida = rutacompleta.Replace("\\", "\")
+                'RutaArchivo_correo = "file:///" + rutasalida
                 RutaArchivo_correo = rutasalida
-                'Funciones.EjecutaFuncion("fn_abrir_documento('" & RutaArchivo_correo & "');")
-                'Process.Start(rutasalida)    
-                'System.Diagnostics.Process.Start(rutasalida)
-                System.Diagnostics.Process.Start("explorer", RutaArchivo_correo)
+                'System.Diagnostics.Process.Start("explorer", RutaArchivo_correo)
+
+                'Funciones.EjecutaFuncion("fn_abrir_documento('" & rutacompleta & "');")
+                'Process.Start(RutaArchivo_correo)
+                'System.Diagnostics.Process.Start(RutaArchivo_correo)
+
+                'System.Diagnostics.Process.Start("explorer", "Impresion/419102-0-.pdf")
+                ' Dim Drives() As String = System.IO.Directory.GetLogicalDrives()
+                'Process.Start("https://www.google.com.mx/?hl=es-419")
+                'System.Diagnostics.Process.Start("explorer", "https://www.google.com.mx/?hl=es-419")
+
+                'System.Diagnostics.Process.Start("explorer", "http://localhost:81/419102-0-.pdf")
+
+                'Shell("explorer.exe root=C:\WINDOWS\system32\notepad.exe", vbNormalFocus)
+                'Shell("explorer.exe root=C:\Impresion", vbNormalFocus)
+                'Shell("explorer.exe root=C:\Impresion\419102-0-.pdf", vbNormalFocus)
+                'Shell("explorer.exe root=http://localhost:81/419102-0-.pdf", vbNormalFocus)
+                'Mensaje.MuestraMensaje("Error", RutaArchivo_correo, Mensaje.TipoMsg.Advertencia)
             Next
 
+
+
+
         Catch ex As Exception
-            'Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
+            EventLog.CreateEventSource(ex.Message, "Application")
+            Mensaje.MuestraMensaje("Error", ex.Message, Mensaje.TipoMsg.Advertencia)
         End Try
     End Sub
+
+    Public Function GenerarRenombrarlocal() As String()
+        Dim archivos() As String = Nothing
+        Dim warnings As Warning() = Nothing
+        Dim streamids As String() = Nothing
+        Dim mimeType As String = Nothing
+        Dim encoding As String = Nothing
+        Dim extension As String = Nothing
+        Dim format As String
+        Dim deviceInfo As String
+        Dim bytes As Byte()
+        Dim dt As New DataTable
+        Dim rutaserver As String
+        Dim UrlReport As String
+        Dim PathReport As String
+        Dim UsuaReport As String
+        Dim PwdReport As String
+        Dim DomReport As String
+        Dim rutacompleta As String
+        Dim ReportV = New ReportViewer()
+        Dim RutaArchivo As String
+        Dim rutasalida As String
+        Dim Arreglorutalocal() As String = Nothing
+        Dim Num_op As String
+
+
+        Try
+            Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
+
+            If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
+
+                UrlReport = dt.Rows(0)("url").ToString
+                PathReport = "/" + dt.Rows(0)("NombreCarpeta").ToString + "/OrdenPago_stro"
+                UsuaReport = dt.Rows(0)("UsuaReport").ToString
+                PwdReport = dt.Rows(0)("PwdReport").ToString
+                DomReport = dt.Rows(0)("DomReport").ToString
+                rutaserver = dt.Rows(0)("rutaserverLocal").ToString
+            End If
+
+            ReportV.ProcessingMode = ProcessingMode.Remote
+            ReportV.ServerReport.ReportServerUrl = New Uri(UrlReport)
+            ReportV.ServerReport.ReportPath = PathReport
+            Dim crc As New Custom_ReportCredentials(UsuaReport, PwdReport, DomReport)
+            ReportV.ServerReport.ReportServerCredentials = crc
+            ReportV.ServerReport.Refresh()
+
+            format = "PDF"
+            deviceInfo = "True"
+
+            ReDim archivos(Nro_ops.Length - 1)
+            ReDim Arreglorutalocal(Nro_ops.Length - 1)
+
+            For index = 0 To Nro_ops.Length - 1
+                Num_op = Nro_ops(index).ToString() + "-0-.pdf"
+                'Arreglorutalocal(Num_op)
+                'Arreglorutalocal = {Num_op}
+                Arreglorutalocal(index) = Num_op
+                ReportV.ServerReport.SetParameters(New ReportParameter("nro_op", Nro_ops(index)))
+                bytes = ReportV.ServerReport.Render(format, Nothing, mimeType, encoding, extension, streamids, warnings)
+
+                'rutacompleta = rutaserver + "//" + Nro_ops(index).ToString() + "-0-.pdf"
+                rutacompleta = rutaserver + "//" + Num_op
+
+                Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
+                fs.Write(bytes, 0, bytes.Length)
+                fs.Close()
+                fs.Dispose()
+                bytes = Nothing
+
+
+
+            Next
+            Return Arreglorutalocal
+        Catch ex As Exception
+            EventLog.CreateEventSource(ex.Message, "Application")
+            Mensaje.MuestraMensaje("Error", ex.Message, Mensaje.TipoMsg.Advertencia)
+        End Try
+    End Function
 
 
     Public Sub Imprimir_todos()
@@ -143,7 +243,6 @@ Public Class reportePDF
         Dim DomReport As String
         Dim rutacompleta As String
         Dim ReportV = New ReportViewer()
-        Dim rutasalida As String
 
         Try
             Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
@@ -192,10 +291,81 @@ Public Class reportePDF
             'Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
         End Try
     End Sub
+    Public Function Imprimir_todos_local() As String
+        Dim archivos() As String = Nothing
+        Dim warnings As Warning() = Nothing
+        Dim streamids As String() = Nothing
+        Dim mimeType As String = Nothing
+        Dim encoding As String = Nothing
+        Dim extension As String = Nothing
+        Dim format As String
+        Dim deviceInfo As String
+        Dim bytes As Byte()
+        Dim dt As New DataTable
+        Dim rutaserver As String
+        Dim UrlReport As String
+        Dim PathReport As String
+        Dim UsuaReport As String
+        Dim PwdReport As String
+        Dim DomReport As String
+        Dim rutacompleta As String
+        Dim ReportV = New ReportViewer()
+        Dim RutaArchivo_Local As String
 
-    Private Sub unirPDFS(archivos As String(), RutaArchivo As String)
+        Try
+            Funciones.fn_Consulta("usp_obtDatosReporteOP 1", dt)
+
+            If Not dt Is Nothing AndAlso dt.Rows.Count > 0 Then
+
+                UrlReport = dt.Rows(0)("url").ToString
+                PathReport = "/" + dt.Rows(0)("NombreCarpeta").ToString + "/OrdenPago_stro"
+                UsuaReport = dt.Rows(0)("UsuaReport").ToString
+                PwdReport = dt.Rows(0)("PwdReport").ToString
+                DomReport = dt.Rows(0)("DomReport").ToString
+                rutaserver = dt.Rows(0)("rutaserverLocal").ToString
+            End If
+
+            ReportV.ProcessingMode = ProcessingMode.Remote
+            ReportV.ServerReport.ReportServerUrl = New Uri(UrlReport)
+            ReportV.ServerReport.ReportPath = PathReport
+            Dim crc As New Custom_ReportCredentials(UsuaReport, PwdReport, DomReport)
+            ReportV.ServerReport.ReportServerCredentials = crc
+            ReportV.ServerReport.Refresh()
+
+            format = "PDF"
+            deviceInfo = "True"
+
+            ReDim archivos(Nro_ops.Length - 1)
+
+            For index = 0 To Nro_ops.Length - 1
+
+                ReportV.ServerReport.SetParameters(New ReportParameter("nro_op", Nro_ops(index)))
+                bytes = ReportV.ServerReport.Render(format, Nothing, mimeType, encoding, extension, streamids, warnings)
+
+                rutacompleta = rutaserver + "\\" + Nro_ops(index).ToString() + "-1-.pdf"
+
+                Dim fs As New System.IO.FileStream(rutacompleta, System.IO.FileMode.Create)
+                fs.Write(bytes, 0, bytes.Length)
+                fs.Close()
+                fs.Dispose()
+                bytes = Nothing
+                archivos(index) = rutacompleta
+            Next
+
+
+            If Nro_ops.Length > 1 Then
+                RutaArchivo_Local = unirPDFS(archivos, rutaserver)
+            End If
+
+            Return RutaArchivo_Local
+        Catch ex As Exception
+            'Mensaje.MuestraMensaje("", ex.Message, Mensaje.TipoMsg.Advertencia)
+        End Try
+    End Function
+    Private Function unirPDFS(archivos As String(), RutaArchivo As String) As String
         Dim NuevoArchivo As String
         Dim RutaCompleta As String
+        Dim RutaArchivo_correo As String
         ' //// Obtener algunos nombres de archivo
         'Dim files As String()
         'files = {]
@@ -227,12 +397,16 @@ Public Class reportePDF
         Next
 
         '...Abrir el archivo
-        RutaArchivo_correo = RutaCompleta.Replace("\\", "\")
+        RutaCompleta.Replace("\\", "\")
+
+        RutaArchivo_correo = "Ordenes de pago_stros.pdf"
+        Return RutaArchivo_correo
+
         'Process.Start(RutaArchivo_correo)
         'System.Diagnostics.Process.Start(RutaArchivo_correo)
-        System.Diagnostics.Process.Start("explorer", RutaArchivo_correo)
+        'System.Diagnostics.Process.Start("explorer", RutaArchivo_correo)
 
-    End Sub
+    End Function
 
     Public Function inicializaArbolfolder(accion As Integer, sPathFile As String, nro_op As String) As String
 
@@ -526,4 +700,5 @@ Public Class reportePDF
         End If
 
     End Sub
+
 End Class
